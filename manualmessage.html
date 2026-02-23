@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Message — AutoPost Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Vercel Analytics -->
+<script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
+
+<style>
+:root{--bg:#07090f;--surface:#0d1117;--surface2:#151b25;--surface3:#1c2432;--border:#1e2a3a;--border2:#253347;--cyan:#06b6d4;--cyan-dim:#06b6d418;--amber:#f59e0b;--amber-dim:#f59e0b18;--green:#10b981;--red:#ef4444;--muted:#4a5568;--muted2:#718096;--text:#e2e8f0;--text2:#a0aec0;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:9000}
+header{border-bottom:1px solid var(--border);background:var(--surface);padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--text);text-decoration:none}
+.logo-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan)}
+nav{display:flex;gap:4px}
+.nav-item{padding:6px 13px;border-radius:6px;font-size:13px;font-weight:500;color:var(--muted2);text-decoration:none;transition:all .15s;border:1px solid transparent}
+.nav-item:hover{color:var(--text);background:var(--surface2)}
+.nav-item.active{color:var(--cyan);background:var(--cyan-dim);border-color:var(--border2)}
+main{flex:1;padding:24px 28px;display:grid;grid-template-columns:1fr 370px;gap:18px;max-width:1180px;width:100%;margin:0 auto;align-items:start}
+@media(max-width:860px){main{grid-template-columns:1fr;padding:18px}}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.card-hdr{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);display:flex;align-items:center;gap:7px}
+.card-title::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--cyan);display:inline-block}
+.card-body{padding:18px}
+
+/* Tabs */
+.tab-bar{display:flex;flex-wrap:wrap;gap:5px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.tab{padding:5px 11px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--muted2);font-family:var(--sans);transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--cyan-dim);color:var(--cyan);border-color:var(--cyan)}
+
+/* Forms */
+.fg{margin-bottom:13px}
+.fl{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted2);margin-bottom:5px}
+.fi,.fs,.ft{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;padding:8px 11px;outline:none;font-family:var(--sans);transition:border-color .15s}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--cyan)}
+.fs{cursor:pointer}
+.ft{resize:vertical;min-height:80px;font-family:var(--mono);font-size:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+
+/* Shared fields banner */
+.shared-fields{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:13px 14px;margin-bottom:14px}
+.shared-fields-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cyan);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.shared-fields-title::before{content:'👥'}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s;text-decoration:none;white-space:nowrap}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-cyan{background:var(--cyan);color:#000}
+.btn-cyan:hover:not(:disabled){background:#22d3ee}
+.btn-ghost{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover:not(:disabled){color:var(--text);border-color:var(--cyan)}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-full{width:100%}
+
+/* Preview */
+.preview-bubble{background:#1a2530;border-radius:14px 14px 14px 4px;padding:14px 16px;font-size:13px;line-height:1.65;color:#e2e8f0;font-family:var(--mono);white-space:pre-wrap;word-break:break-word;min-height:180px;border:1px solid #1e3040}
+.preview-wrap{background:#111820;border-radius:10px;padding:14px;margin-bottom:14px}
+.preview-ph{color:var(--muted2);font-family:var(--sans);font-style:italic;font-size:13px}
+.preview-time{font-size:10px;color:#556;margin-top:6px;text-align:right;font-family:var(--mono)}
+
+/* Media */
+.media-zone{border:2px dashed var(--border2);border-radius:7px;padding:14px;text-align:center;cursor:pointer;position:relative;transition:border-color .2s}
+.media-zone:hover{border-color:var(--cyan)}
+.media-zone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.media-img{max-width:100%;max-height:130px;border-radius:5px;object-fit:contain}
+
+/* Channels */
+.ch-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.ch-row:last-child{border-bottom:none}
+
+/* History */
+.table{width:100%;border-collapse:collapse;font-size:12px}
+.table th{text-align:left;font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;padding:7px 11px;border-bottom:1px solid var(--border)}
+.table td{padding:8px 11px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+.table tr:last-child td{border-bottom:none}
+.table tr:hover td{background:var(--surface2)}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.badge-cyan{background:var(--cyan-dim);color:var(--cyan)}
+.empty{padding:36px 16px;text-align:center;color:var(--muted2);font-size:13px}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+
+#toast{display:none;position:fixed;bottom:20px;right:20px;z-index:999;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:500}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo"><div class="logo-dot"></div>AutoPost Pro</a>
+  <nav>
+    <a href="index.html" class="nav-item">Dashboard</a>
+    <a href="manualmessage.html" class="nav-item active">Manual</a>
+    <a href="aimessage.html" class="nav-item">AI Message</a>
+  </nav>
+  <span style="font-family:var(--mono);font-size:11px;color:var(--muted2);" id="hdr-time"></span>
+</header>
+
+<main>
+  <!-- LEFT: Composer -->
+  <div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Compose Message</div></div>
+      <div class="tab-bar">
+        <button class="tab active" onclick="useTemplate('goal',event)">⚽ Goal</button>
+        <button class="tab" onclick="useTemplate('card-yellow',event)">🟨 Yellow</button>
+        <button class="tab" onclick="useTemplate('card-red',event)">🟥 Red Card</button>
+        <button class="tab" onclick="useTemplate('ht',event)">🔔 Half Time</button>
+        <button class="tab" onclick="useTemplate('ft',event)">🏁 Full Time</button>
+        <button class="tab" onclick="useTemplate('lineup',event)">📋 Lineup</button>
+        <button class="tab" onclick="useTemplate('sub',event)">🔄 Sub</button>
+        <button class="tab" onclick="useTemplate('extratime',event)">⏱ Extra Time</button>
+        <button class="tab" onclick="useTemplate('matchpreview',event)">🏆 Preview</button>
+        <button class="tab" onclick="useTemplate('matchstats',event)">📊 Stats</button>
+        <button class="tab" onclick="useTemplate('free',event)">✏ Free Text</button>
+      </div>
+      <div class="card-body">
+
+        <!-- ═══════════════════════════════════════════
+             SHARED FIELDS: Users Label + Channel Link
+             Shown on every template update
+        ════════════════════════════════════════════ -->
+        <div class="shared-fields">
+          <div class="shared-fields-title">Audience Tags (optional — shown on every update)</div>
+          <div class="row2">
+            <div class="fg" style="margin-bottom:0;">
+              <label class="fl">👥 Users Label</label>
+              <input class="fi" id="g-users-label" placeholder="e.g. @everyone, 🔔 Subscribers…" oninput="buildPreview()">
+            </div>
+            <div class="fg" style="margin-bottom:0;">
+              <label class="fl">🔗 Channel Link</label>
+              <input class="fi" id="g-channel-link" placeholder="e.g. t.me/mychannel" oninput="buildPreview()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Goal -->
+        <div id="f-goal">
+          <div class="row2">
+            <div class="fg"><label class="fl">Home Team</label><input class="fi" id="f-home" placeholder="Arsenal" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Away Team</label><input class="fi" id="f-away" placeholder="Chelsea" oninput="buildPreview()"></div>
+          </div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Score</label><input class="fi" id="f-score" placeholder="2–1" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Minute</label><input class="fi" id="f-min" placeholder="67" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Scorer</label><input class="fi" id="f-scorer" placeholder="Player name" oninput="buildPreview()"></div>
+          <div class="fg"><label class="fl">Assist (optional)</label><input class="fi" id="f-assist" placeholder="Assisting player" oninput="buildPreview()"></div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="f-comp" placeholder="Premier League" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Card -->
+        <div id="f-card" style="display:none">
+          <div class="fg"><label class="fl">Match</label><input class="fi" id="c-match" placeholder="Home vs Away" oninput="buildPreview()"></div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Player</label><input class="fi" id="c-player" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Minute</label><input class="fi" id="c-min" placeholder="54" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="c-comp" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- HT / FT -->
+        <div id="f-result" style="display:none">
+          <div class="row2">
+            <div class="fg"><label class="fl">Home Team</label><input class="fi" id="r-home" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Away Team</label><input class="fi" id="r-away" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Score</label><input class="fi" id="r-score" placeholder="2–0" oninput="buildPreview()"></div>
+          <div class="fg"><label class="fl">Scorers (one per line)</label><textarea class="ft" id="r-scorers" placeholder="Salah 12'&#10;Núñez 45'" oninput="buildPreview()"></textarea></div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="r-comp" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Lineup -->
+        <div id="f-lineup" style="display:none">
+          <div class="fg"><label class="fl">Match</label><input class="fi" id="l-match" placeholder="Home vs Away" oninput="buildPreview()"></div>
+          <div class="fg"><label class="fl">Home XI (one per line)</label><textarea class="ft" id="l-home" placeholder="1. Raya&#10;2. White…" oninput="buildPreview()"></textarea></div>
+          <div class="fg"><label class="fl">Away XI (one per line)</label><textarea class="ft" id="l-away" oninput="buildPreview()"></textarea></div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="l-comp" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Sub -->
+        <div id="f-sub" style="display:none">
+          <div class="fg"><label class="fl">Match</label><input class="fi" id="s-match" placeholder="Home vs Away" oninput="buildPreview()"></div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Player Off</label><input class="fi" id="s-off" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Player On</label><input class="fi" id="s-on" oninput="buildPreview()"></div>
+          </div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Team</label><input class="fi" id="s-team" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Minute</label><input class="fi" id="s-min" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="s-comp" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Extra Time -->
+        <div id="f-extratime" style="display:none">
+          <div class="row2">
+            <div class="fg"><label class="fl">Home</label><input class="fi" id="et-home" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Away</label><input class="fi" id="et-away" oninput="buildPreview()"></div>
+          </div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Score</label><input class="fi" id="et-score" placeholder="1–1" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Added Mins</label><input class="fi" id="et-added" placeholder="5" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Half</label>
+            <select class="fs" id="et-half" onchange="buildPreview()">
+              <option>1st Half</option><option>2nd Half</option><option>ET 1st Half</option><option>ET 2nd Half</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="et-comp" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Match Preview -->
+        <div id="f-matchpreview" style="display:none">
+          <div class="row2">
+            <div class="fg"><label class="fl">Home Team</label><input class="fi" id="mp-home" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Away Team</label><input class="fi" id="mp-away" oninput="buildPreview()"></div>
+          </div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Date</label><input class="fi" id="mp-date" placeholder="Mon 24 Feb" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Kick-off</label><input class="fi" id="mp-time" placeholder="20:00" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Venue</label><input class="fi" id="mp-venue" oninput="buildPreview()"></div>
+          <div class="fg"><label class="fl">Competition / Round</label><input class="fi" id="mp-comp" oninput="buildPreview()"></div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Home Form</label><input class="fi" id="mp-fh" placeholder="W W D L W" oninput="buildPreview()"></div>
+            <div class="fg"><label class="fl">Away Form</label><input class="fi" id="mp-fa" placeholder="W D D W L" oninput="buildPreview()"></div>
+          </div>
+          <div class="fg"><label class="fl">Storyline (optional)</label><input class="fi" id="mp-story" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Match Stats -->
+        <div id="f-matchstats" style="display:none">
+          <div class="fg"><label class="fl">Match</label><input class="fi" id="st-match" oninput="buildPreview()"></div>
+          <div class="fg"><label class="fl">Score</label><input class="fi" id="st-score" oninput="buildPreview()"></div>
+          <div style="display:grid;grid-template-columns:1fr 110px 1fr;gap:6px;align-items:center;margin-bottom:6px;font-size:10px;color:var(--muted2);text-align:center;"><span>Home</span><span>Stat</span><span>Away</span></div>
+          <div id="stats-rows"></div>
+          <div class="fg"><label class="fl">Competition</label><input class="fi" id="st-comp" oninput="buildPreview()"></div>
+        </div>
+
+        <!-- Free -->
+        <div id="f-free" style="display:none">
+          <div class="fg"><label class="fl">Message</label><textarea class="ft" id="free-txt" style="min-height:150px;" oninput="buildPreview()"></textarea></div>
+        </div>
+
+        <!-- Media -->
+        <hr class="divider">
+        <div class="fl" style="margin-bottom:8px;">📎 Attach Image (optional)</div>
+        <div class="media-zone" id="media-zone">
+          <input type="file" id="media-input" accept="image/*" onchange="handleMedia(event)">
+          <div id="media-ph" style="color:var(--muted2);font-size:13px;">🖼 Click or drag an image</div>
+          <div id="media-prev" style="display:none;">
+            <img id="media-img" class="media-img"><br>
+            <span style="font-size:11px;color:var(--muted2);" id="media-name"></span>
+            <button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="clearMedia(event)">✕ Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="card" style="margin-top:14px;">
+      <div class="card-hdr">
+        <div class="card-title">Sent History</div>
+        <button class="btn btn-ghost btn-sm" onclick="clearHistory()">Clear</button>
+      </div>
+      <div id="history"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Preview + send -->
+  <div style="position:sticky;top:70px;">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title">WhatsApp Preview</div>
+        <button class="btn btn-ghost btn-sm" onclick="copyMsg()">📋 Copy</button>
+      </div>
+      <div class="card-body">
+        <div id="img-badge" style="display:none;font-size:11px;color:var(--muted2);margin-bottom:8px;">🖼 <span id="img-badge-name"></span></div>
+        <div class="preview-wrap">
+          <div class="preview-bubble" id="preview"></div>
+          <div class="preview-time" id="preview-time">—</div>
+        </div>
+
+        <div class="fl" style="margin-bottom:8px;">Send To</div>
+        <div id="ch-list"></div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
+          <button class="btn btn-cyan btn-full" onclick="sendNow()">📤 Send to Telegram</button>
+          <button class="btn btn-ghost btn-full" onclick="copyMsg()">📋 Copy for WhatsApp</button>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted2);">WhatsApp: copy above and paste manually into your group.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+<script>
+const DB={
+  get:k=>{try{return JSON.parse(localStorage.getItem('ap_'+k))}catch{return null}},
+  set:(k,v)=>localStorage.setItem('ap_'+k,JSON.stringify(v)),
+  push:(k,item)=>{const a=DB.get(k)||[];a.push({...item,id:Date.now()});DB.set(k,a);}
+};
+
+let tpl='goal', cardType='yellow', attachedFile=null, attachedB64=null;
+const STAT_ROWS=[
+  {id:'poss',label:'Possession %'},{id:'shots',label:'Shots'},
+  {id:'shots-ot',label:'On Target'},{id:'corners',label:'Corners'},
+  {id:'fouls',label:'Fouls'},{id:'yellow',label:'Yellow Cards'},{id:'red',label:'Red Cards'},
+];
+
+document.addEventListener('DOMContentLoaded',()=>{
+  useTemplate('goal');loadChannels();loadHistory();
+  setInterval(()=>document.getElementById('hdr-time').textContent=new Date().toLocaleTimeString(),1000);
+  const zone=document.getElementById('media-zone');
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.style.borderColor='var(--cyan)'});
+  zone.addEventListener('dragleave',()=>zone.style.borderColor='var(--border2)');
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.style.borderColor='var(--border2)';
+    const f=e.dataTransfer.files[0];
+    if(f&&f.type.startsWith('image/'))handleMedia({target:{files:[f]}});
+    else toast('Drop an image file','error');
+  });
+});
+
+function buildStatsRows(){
+  document.getElementById('stats-rows').innerHTML=STAT_ROWS.map(r=>`
+    <div style="display:grid;grid-template-columns:1fr 110px 1fr;gap:6px;align-items:center;margin-bottom:5px;">
+      <input class="fi" id="st-h-${r.id}" placeholder="–" oninput="buildPreview()" style="text-align:center;">
+      <div style="font-size:10px;color:var(--muted2);text-align:center;">${r.label}</div>
+      <input class="fi" id="st-a-${r.id}" placeholder="–" oninput="buildPreview()" style="text-align:center;">
+    </div>`).join('');
+}
+
+function useTemplate(type, ev){
+  tpl=type;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  if(ev?.target)ev.target.classList.add('active');
+  ['goal','card','result','lineup','sub','extratime','matchpreview','matchstats','free']
+    .forEach(id=>{const el=document.getElementById('f-'+id);if(el)el.style.display='none';});
+  if(type==='goal')           document.getElementById('f-goal').style.display='block';
+  else if(type.startsWith('card-')){cardType=type==='card-yellow'?'yellow':'red';document.getElementById('f-card').style.display='block';}
+  else if(type==='ht'||type==='ft') document.getElementById('f-result').style.display='block';
+  else if(type==='lineup')    document.getElementById('f-lineup').style.display='block';
+  else if(type==='sub')       document.getElementById('f-sub').style.display='block';
+  else if(type==='extratime') document.getElementById('f-extratime').style.display='block';
+  else if(type==='matchpreview')document.getElementById('f-matchpreview').style.display='block';
+  else if(type==='matchstats'){document.getElementById('f-matchstats').style.display='block';buildStatsRows();}
+  else document.getElementById('f-free').style.display='block';
+  buildPreview();
+}
+
+const v=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+
+/**
+ * Build the shared footer lines:
+ *  - Users Label (if filled)
+ *  - Channel Link (if filled)
+ * These appear at the very bottom of every message, above the affiliate line.
+ */
+function buildAudienceLine(){
+  const label = v('g-users-label');
+  const link  = v('g-channel-link');
+  let line = '';
+  if(label || link){
+    line += '\n━━━━━━━━━━━━━';
+    if(label) line += `\n👥 ${label}`;
+    if(link)  line += `\n🔗 ${link}`;
+  }
+  return line;
+}
+
+function buildPreview(){
+  const aff=DB.get('affiliate')||{};
+  const affLine=aff.url?`\n\n━━━━━━━━━━━━━\n${aff.label||'🔗 Link'} → ${aff.url}`:'';
+  const audLine = buildAudienceLine();
+  let msg='';
+
+  if(tpl==='goal'){
+    const home=v('f-home'),away=v('f-away'),score=v('f-score'),min=v('f-min'),scorer=v('f-scorer'),assist=v('f-assist'),comp=v('f-comp');
+    if(!home&&!away){setPreview('');return;}
+    msg=`⚽ GOAL!\n${home||'?'} ${score||'?'} ${away||'?'}`;
+    if(scorer)msg+=`\n${scorer} ✅`;if(min)msg+=` (${min}')`;
+    if(assist)msg+=`\n🅰️ Assist: ${assist}`;if(comp)msg+=`\n\n🏟 ${comp}`;
+    msg+=audLine+affLine;
+  }else if(tpl==='card-yellow'||tpl==='card-red'){
+    const match=v('c-match'),player=v('c-player'),min=v('c-min'),comp=v('c-comp');
+    msg=`${cardType==='red'?'🟥 RED CARD!':'🟨 YELLOW CARD'}\n${match||'? vs ?'}`;
+    if(player)msg+=`\n${player}`;if(min)msg+=` (${min}')`;if(comp)msg+=`\n\n🏟 ${comp}`;
+    msg+=audLine+affLine;
+  }else if(tpl==='ht'||tpl==='ft'){
+    const home=v('r-home'),away=v('r-away'),score=v('r-score'),scorers=v('r-scorers'),comp=v('r-comp');
+    msg=`${tpl==='ht'?'🔔 HALF TIME':'🏁 FULL TIME'}\n${home||'?'} ${score||'?'} ${away||'?'}`;
+    if(scorers)msg+=`\n\n⚽ Scorers:\n${scorers}`;if(comp)msg+=`\n\n🏟 ${comp}`;
+    msg+=audLine+affLine;
+  }else if(tpl==='lineup'){
+    const match=v('l-match'),hxi=v('l-home'),axi=v('l-away'),comp=v('l-comp');
+    const parts=match.split(' vs ');
+    msg=`📋 LINEUPS\n${match||'? vs ?'}`;if(comp)msg+=`\n🏟 ${comp}`;
+    if(hxi)msg+=`\n\n🟢 ${parts[0]||'Home'} XI:\n${hxi}`;
+    if(axi)msg+=`\n\n🔵 ${parts[1]||'Away'} XI:\n${axi}`;
+    msg+=audLine+affLine;
+  }else if(tpl==='sub'){
+    const match=v('s-match'),off=v('s-off'),on=v('s-on'),team=v('s-team'),min=v('s-min'),comp=v('s-comp');
+    msg=`🔄 SUBSTITUTION\n${match||'? vs ?'}`;
+    if(team)msg+=`\nTeam: ${team}`;if(off)msg+=`\n🔴 Off: ${off}`;if(on)msg+=`\n🟢 On: ${on}`;
+    if(min)msg+=`\n⏱ ${min}'`;if(comp)msg+=`\n\n🏟 ${comp}`;
+    msg+=audLine+affLine;
+  }else if(tpl==='extratime'){
+    const home=v('et-home'),away=v('et-away'),score=v('et-score'),added=v('et-added'),half=v('et-half'),comp=v('et-comp');
+    msg=`⏱️ INJURY TIME`;if(added)msg+=` +${added} mins`;
+    msg+=`\n${home||'?'} ${score||'?'} ${away||'?'}`;if(half)msg+=`\n📍 ${half}`;
+    if(comp)msg+=`\n\n🏟 ${comp}`;msg+=audLine+affLine;
+  }else if(tpl==='matchpreview'){
+    const home=v('mp-home'),away=v('mp-away'),date=v('mp-date'),time=v('mp-time'),venue=v('mp-venue'),comp=v('mp-comp'),fh=v('mp-fh'),fa=v('mp-fa'),story=v('mp-story');
+    if(!home&&!away){setPreview('');return;}
+    msg=`🏆 MATCH PREVIEW\n━━━━━━━━━━━━━\n${home||'?'} vs ${away||'?'}`;
+    if(comp)msg+=`\n🏟 ${comp}`;if(date||time)msg+=`\n📅 ${[date,time].filter(Boolean).join(' – ')}`;
+    if(venue)msg+=`\n📍 ${venue}`;
+    if(fh||fa){msg+=`\n\n📈 Form (last 5)`;if(fh)msg+=`\n${home||'Home'}: ${fh}`;if(fa)msg+=`\n${away||'Away'}: ${fa}`;}
+    if(story)msg+=`\n\n💬 ${story}`;msg+=audLine+affLine;
+  }else if(tpl==='matchstats'){
+    const match=v('st-match'),score=v('st-score'),comp=v('st-comp');
+    msg=`📊 MATCH STATS\n${match||'? vs ?'}`;if(score)msg+=` — ${score}`;if(comp)msg+=`\n🏟 ${comp}`;msg+='\n\n';
+    STAT_ROWS.forEach(r=>{const h=v(`st-h-${r.id}`),a=v(`st-a-${r.id}`);if(h||a)msg+=`${r.label.padEnd(14)} ${(h||'–').padStart(4)}  |  ${(a||'–')}\n`;});
+    msg=msg.trimEnd();msg+=audLine+affLine;
+  }else{
+    msg=v('free-txt');
+    if(msg)(msg+=audLine),(aff.url&&(msg+=affLine));
+  }
+  setPreview(msg);
+}
+
+function setPreview(msg){
+  const el=document.getElementById('preview');
+  el.textContent=msg||'';
+  if(!msg)el.innerHTML='<span class="preview-ph">Fill in the form to preview your message</span>';
+  document.getElementById('preview-time').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' · WhatsApp';
+  const badge=document.getElementById('img-badge');
+  if(attachedFile){document.getElementById('img-badge-name').textContent=attachedFile.name;badge.style.display='block';}
+  else badge.style.display='none';
+}
+
+function handleMedia(e){
+  const file=e.target.files[0];if(!file)return;
+  attachedFile=file;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    attachedB64=ev.target.result;
+    document.getElementById('media-ph').style.display='none';
+    document.getElementById('media-prev').style.display='block';
+    document.getElementById('media-img').src=ev.target.result;
+    document.getElementById('media-name').textContent=file.name;
+    buildPreview();
+  };reader.readAsDataURL(file);
+}
+function clearMedia(e){
+  e.stopPropagation();attachedFile=null;attachedB64=null;
+  document.getElementById('media-input').value='';
+  document.getElementById('media-ph').style.display='block';
+  document.getElementById('media-prev').style.display='none';
+  buildPreview();
+}
+
+function loadChannels(){
+  const channels=DB.get('channels')||[];
+  const el=document.getElementById('ch-list');
+  if(!channels.length){el.innerHTML='<div style="font-size:12px;color:var(--muted2);">No channels. <a href="index.html" style="color:var(--cyan);">Add in Settings →</a></div>';return;}
+  el.innerHTML=channels.map((ch,i)=>`
+    <div class="ch-row">
+      <label style="display:flex;align-items:center;gap:8px;flex:1;cursor:pointer;font-size:13px;"><input type="checkbox" class="ch-cb" value="${i}" checked style="accent-color:var(--cyan);">📢 ${ch.name}</label>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--muted2);">${ch.chatId}</span>
+    </div>`).join('');
+}
+
+async function sendNow(){
+  const msg=document.getElementById('preview').textContent;
+  if(!msg){toast('Nothing to send','error');return;}
+  const token=DB.get('botToken');
+  if(!token){toast('No bot token. Add in Settings.','error');return;}
+  const channels=DB.get('channels')||[];
+  const sel=[...document.querySelectorAll('.ch-cb:checked')].map(cb=>channels[parseInt(cb.value)]).filter(Boolean);
+  if(!sel.length){toast('Select at least one channel','error');return;}
+  let sent=0;
+  for(const ch of sel){
+    try{
+      const r=await fetch('/api/telegram/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:ch.chatId,text:msg,bot_token:token})});
+      if((await r.json()).ok)sent++;
+    }catch(e){console.error(e);}
+  }
+  if(sent>0){DB.push('posts',{preview:msg.substring(0,80),platform:'Telegram',hasImage:!!attachedFile});loadHistory();toast(`✅ Sent to ${sent} channel(s)`);}
+  else toast('Send failed. Check token & chat IDs.','error');
+}
+
+function copyMsg(){
+  const msg=document.getElementById('preview').textContent;
+  if(!msg){toast('Nothing to copy','error');return;}
+  navigator.clipboard.writeText(msg).then(()=>toast('✓ Copied!')).catch(()=>toast('Copy failed','error'));
+}
+
+function loadHistory(){
+  const posts=(DB.get('posts')||[]).slice(-30).reverse();
+  const el=document.getElementById('history');
+  if(!posts.length){el.innerHTML='<div class="empty"><div style="font-size:26px;margin-bottom:8px;">📭</div>No messages sent yet</div>';return;}
+  el.innerHTML=`<table class="table"><thead><tr><th>Time</th><th>Message</th><th>Platform</th><th>Media</th></tr></thead><tbody>
+    ${posts.map(p=>`<tr>
+      <td>${new Date(p.id).toLocaleString()}</td>
+      <td style="font-family:var(--sans);color:var(--text2);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${(p.preview||'').replace(/\n/g,' ')}</td>
+      <td><span class="badge badge-cyan">${p.platform}</span></td>
+      <td>${p.hasImage?'🖼':'—'}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function clearHistory(){
+  if(!confirm('Clear all history?'))return;
+  DB.set('posts',[]);loadHistory();toast('Cleared');
+}
+
+function toast(msg,type='success'){
+  const el=document.getElementById('toast');el.textContent=msg;
+  el.style.cssText=`display:block;position:fixed;bottom:20px;right:20px;z-index:999;background:${type==='error'?'#ef4444':'#10b981'};color:#fff;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:500;`;
+  setTimeout(()=>el.style.display='none',3000);
+}
+</script>
+</body>
+</html>

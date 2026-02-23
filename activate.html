@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate AutoPost Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Vercel Analytics -->
+    <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
+    
+    <style>
+        :root {
+            --bg: #07090f;
+            --surface: #0d1117;
+            --surface2: #151b25;
+            --border: #1e2a3a;
+            --border2: #253347;
+            --cyan: #06b6d4;
+            --amber: #f59e0b;
+            --green: #10b981;
+            --red: #ef4444;
+            --muted: #4a5568;
+            --muted2: #718096;
+            --text: #e2e8f0;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 460px;
+            width: 90%;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        
+        .logo-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--amber);
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: var(--muted2);
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .telegram-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+        
+        .telegram-btn:hover {
+            background: #0077b5;
+            transform: translateY(-2px);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--muted2);
+            font-size: 12px;
+            margin: 24px 0;
+        }
+        
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .code-label {
+            font-size: 12px;
+            color: var(--muted2);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .code-input {
+            width: 100%;
+            background: var(--surface2);
+            border: 2px solid var(--border2);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 28px;
+            font-family: var(--mono);
+            padding: 16px;
+            text-align: center;
+            letter-spacing: 8px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .code-input:focus {
+            border-color: var(--amber);
+        }
+        
+        .activate-btn {
+            width: 100%;
+            background: var(--amber);
+            color: black;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+        
+        .activate-btn:hover {
+            background: #fbbf24;
+            transform: translateY(-2px);
+        }
+        
+        .activate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-box {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 13px;
+            color: var(--muted2);
+            line-height: 1.6;
+            margin-top: 24px;
+        }
+        
+        .status-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .status-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--green);
+            color: var(--green);
+        }
+        
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--muted2);
+        }
+        
+        .footer a {
+            color: var(--amber);
+            text-decoration: none;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="logo">
+                <div class="logo-dot"></div>
+                <span style="font-weight: 700;">AutoPost Pro</span>
+            </div>
+            
+            <h1>🔐 Activate Your Account</h1>
+            <div class="subtitle">Connect with Telegram to unlock all features</div>
+            
+            <a href="https://t.me/AutoPostProBot" target="_blank" class="telegram-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm5.568 8.16c-.18.768-2.64 8.976-2.64 8.976-.12.48-.36.624-.72.624-.24 0-.48-.12-.72-.24-1.44-.96-2.88-1.92-4.32-2.88-.36-.24-.48-.48-.12-.84.24-.24 2.28-2.28 2.28-2.28.12-.12.24-.24.12-.48-.12-.12-.24-.12-.48-.12-.24 0-3.84 2.52-3.84 2.52-.12.12-.24.12-.48 0-.24-.12-2.16-.72-2.16-.72-.48-.12-.48-.6.12-.84 2.28-1.08 5.04-2.28 7.68-3.48 1.44-.6 2.88-1.08 4.32-1.44.72-.12 1.44-.12 1.92.36.12.24.12.6 0 .96z"/>
+                </svg>
+                Open Telegram Bot
+            </a>
+            
+            <div class="divider">OR</div>
+            
+            <div class="code-label">Enter activation code from Telegram</div>
+            <input type="text" class="code-input" id="code" 
+                   placeholder="ABC123XYZ0" maxlength="10" autocomplete="off">
+            
+            <div id="status-message" class="status-message"></div>
+            
+            <button class="activate-btn" id="activateBtn" onclick="activate()">
+                Activate Account
+            </button>
+            
+            <div class="info-box">
+                <strong>How to get a code:</strong><br>
+                1. Click the Telegram button above<br>
+                2. Start the bot with /start<br>
+                3. Use /subscribe to get access<br>
+                4. Use /activate to generate code<br>
+                5. Enter code here
+            </div>
+            
+            <div class="footer">
+                Already have an account? <a href="aimessage.html">Go to AI Message →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function getDeviceFingerprint() {
+            const raw = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                screen.colorDepth,
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+                navigator.hardwareConcurrency || '',
+                navigator.platform || ''
+            ].join('|');
+            
+            if (window.crypto?.subtle) {
+                const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
+                return Array.from(new Uint8Array(buf))
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join('');
+            }
+            
+            // Fallback
+            let hash = 0;
+            for (let i = 0; i < raw.length; i++) {
+                hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash).toString(16).padStart(8, '0');
+        }
+
+        async function activate() {
+            const code = document.getElementById('code').value.trim().toUpperCase();
+            const btn = document.getElementById('activateBtn');
+            const statusDiv = document.getElementById('status-message');
+            
+            if (code.length !== 10) {
+                showStatus('Please enter a valid 10-character code', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> Activating...';
+            statusDiv.style.display = 'none';
+            
+            try {
+                const fp = await getDeviceFingerprint();
+                
+                const response = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, device_fp: fp })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Save session
+                    localStorage.setItem('session_token', data.session_token);
+                    localStorage.setItem('user_status', data.status);
+                    
+                    showStatus('✅ Activation successful! Redirecting...', 'success');
+                    
+                    // Redirect to AI message page
+                    setTimeout(() => {
+                        window.location.href = '/aimessage.html';
+                    }, 1500);
+                } else {
+                    showStatus(data.detail || 'Activation failed', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Activate Account';
+                }
+            } catch (error) {
+                showStatus('Error: ' + error.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = 'Activate Account';
+            }
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message status-' + type;
+            statusDiv.style.display = 'block';
+        }
+        
+        // Auto-submit when code is entered
+        document.getElementById('code').addEventListener('input', function(e) {
+            if (e.target.value.length === 10) {
+                activate();
+            }
+        });
+        
+        // Check if already logged in
+        (async function() {
+            const session = localStorage.getItem('session_token');
+            if (session) {
+                try {
+                    const res = await fetch('/api/auth/check', {
+                        headers: { 'session': session }
+                    });
+                    if (res.ok) {
+                        // Already logged in, redirect
+                        window.location.href = '/aimessage.html';
+                    } else {
+                        localStorage.removeItem('session_token');
+                    }
+                } catch (e) {
+                    // Ignore
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
