@@ -1,0 +1,2 @@
+# Create a .python-version file with Python 3.9
+echo "3.9" > .python-version
