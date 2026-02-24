@@ -3,11 +3,7 @@
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.12",
-        "maxLambdaSize": "15mb"
-      }
+      "use": "@vercel/python"
     },
     {
       "src": "*.html",
