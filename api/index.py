@@ -643,5 +643,5 @@ async def admin_activate_user(
 # VERCEL HANDLER
 # ═══════════════════════════════════════════════════════════
 
-from mangum import Mangum
-handler = Mangum(app)
+#from mangum import Mangum
+#handler = Mangum(app)
