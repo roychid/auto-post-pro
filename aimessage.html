@@ -1,1438 +1,1527 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Message — AutoPost Pro</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Vercel Analytics -->
-    <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
-    
-    <style>
-        :root {
-            --bg: #07090f;
-            --surface: #0d1117;
-            --surface2: #151b25;
-            --surface3: #1c2432;
-            --border: #1e2a3a;
-            --border2: #253347;
-            --cyan: #06b6d4;
-            --cyan-dim: #06b6d418;
-            --amber: #f59e0b;
-            --amber-dim: #f59e0b18;
-            --green: #10b981;
-            --green-dim: #10b98118;
-            --red: #ef4444;
-            --red-dim: #ef444418;
-            --purple: #a855f7;
-            --purple-dim: #a855f718;
-            --muted: #4a5568;
-            --muted2: #718096;
-            --text: #e2e8f0;
-            --text2: #a0aec0;
-            --mono: 'JetBrains Mono', monospace;
-            --sans: 'Space Grotesk', sans-serif;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: var(--sans);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.025) 2px, rgba(0,0,0,.025) 4px);
-            pointer-events: none;
-            z-index: 9000;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoPost Pro — Free Football Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
-        /* Header */
-        header {
-            border-bottom: 1px solid var(--border);
-            background: var(--surface);
-            padding: 0 28px;
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 15px;
-            color: var(--text);
-            text-decoration: none;
-        }
-        
-        .logo-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--amber);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--amber);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        nav {
-            display: flex;
-            gap: 4px;
-        }
-        
-        .nav-item {
-            padding: 6px 13px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--muted2);
-            text-decoration: none;
-            transition: all .15s;
-            border: 1px solid transparent;
-        }
-        
-        .nav-item:hover {
-            color: var(--text);
-            background: var(--surface2);
-        }
-        
-        .nav-item.active {
-            color: var(--amber);
-            background: var(--amber-dim);
-            border-color: var(--border2);
-        }
-        
-        .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .quota-bar-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--mono);
-            font-size: 11px;
-            color: var(--muted2);
-        }
-        
-        .quota-bar {
-            width: 80px;
-            height: 5px;
-            background: var(--surface2);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .quota-bar-fill {
-            height: 100%;
-            background: var(--green);
-            border-radius: 3px;
-            transition: width .4s;
-        }
-        
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 9px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-        }
-        
-        .badge-premium {
-            background: var(--green-dim);
-            color: var(--green);
-            border: 1px solid var(--green);
-        }
-        
-        .badge-trial {
-            background: var(--amber-dim);
-            color: var(--amber);
-            border: 1px solid var(--amber);
-        }
-        
-        .logout-btn {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--muted2);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all .15s;
-        }
-        
-        .logout-btn:hover {
-            border-color: var(--red);
-            color: var(--red);
-        }
+<!-- Vercel Analytics -->
+<script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
 
-        /* Main layout */
-        main {
-            flex: 1;
-            padding: 24px 28px;
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 18px;
-            max-width: 1180px;
-            width: 100%;
-            margin: 0 auto;
-            align-items: start;
-        }
-        
-        @media (max-width: 860px) {
-            main {
-                grid-template-columns: 1fr;
-                padding: 18px;
-            }
-        }
+<style>
+/* === FULL CSS (identical to your provided style block) === */
+:root {
+  --bg:      #07080f;
+  --s1:      #0b0d16;
+  --s2:      #0f1120;
+  --s3:      #141728;
+  --s4:      #1a1e30;
+  --s5:      #20243a;
+  --rim:     rgba(255,255,255,.055);
+  --rim2:    rgba(255,255,255,.10);
+  --rim3:    rgba(255,255,255,.18);
+  --volt:    #c8ff00;
+  --volt2:   #deff55;
+  --vfog:    rgba(200,255,0,.09);
+  --vglow:   rgba(200,255,0,.22);
+  --red:     #ff4545;
+  --redfog:  rgba(255,69,69,.10);
+  --sky:     #3cc8ff;
+  --skyfog:  rgba(60,200,255,.09);
+  --amber:   #ffb020;
+  --ambfog:  rgba(255,176,32,.09);
+  --green:   #3effa0;
+  --grnfog:  rgba(62,255,160,.09);
+  --white:   #edf0ff;
+  --grey:    #7e879e;
+  --dim:     #3a4058;
+  --display: 'Bebas Neue', sans-serif;
+  --body:    'DM Sans', sans-serif;
+  --mono:    'DM Mono', monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--body);background:var(--bg);color:var(--white);display:flex;flex-direction:column;}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size:220px;}
 
-        /* Cards */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 14px;
-        }
-        
-        .card-hdr {
-            padding: 13px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-        
-        .card-title {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .1em;
-            color: var(--muted2);
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-        
-        .card-title::before {
-            content: '';
-            width: 3px;
-            height: 12px;
-            border-radius: 2px;
-            background: var(--amber);
-            display: inline-block;
-        }
-        
-        .card-body {
-            padding: 18px;
-        }
+/* ── KEYFRAMES ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px var(--vglow)}50%{box-shadow:0 0 40px rgba(200,255,0,.35)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes progress{from{width:0}to{width:var(--w,100%)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes msg-reveal{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-        /* Forms */
-        .fg {
-            margin-bottom: 14px;
-        }
-        
-        .fl {
-            display: block;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            color: var(--muted2);
-            margin-bottom: 5px;
-        }
-        
-        .fi, .fs {
-            width: 100%;
-            background: var(--surface2);
-            border: 1px solid var(--border2);
-            border-radius: 6px;
-            color: var(--text);
-            font-size: 13px;
-            padding: 8px 11px;
-            outline: none;
-            font-family: var(--sans);
-            transition: border-color .15s;
-        }
-        
-        .fi:focus, .fs:focus {
-            border-color: var(--cyan);
-        }
-        
-        .fs {
-            cursor: pointer;
-        }
-        
-        .opt {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 0;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        
-        .opt input {
-            accent-color: var(--amber);
-            width: 14px;
-            height: 14px;
-        }
+/* ══════════════════════ HEADER ══════════════════════ */
+.header{
+  height:52px;min-height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;background:rgba(7,8,15,.9);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--rim);
+  flex-shrink:0;z-index:200;position:relative;
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:20px;letter-spacing:.06em;color:var(--white);text-decoration:none;}
+.logo-mark{width:28px;height:28px;background:var(--volt);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;animation:glow-pulse 3s ease-in-out infinite;}
+.logo span{color:var(--volt);}
+.hdr-mid{display:flex;gap:2px;}
+.hdr-tab{padding:5px 14px;border-radius:5px;font-size:12px;font-weight:500;color:var(--dim);cursor:pointer;border:1px solid transparent;transition:.15s;font-family:var(--body);}
+.hdr-tab:hover{color:var(--grey);background:var(--s2);}
+.hdr-tab.on{color:var(--volt);background:var(--vfog);border-color:rgba(200,255,0,.18);}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.ticker-mini{display:flex;align-items:center;gap:0;height:28px;background:var(--s2);border:1px solid var(--rim);border-radius:6px;overflow:hidden;max-width:360px;}
+.tm-label{padding:0 10px;font-family:var(--mono);font-size:9px;color:var(--volt);font-weight:500;letter-spacing:.1em;border-right:1px solid var(--rim);white-space:nowrap;height:100%;display:flex;align-items:center;}
+.tm-scroll{overflow:hidden;flex:1;}
+.tm-inner{display:flex;gap:0;animation:ticker 28s linear infinite;white-space:nowrap;}
+.tm-inner:hover{animation-play-state:paused;}
+.tm-item{padding:0 16px;font-family:var(--mono);font-size:10px;color:var(--grey);border-right:1px solid var(--rim);height:28px;display:flex;align-items:center;gap:6px;}
+.tm-item .sc{color:var(--volt);font-weight:600;}
+.tm-item .live{color:var(--red);font-size:8px;font-weight:700;}
+.quota-pill{display:none;} /* HIDDEN - we're free now */
+.qtrack{width:48px;height:3px;background:var(--s4);border-radius:2px;overflow:hidden;}
+.qfill{height:100%;border-radius:2px;transition:width .5s;}
+.status-dot{display:none;} /* HIDDEN - free for all */
+.hdr-btn{background:none;border:1px solid var(--rim);color:var(--dim);padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;transition:.15s;font-family:var(--body);}
+.hdr-btn:hover{border-color:var(--red);color:var(--red);}
 
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            font-family: var(--sans);
-            transition: all .15s;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-        
-        .btn:disabled {
-            opacity: .45;
-            cursor: not-allowed;
-        }
-        
-        .btn-amber {
-            background: var(--amber);
-            color: #000;
-        }
-        
-        .btn-amber:hover:not(:disabled) {
-            background: #fbbf24;
-            transform: translateY(-1px);
-        }
-        
-        .btn-cyan {
-            background: var(--cyan);
-            color: #000;
-        }
-        
-        .btn-cyan:hover:not(:disabled) {
-            background: #22d3ee;
-            transform: translateY(-1px);
-        }
-        
-        .btn-ghost {
-            background: var(--surface2);
-            color: var(--text2);
-            border: 1px solid var(--border2);
-        }
-        
-        .btn-ghost:hover:not(:disabled) {
-            color: var(--text);
-            border-color: var(--cyan);
-        }
-        
-        .btn-sm {
-            padding: 5px 11px;
-            font-size: 12px;
-        }
-        
-        .btn-full {
-            width: 100%;
-        }
+/* ══════════════════════ LAYOUT ══════════════════════ */
+.app{flex:1;display:grid;grid-template-columns:280px 1fr 284px;overflow:hidden;min-height:0;}
+.col{display:flex;flex-direction:column;overflow:hidden;}
+.col-l{border-right:1px solid var(--rim);}
+.col-m{border-right:1px solid var(--rim);}
+.scrollable{overflow-y:auto;flex:1;}
+.scrollable::-webkit-scrollbar{width:3px;}
+.scrollable::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px;}
 
-        /* Match list */
-        .match-list {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--surface2);
-        }
-        
-        .match-item {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            transition: all .15s;
-        }
-        
-        .match-item:last-child {
-            border-bottom: none;
-        }
-        
-        .match-item:hover {
-            background: var(--surface3);
-        }
-        
-        .match-item.sel {
-            background: var(--amber-dim);
-            border-left: 3px solid var(--amber);
-        }
-        
-        .mi-teams {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .mi-score {
-            color: var(--amber);
-            font-family: var(--mono);
-        }
-        
-        .mi-meta {
-            font-size: 10px;
-            color: var(--muted2);
-            font-family: var(--mono);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .live-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--amber);
-            border-radius: 50%;
-            animation: blink 1s infinite;
-            display: inline-block;
-            margin-right: 4px;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .15; }
-        }
+/* ══════════════════════ SECTION HEADERS ══════════════════════ */
+.sec{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px;border-bottom:1px solid var(--rim);flex-shrink:0;}
+.sec-title{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.sec-title::before{content:'';width:8px;height:2px;border-radius:1px;background:var(--volt);}
+.sec-actions{display:flex;gap:5px;}
 
-        /* Preview box */
-        .preview-box {
-            background: var(--surface2);
-            border: 1px solid var(--border2);
-            border-radius: 8px;
-            min-height: 240px;
-            padding: 18px;
-            font-family: var(--mono);
-            font-size: 13px;
-            line-height: 1.7;
-            color: var(--text);
-            white-space: pre-wrap;
-            word-break: break-word;
-            position: relative;
-        }
-        
-        .preview-placeholder {
-            color: var(--muted2);
-            font-family: var(--sans);
-            font-style: italic;
-            font-size: 13px;
-        }
-        
-        .gen-overlay {
-            position: absolute;
-            inset: 0;
-            border-radius: 8px;
-            background: rgba(7, 9, 15, .95);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        .gen-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border2);
-            border-top-color: var(--amber);
-            border-radius: 50%;
-            animation: spin .7s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .gen-label {
-            font-size: 13px;
-            color: var(--text2);
-        }
+/* ══════════════════════ MINI BUTTONS ══════════════════════ */
+.mb{background:none;border:1px solid var(--rim);color:var(--dim);padding:2px 8px;border-radius:4px;font-size:10px;font-family:var(--mono);cursor:pointer;transition:.12s;white-space:nowrap;}
+.mb:hover{border-color:var(--volt);color:var(--volt);}
+.mb.sky:hover{border-color:var(--sky);color:var(--sky);}
+.mb.red:hover{border-color:var(--red);color:var(--red);}
+.mb.on{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
 
-        /* Widget */
-        .widget-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            background: var(--surface2);
-            border: 1px solid var(--border2);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: border-color .15s;
-            margin-bottom: 10px;
-        }
-        
-        .widget-toggle:hover {
-            border-color: var(--amber);
-        }
-        
-        .match-widget {
-            background: linear-gradient(145deg, #0d1117, #151b25);
-            border: 1px solid var(--border2);
-            border-radius: 12px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-        
-        .match-widget::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 50% 0%, var(--amber-dim), transparent 70%);
-            pointer-events: none;
-        }
-        
-        .widget-league {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-        
-        .widget-league img {
-            width: 22px;
-            height: 22px;
-            object-fit: contain;
-        }
-        
-        .widget-league-name {
-            font-size: 11px;
-            color: var(--muted2);
-            font-family: var(--mono);
-        }
-        
-        .widget-teams {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .widget-team {
-            text-align: center;
-        }
-        
-        .widget-team img {
-            width: 56px;
-            height: 56px;
-            object-fit: contain;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,.5));
-        }
-        
-        .widget-team-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        .widget-score-box {
-            text-align: center;
-        }
-        
-        .widget-score {
-            font-family: var(--mono);
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--amber);
-        }
-        
-        .widget-status {
-            font-size: 11px;
-            color: var(--muted2);
-            font-family: var(--mono);
-            margin-top: 4px;
-        }
-        
-        .widget-events {
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
-            margin-top: 4px;
-        }
-        
-        .widget-event {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 0;
-            font-size: 12px;
-        }
-        
-        .widget-event-min {
-            font-family: var(--mono);
-            font-size: 10px;
-            color: var(--amber);
-            min-width: 28px;
-        }
+/* ══════════════════════ FORM ELEMENTS ══════════════════════ */
+.field{padding:0 16px 12px;}
+.lbl{display:block;font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:5px;}
+.sel,.inp{width:100%;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;color:var(--white);font-size:12px;padding:7px 10px;outline:none;font-family:var(--body);transition:.15s;appearance:none;cursor:pointer;}
+.sel:focus,.inp:focus{border-color:var(--volt);box-shadow:0 0 0 2px var(--vfog);}
+.sel-wrap{position:relative;}
+.sel-wrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--dim);font-size:11px;}
+.textarea{width:100%;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;color:var(--white);font-size:12px;padding:8px 10px;outline:none;font-family:var(--mono);resize:vertical;min-height:70px;transition:.15s;line-height:1.6;}
+.textarea:focus{border-color:var(--volt);}
 
-        /* Channels */
-        .ch-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .ch-row:last-child {
-            border-bottom: none;
-        }
-        
-        .ch-row label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        
-        .ch-row input[type="checkbox"] {
-            accent-color: var(--cyan);
-            width: 16px;
-            height: 16px;
-        }
+/* toggle switch */
+.tog{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;border-bottom:1px solid var(--rim);}
+.tog:last-of-type{border-bottom:none;}
+.tog-info{flex:1;}
+.tog-name{font-size:12px;color:var(--white);cursor:pointer;}
+.tog-sub{font-size:10px;color:var(--dim);font-family:var(--mono);margin-top:1px;}
+.sw{position:relative;width:30px;height:17px;flex-shrink:0;margin-left:10px;}
+.sw input{opacity:0;width:0;height:0;}
+.sw-track{position:absolute;inset:0;cursor:pointer;background:var(--s4);border-radius:17px;border:1px solid var(--rim2);transition:.2s;}
+.sw-track::before{content:'';position:absolute;width:9px;height:9px;border-radius:50%;left:3px;top:3px;background:var(--dim);transition:.2s;}
+.sw input:checked+.sw-track{background:var(--vfog);border-color:rgba(200,255,0,.35);}
+.sw input:checked+.sw-track::before{transform:translateX(13px);background:var(--volt);box-shadow:0 0 6px var(--volt);}
 
-        /* Toast */
-        #toast {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            background: var(--green);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,.3);
-        }
+/* ══════════════════════ LEFT COL ══════════════════════ */
+/* type tabs */
+.type-tabs{display:flex;border-bottom:1px solid var(--rim);padding:0 8px;gap:0;flex-shrink:0;}
+.ttab{padding:8px 10px;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;white-space:nowrap;}
+.ttab:hover{color:var(--grey);}
+.ttab.on{color:var(--volt);border-bottom-color:var(--volt);}
 
-        /* Data box */
-        .data-box {
-            background: var(--surface3);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 10px;
-            font-family: var(--mono);
-            font-size: 10px;
-            color: var(--muted2);
-            white-space: pre;
-            overflow-x: auto;
-            max-height: 120px;
-            overflow-y: auto;
-            margin-top: 10px;
-            display: none;
-        }
+/* match rows */
+.match-row{padding:10px 16px;border-bottom:1px solid var(--rim);cursor:pointer;transition:background .1s;position:relative;}
+.match-row:hover{background:var(--s2);}
+.match-row.sel{background:var(--vfog);}
+.match-row.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--volt);}
+.mr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
+.mr-home,.mr-away{font-size:12px;font-weight:500;color:var(--white);}
+.mr-score{font-family:var(--mono);font-size:11px;color:var(--volt);background:var(--vfog);padding:1px 7px;border-radius:3px;font-weight:600;}
+.mr-bot{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--dim);}
+.tag-live{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:3px;background:var(--redfog);color:var(--red);font-size:8px;font-weight:700;letter-spacing:.04em;}
+.tag-live .p{width:4px;height:4px;border-radius:50%;background:var(--red);animation:blink .8s infinite;}
+.tag-ft{display:inline-flex;padding:1px 6px;border-radius:3px;background:var(--s3);color:var(--dim);font-size:8px;letter-spacing:.04em;}
+.tag-sch{display:inline-flex;padding:1px 6px;border-radius:3px;background:var(--skyfog);color:var(--sky);font-size:8px;letter-spacing:.04em;}
+.league-hdr{padding:5px 16px;background:var(--s1);border-bottom:1px solid var(--rim);font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;}
 
-        /* Loading states */
-        .loading {
-            color: var(--muted2);
-            text-align: center;
-            padding: 20px;
-            font-size: 12px;
-        }
-        
-        .error {
-            color: var(--red);
-            text-align: center;
-            padding: 20px;
-            font-size: 12px;
-        }
+/* search */
+.search-wrap{padding:8px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;}
+.search-inp{width:100%;background:var(--s2);border:1px solid var(--rim);border-radius:5px;padding:6px 10px;font-size:12px;color:var(--white);outline:none;font-family:var(--body);}
+.search-inp:focus{border-color:var(--volt);}
+.search-inp::placeholder{color:var(--dim);}
 
-        /* Refresh button */
-        .refresh-btn {
-            background: none;
-            border: 1px solid var(--border2);
-            color: var(--muted2);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all .15s;
-        }
-        
-        .refresh-btn:hover {
-            border-color: var(--cyan);
-            color: var(--cyan);
-        }
-    </style>
+/* template chips */
+.tpl-row{display:flex;flex-wrap:wrap;gap:5px;padding:10px 16px;border-bottom:1px solid var(--rim);}
+.tpl-chip{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid var(--rim2);background:var(--s2);color:var(--grey);transition:.12s;white-space:nowrap;}
+.tpl-chip:hover{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
+.tpl-chip.on{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
+
+/* generate button */
+.gen-wrap{padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
+.gen-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--volt),var(--volt2));border:none;border-radius:7px;font-family:var(--display);font-size:17px;letter-spacing:.06em;color:var(--bg);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 20px var(--vfog);position:relative;overflow:hidden;}
+.gen-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);background-size:200% 100%;animation:shimmer 2.5s infinite;}
+.gen-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px var(--vglow);}
+.gen-btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* ══════════════════════ MIDDLE COL TABS ══════════════════════ */
+.mid-tabs{display:flex;border-bottom:1px solid var(--rim);padding:0 6px;flex-shrink:0;overflow-x:auto;}
+.mid-tabs::-webkit-scrollbar{display:none;}
+.mtab{padding:9px 12px;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;white-space:nowrap;}
+.mtab:hover{color:var(--grey);}
+.mtab.on{color:var(--volt);border-bottom-color:var(--volt);}
+
+/* ══════════════════════ MESSAGE AREA ══════════════════════ */
+#view-message{display:flex;flex-direction:column;height:100%;}
+.msg-actions{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;flex-wrap:wrap;gap:6px;}
+.ma-left{display:flex;gap:5px;flex-wrap:wrap;}
+.ma-right{font-family:var(--mono);font-size:10px;color:var(--dim);display:flex;gap:12px;}
+.action-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:5px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--rim2);background:var(--s2);color:var(--grey);transition:.12s;font-family:var(--body);}
+.action-btn:hover{color:var(--white);border-color:var(--rim3);background:var(--s3);}
+.action-btn.primary{background:var(--skyfog);color:var(--sky);border-color:rgba(60,200,255,.25);}
+.action-btn.primary:hover{background:rgba(60,200,255,.15);}
+.action-btn.danger{background:var(--redfog);color:var(--red);border-color:rgba(255,69,69,.25);}
+
+.msg-body{flex:1;overflow-y:auto;padding:20px;position:relative;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--white);white-space:pre-wrap;word-break:break-word;}
+.msg-body::-webkit-scrollbar{width:3px;}
+.msg-body::-webkit-scrollbar-thumb{background:var(--s4);}
+.msg-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:24px;}
+.mp-icon{font-size:34px;opacity:.18;}
+.mp-text{font-size:13px;color:var(--dim);font-family:var(--body);line-height:1.6;}
+.mp-text strong{color:var(--volt);}
+.msg-generated{animation:msg-reveal .3s ease;}
+.gen-overlay{position:absolute;inset:0;background:rgba(7,8,15,.94);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(4px);z-index:10;}
+.ring-loader{width:40px;height:40px;border:2px solid var(--s4);border-top-color:var(--volt);border-right-color:var(--volt2);border-radius:50%;animation:spin .75s cubic-bezier(.5,.1,.5,.9) infinite;}
+.gen-status-txt{font-family:var(--mono);font-size:11px;color:var(--grey);}
+
+.msg-footer{padding:8px 16px;border-top:1px solid var(--rim);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--dim);}
+
+/* copy banner */
+.copy-bar{margin:0 16px 10px;padding:8px 14px;background:var(--vfog);border:1px dashed rgba(200,255,0,.25);border-radius:6px;font-family:var(--mono);font-size:10px;color:var(--volt);cursor:pointer;display:none;align-items:center;justify-content:space-between;}
+.copy-bar:hover{background:rgba(200,255,0,.12);}
+
+/* send panel */
+.send-panel{border-top:1px solid var(--rim);padding:12px 16px;flex-shrink:0;}
+.ch-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--rim);}
+.ch-row:last-child{border-bottom:none;}
+.ch-row label{display:flex;align-items:center;gap:8px;flex:1;cursor:pointer;font-size:12px;color:var(--grey);}
+.ch-row input[type=checkbox]{accent-color:var(--volt);width:13px;height:13px;cursor:pointer;}
+.ch-cid{font-family:var(--mono);font-size:9px;color:var(--dim);margin-left:auto;}
+.send-btn{width:100%;margin-top:10px;padding:11px;background:var(--skyfog);border:1px solid rgba(60,200,255,.25);border-radius:7px;color:var(--sky);font-family:var(--display);font-size:16px;letter-spacing:.06em;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.send-btn:hover{background:rgba(60,200,255,.15);transform:translateY(-1px);}
+.send-btns-row{display:flex;gap:8px;margin-top:8px;}
+.send-sub{flex:1;padding:8px;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;font-size:11px;font-weight:500;color:var(--grey);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px;font-family:var(--body);}
+.send-sub:hover{color:var(--white);border-color:var(--rim3);}
+
+/* ══════════════════════ EVENTS VIEW ══════════════════════ */
+#view-events{display:none;flex-direction:column;height:100%;}
+.ev-match-bar{padding:10px 16px;border-bottom:1px solid var(--rim);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.emb-score{font-family:var(--display);font-size:24px;letter-spacing:.04em;color:var(--volt);}
+.emb-info{font-family:var(--mono);font-size:10px;color:var(--dim);}
+.ev-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rim);transition:background .1s;}
+.ev-item:hover{background:var(--s2);}
+.ev-min{font-family:var(--mono);font-size:10px;color:var(--volt);min-width:28px;font-weight:500;}
+.ev-icon{font-size:16px;flex-shrink:0;}
+.ev-detail{flex:1;}
+.ev-player{font-size:12px;font-weight:600;color:var(--white);}
+.ev-team{font-size:10px;color:var(--dim);font-family:var(--mono);}
+.ev-post-btn{opacity:0;transition:.1s;}
+.ev-item:hover .ev-post-btn{opacity:1;}
+.ev-bottom{padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
+
+/* ══════════════════════ FIXTURES VIEW ══════════════════════ */
+#view-fixtures{display:none;flex-direction:column;height:100%;}
+.fix-item{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rim);gap:8px;transition:background .1s;}
+.fix-item:hover{background:var(--s2);}
+.fix-time{font-family:var(--mono);font-size:10px;color:var(--dim);min-width:44px;}
+.fix-teams{flex:1;font-size:12px;font-weight:500;}
+.fix-teams .sep{color:var(--dim);font-family:var(--mono);font-size:10px;margin:0 5px;}
+.fix-score{font-family:var(--mono);font-size:11px;color:var(--volt);min-width:34px;text-align:center;}
+.fix-acts{display:flex;gap:4px;opacity:0;transition:.1s;}
+.fix-item:hover .fix-acts{opacity:1;}
+
+/* ══════════════════════ STATS VIEW ══════════════════════ */
+#view-stats{display:none;flex-direction:column;height:100%;}
+.stats-header{padding:14px 16px;border-bottom:1px solid var(--rim);display:grid;grid-template-columns:1fr auto 1fr;gap:8px;text-align:center;flex-shrink:0;}
+.sh-team{font-size:13px;font-weight:600;}
+.sh-score{font-family:var(--display);font-size:28px;color:var(--volt);letter-spacing:.04em;}
+.sh-status{font-family:var(--mono);font-size:10px;color:var(--red);}
+.stat-row{padding:10px 16px;border-bottom:1px solid var(--rim);}
+.stat-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:5px;}
+.stat-lbl .v1{color:var(--volt);}
+.stat-lbl .v2{color:var(--sky);}
+.stat-track{height:4px;background:var(--s4);border-radius:2px;overflow:visible;position:relative;display:grid;grid-template-columns:1fr 1fr;}
+.stat-left{height:4px;background:var(--volt);border-radius:2px;justify-self:end;animation:progress 1s ease both;}
+.stat-right{height:4px;background:var(--sky);border-radius:2px;animation:progress 1s ease both;}
+
+/* ══════════════════════ HISTORY VIEW ══════════════════════ */
+#view-history{display:none;flex-direction:column;height:100%;}
+.hist-item{padding:11px 16px;border-bottom:1px solid var(--rim);cursor:pointer;transition:background .1s;}
+.hist-item:hover{background:var(--s2);}
+.hi-top{display:flex;justify-content:space-between;margin-bottom:3px;}
+.hi-title{font-size:12px;font-weight:600;color:var(--white);}
+.hi-time{font-family:var(--mono);font-size:9px;color:var(--dim);}
+.hi-prev{font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ══════════════════════ AUTOMATION VIEW ══════════════════════ */
+#view-automation{display:none;flex-direction:column;height:100%;}
+.auto-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rim);}
+.auto-info{flex:1;}
+.auto-name{font-size:12px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.auto-desc{font-size:10px;color:var(--dim);font-family:var(--mono);}
+.auto-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;font-weight:600;letter-spacing:.04em;cursor:pointer;border:none;}
+.ab-on{background:var(--grnfog);color:var(--green);border:1px solid rgba(62,255,160,.25);}
+.ab-off{background:var(--s3);color:var(--dim);border:1px solid var(--rim);}
+.auto-bottom{padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
+
+/* ══════════════════════ SCHEDULE VIEW ══════════════════════ */
+#view-schedule{display:none;flex-direction:column;height:100%;}
+.sched-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rim);}
+.si-time{font-family:var(--mono);font-size:10px;color:var(--amber);min-width:80px;}
+.si-info{flex:1;}
+.si-title{font-size:12px;font-weight:500;color:var(--white);}
+.si-ch{font-size:10px;color:var(--dim);font-family:var(--mono);}
+.si-del{opacity:0;transition:.1s;}
+.sched-item:hover .si-del{opacity:1;}
+
+/* ══════════════════════ RIGHT COL ══════════════════════ */
+/* match focus card */
+.focus-card{padding:14px 16px;border-bottom:1px solid var(--rim);}
+.fc-league{font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
+.fc-score-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;text-align:center;margin-bottom:12px;}
+.fc-team-name{font-size:12px;font-weight:600;}
+.fc-score-box{text-align:center;}
+.fc-score{font-family:var(--display);font-size:32px;letter-spacing:.04em;color:var(--volt);}
+.fc-min{font-family:var(--mono);font-size:9px;color:var(--red);margin-top:2px;}
+.fc-actions{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;}
+
+/* quick event buttons */
+.qev-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 16px;border-bottom:1px solid var(--rim);}
+.qev-btn{padding:7px 6px;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;font-size:11px;font-weight:500;color:var(--grey);cursor:pointer;transition:.12s;text-align:center;font-family:var(--body);}
+.qev-btn:hover{color:var(--white);border-color:var(--rim3);background:var(--s3);}
+
+/* scorers */
+.scorer-row{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;border-bottom:1px solid var(--rim);font-size:12px;}
+.sr-left{display:flex;align-items:center;gap:6px;}
+.sr-name{color:var(--white);font-weight:500;}
+.sr-min{font-family:var(--mono);font-size:10px;color:var(--dim);}
+.sr-team{font-family:var(--mono);font-size:10px;color:var(--volt);}
+
+/* affiliate panel - now prominent */
+.aff-panel{
+  padding:16px;
+  border-bottom:1px solid var(--rim);
+  background:linear-gradient(145deg, var(--vfog), transparent);
+  border-left:2px solid var(--volt);
+}
+.aff-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+  color:var(--volt);
+  font-family:var(--display);
+  font-size:14px;
+  letter-spacing:.05em;
+}
+.aff-inputs{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.aff-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.aff-row .inp{
+  flex:1;
+}
+.aff-badge{
+  background:var(--volt);
+  color:var(--bg);
+  padding:2px 8px;
+  border-radius:4px;
+  font-size:9px;
+  font-weight:700;
+  font-family:var(--mono);
+  text-transform:uppercase;
+}
+
+/* scheduled widget */
+.sched-mini{padding:8px 16px;}
+.sm-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rim);font-size:11px;}
+.sm-row:last-child{border-bottom:none;}
+.sm-title{color:var(--grey);}
+.sm-time{font-family:var(--mono);font-size:10px;color:var(--amber);}
+
+/* ══════════════════════ MODALS ══════════════════════ */
+.modal-bg{position:fixed;inset:0;z-index:900;background:rgba(7,8,15,.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--s2);border:1px solid var(--rim2);border-radius:12px;padding:24px;width:420px;max-width:92vw;max-height:84vh;overflow-y:auto;position:relative;animation:pop .2s ease;}
+.modal h3{font-family:var(--display);font-size:22px;letter-spacing:.04em;margin-bottom:4px;}
+.modal p{font-size:12px;color:var(--dim);font-family:var(--mono);margin-bottom:18px;}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;transition:.12s;}
+.modal-close:hover{color:var(--white);}
+.modal-footer{display:flex;gap:8px;margin-top:16px;}
+.btn-volt-solid{flex:1;padding:11px;background:var(--volt);color:var(--bg);border:none;border-radius:7px;font-family:var(--display);font-size:16px;letter-spacing:.06em;cursor:pointer;transition:.15s;}
+.btn-volt-solid:hover{background:var(--volt2);}
+.btn-cancel{padding:11px 20px;background:var(--s3);color:var(--grey);border:1px solid var(--rim2);border-radius:7px;font-size:13px;cursor:pointer;font-family:var(--body);transition:.15s;}
+.btn-cancel:hover{color:var(--white);}
+
+/* ══════════════════════ TOAST ══════════════════════ */
+#toast{position:fixed;bottom:20px;right:20px;z-index:9997;display:none;padding:10px 18px;border-radius:7px;font-size:12px;font-weight:500;font-family:var(--body);animation:slideUp .2s ease;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+.t-ok{background:#0b2616;color:var(--green);border:1px solid rgba(62,255,160,.25);}
+.t-err{background:#250b0b;color:var(--red);border:1px solid rgba(255,69,69,.25);}
+.t-inf{background:#0b1625;color:var(--sky);border:1px solid rgba(60,200,255,.25);}
+.t-volt{background:#161f00;color:var(--volt);border:1px solid rgba(200,255,0,.25);}
+
+/* ══════════════════════ EMPTY / LOADING ══════════════════════ */
+.empty{text-align:center;padding:28px 16px;font-size:11px;color:var(--dim);font-family:var(--mono);}
+.empty a{color:var(--volt);text-decoration:none;}
+.sp-sm{display:inline-block;width:11px;height:11px;border:2px solid var(--rim2);border-top-color:var(--volt);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:4px;}
+
+/* responsive */
+@media(max-width:1080px){.app{grid-template-columns:260px 1fr;}.col-r{display:none;}}
+@media(max-width:700px){.app{grid-template-columns:1fr;}.col-l{display:none;}.header{padding:0 12px;}.ticker-mini{display:none;}}
+</style>
 </head>
 <body>
-    <header>
-        <a href="index.html" class="logo">
-            <div class="logo-dot"></div>
-            AutoPost Pro
-        </a>
-        
-        <nav>
-            <a href="index.html" class="nav-item">Dashboard</a>
-            <a href="manualmessage.html" class="nav-item">Manual</a>
-            <a href="aimessage.html" class="nav-item active">AI Message</a>
-        </nav>
-        
-        <div class="user-badge">
-            <div class="quota-bar-wrap" id="quota-display">
-                <span id="quota-txt">—</span>
-                <div class="quota-bar">
-                    <div class="quota-bar-fill" id="quota-fill" style="width:0%"></div>
-                </div>
-            </div>
-            <span class="status-badge" id="status-badge">⚪ Loading</span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-    </header>
 
-    <main>
-        <!-- LEFT COLUMN -->
+<!-- ════════════ HEADER ════════════ -->
+<header class="header">
+  <a href="index.html" class="logo"><div class="logo-mark">⚡</div>AUTOPOST<span>PRO</span> <span style="font-size:12px;color:var(--grey);margin-left:6px;">✨ FREE FOR EVERYONE</span></a>
+
+  <!-- Live ticker (dynamically updated) -->
+  <div class="ticker-mini">
+    <span class="tm-label">● LIVE</span>
+    <div class="tm-scroll">
+      <div class="tm-inner" id="ticker-data">
+        <!-- populated by updateTicker() -->
+      </div>
+    </div>
+  </div>
+
+  <div class="hdr-right">
+    <!-- No quota/pro badges - completely free -->
+    <button class="hdr-btn" onclick="window.location.href='index.html'">Dashboard</button>
+  </div>
+</header>
+
+<!-- ════════════════════════════════ 3-COLUMN APP ═══════════════════════════════ -->
+<div class="app">
+
+  <!-- ██████████ LEFT COLUMN ██████████ -->
+  <div class="col col-l">
+
+    <!-- Content type -->
+    <div class="type-tabs">
+      <div class="ttab on" onclick="setType('live',this)">🔴 Live</div>
+      <div class="ttab" onclick="setType('preview',this)">📅 Preview</div>
+      <div class="ttab" onclick="setType('standings',this)">🏆 Table</div>
+      <div class="ttab" onclick="setType('digest',this)">📊 Digest</div>
+      <div class="ttab" onclick="setType('custom',this)">✏️ Custom</div>
+    </div>
+
+    <!-- Custom prompt (hidden by default) -->
+    <div id="custom-prompt" style="display:none;padding:8px 16px;border-bottom:1px solid var(--rim);">
+      <label class="lbl">Your Prompt</label>
+      <textarea class="textarea" id="custom-txt" placeholder="e.g. Write an exciting 3-line goal alert in Arabic for Saka scoring in minute 67…"></textarea>
+    </div>
+
+    <!-- Fixture filter + search -->
+    <div class="sec" id="match-sec-hdr">
+      <div class="sec-title">Fixtures</div>
+      <div class="sec-actions">
+        <button class="mb on" id="f-all" onclick="filterBy('all')">All</button>
+        <button class="mb sky" id="f-live" onclick="filterBy('live')">Live</button>
+        <button class="mb" onclick="loadMatches()" title="Refresh">↻</button>
+      </div>
+    </div>
+    <div class="search-wrap" id="match-search-wrap">
+      <input class="search-inp" type="text" placeholder="Search team or league…" oninput="searchMatches(this.value)" id="match-search">
+    </div>
+
+    <!-- Match list (populated by loadMatches()) -->
+    <div class="scrollable" id="match-list">
+      <div class="empty">Click refresh to load matches</div>
+    </div>
+
+    <!-- AI Options -->
+    <div class="sec"><div class="sec-title">AI Options</div></div>
+    <div style="padding:10px 16px 4px;">
+      <div class="field" style="padding:0 0 10px;">
+        <label class="lbl">Tone</label>
+        <div class="sel-wrap"><select class="sel" id="tone">
+          <option value="professional">📰 Professional</option>
+          <option value="excited">🔥 Excited & Energetic</option>
+          <option value="casual">😎 Casual</option>
+          <option value="dramatic">⚡ Dramatic</option>
+          <option value="analytical">🧮 Analytical</option>
+          <option value="poetic">🎭 Poetic / Creative</option>
+        </select></div>
+      </div>
+      <div class="field" style="padding:0 0 10px;">
+        <label class="lbl">Length</label>
+        <div class="sel-wrap"><select class="sel" id="length">
+          <option value="tweet">Tweet (1–2 lines)</option>
+          <option value="short">Short (2–3 lines)</option>
+          <option value="medium" selected>Medium (4–6 lines)</option>
+          <option value="detailed">Detailed (8–12 lines)</option>
+          <option value="article">Full Report (15+ lines)</option>
+        </select></div>
+      </div>
+      <div class="field" style="padding:0 0 10px;">
+        <label class="lbl">Language</label>
+        <div class="sel-wrap"><select class="sel" id="lang">
+          <option value="en">🇬🇧 English</option>
+          <option value="ar">🇸🇦 Arabic</option>
+          <option value="fr">🇫🇷 French</option>
+          <option value="es">🇪🇸 Spanish</option>
+          <option value="pt">🇧🇷 Portuguese</option>
+          <option value="sw">🇰🇪 Swahili</option>
+        </select></div>
+      </div>
+    </div>
+    <div class="tog"><div class="tog-info"><div class="tog-name">Match stats</div><div class="tog-sub">possession, shots, corners</div></div><label class="sw"><input type="checkbox" id="inc-stats" checked><span class="sw-track"></span></label></div>
+    <div class="tog"><div class="tog-info"><div class="tog-name">Top performers</div><div class="tog-sub">goals, assists, ratings</div></div><label class="sw"><input type="checkbox" id="inc-players" checked><span class="sw-track"></span></label></div>
+    <div class="tog"><div class="tog-info"><div class="tog-name">Head-to-head history</div><div class="tog-sub">last 5 meetings</div></div><label class="sw"><input type="checkbox" id="inc-h2h"><span class="sw-track"></span></label></div>
+    <div class="tog"><div class="tog-info"><div class="tog-name">Include affiliate</div><div class="tog-sub">support us by adding link</div></div><label class="sw"><input type="checkbox" id="inc-aff" checked><span class="sw-track"></span></label></div>
+    <div class="tog" style="border-bottom:1px solid var(--rim);"><div class="tog-info"><div class="tog-name">Emojis</div><div class="tog-sub">adds ⚽🔥 to message</div></div><label class="sw"><input type="checkbox" id="inc-emojis" checked><span class="sw-track"></span></label></div>
+
+    <!-- Templates -->
+    <div class="sec"><div class="sec-title">Templates</div><button class="mb" onclick="openModal('modal-tpl')">+ New</button></div>
+    <div class="tpl-row">
+      <span class="tpl-chip on" onclick="pickTpl(this,'default')">⚡ Default</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'goal')">⚽ Goal Alert</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'halftime')">🔔 Half Time</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'fulltime')">🏁 Full Time</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'preview')">📅 Preview</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'red')">🟥 Red Card</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'lineup')">📋 Lineups</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'penalty')">🎯 Penalty</span>
+    </div>
+
+    <div class="gen-wrap">
+      <button class="gen-btn" id="gen-btn" onclick="generate()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        GENERATE MESSAGE
+      </button>
+    </div>
+  </div>
+
+  <!-- ██████████ MIDDLE COLUMN ██████████ -->
+  <div class="col col-m">
+    <div class="mid-tabs">
+      <div class="mtab on" onclick="switchMid('message',this)">Message</div>
+      <div class="mtab" onclick="switchMid('events',this)">Live Events</div>
+      <div class="mtab" onclick="switchMid('fixtures',this)">All Fixtures</div>
+      <div class="mtab" onclick="switchMid('stats',this)">Match Stats</div>
+      <div class="mtab" onclick="switchMid('history',this)">History</div>
+      <div class="mtab" onclick="switchMid('automation',this)">Automation</div>
+      <div class="mtab" onclick="switchMid('schedule',this)">Schedule</div>
+    </div>
+
+    <!-- ── MESSAGE ── -->
+    <div id="view-message">
+      <div class="msg-actions">
+        <div class="ma-left">
+          <button class="action-btn" onclick="copyMsg()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+          <button class="action-btn" onclick="editMsg()" id="edit-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
+          <button class="action-btn" onclick="regenerate()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Retry</button>
+          <button class="action-btn" onclick="saveMsg()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save</button>
+          <button class="action-btn" onclick="openModal('modal-schedule')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+        </div>
+        <div class="ma-right">
+          <span id="gen-ts"></span>
+          <span id="char-count"></span>
+        </div>
+      </div>
+
+      <div class="msg-body" id="msg-body">
+        <div class="msg-placeholder" id="msg-ph">
+          <div class="mp-icon">✨</div>
+          <p class="mp-text">Select a match,<br>then click <strong>Generate Message</strong><br><span style="font-size:11px;color:var(--volt);margin-top:8px;display:block;">⚡ 100% FREE · No limits</span></p>
+        </div>
+        <span id="msg-txt" style="display:none;"></span>
+        <div class="gen-overlay" id="gen-overlay">
+          <div class="ring-loader"></div>
+          <div class="gen-status-txt" id="gen-status">Crafting your message…</div>
+        </div>
+      </div>
+
+      <div class="copy-bar" id="copy-bar" onclick="copyMsg()">
+        <span>📋 Click to copy · paste into WhatsApp, Instagram, X</span>
+        <span style="opacity:.5;">ctrl+c</span>
+      </div>
+
+      <!-- Channels -->
+      <div class="send-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);">Send To Channels</span>
+          <div style="display:flex;gap:4px;">
+            <button class="mb" onclick="selAllCh(true)">All</button>
+            <button class="mb" onclick="selAllCh(false)">None</button>
+            <button class="mb" onclick="openModal('modal-channel')">+ Add</button>
+          </div>
+        </div>
+        <div id="ch-list">
+          <!-- populated by loadChannelsFromStorage() -->
+        </div>
+        <button class="send-btn" onclick="sendAll()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          SEND TO TELEGRAM
+        </button>
+        <div class="send-btns-row">
+          <button class="send-sub" onclick="copyMsg()">📋 Copy for WhatsApp</button>
+          <button class="send-sub" onclick="openModal('modal-schedule')">⏰ Schedule Post</button>
+        </div>
+      </div>
+
+      <div class="msg-footer">
+        <span id="msg-footer-l">Ready</span>
+        <span>AutoPost Pro · Free for all ⚡</span>
+      </div>
+    </div>
+
+    <!-- ── LIVE EVENTS ── -->
+    <div id="view-events">
+      <div class="ev-match-bar">
         <div>
-            <!-- Message Type Card -->
-            <div class="card">
-                <div class="card-hdr">
-                    <div class="card-title">Message Type</div>
-                </div>
-                <div class="card-body">
-                    <div class="fg">
-                        <select class="fs" id="msg-type" onchange="toggleType()">
-                            <option value="live">🔴 Live Match Summary</option>
-                            <option value="preview">📅 Match Preview + H2H</option>
-                            <option value="standings">🏆 League Standings</option>
-                            <option value="digest">📊 Today's Fixtures Digest</option>
-                        </select>
-                    </div>
-
-                    <!-- Match Selection Section -->
-                    <div id="match-section">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                            <label class="fl" style="margin:0;">Select Match</label>
-                            <button class="refresh-btn" onclick="loadMatches()">↻ Refresh</button>
-                        </div>
-                        <div id="match-list" class="match-list">
-                            <div class="loading">Click Refresh to load matches</div>
-                        </div>
-                    </div>
-
-                    <!-- League Selection Section -->
-                    <div id="league-section" style="display: none;">
-                        <div class="fg">
-                            <label class="fl">League</label>
-                            <select class="fs" id="league-sel"></select>
-                        </div>
-                        <div class="fg">
-                            <label class="fl">Season</label>
-                            <select class="fs" id="season-sel">
-                                <option value="2024">2024/25</option>
-                                <option value="2023">2023/24</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AI Options Card -->
-            <div class="card">
-                <div class="card-hdr">
-                    <div class="card-title">AI Options</div>
-                </div>
-                <div class="card-body">
-                    <div class="fg">
-                        <label class="fl">Tone</label>
-                        <select class="fs" id="tone">
-                            <option value="professional">📰 Professional</option>
-                            <option value="excited">🔥 Excited & Energetic</option>
-                            <option value="casual">😎 Casual & Friendly</option>
-                            <option value="dramatic">⚡ Dramatic</option>
-                        </select>
-                    </div>
-                    
-                    <div class="fg">
-                        <label class="fl">Length</label>
-                        <select class="fs" id="length">
-                            <option value="short">Short (2–3 lines)</option>
-                            <option value="medium" selected>Medium (4–6 lines)</option>
-                            <option value="detailed">Detailed report (8–12 lines)</option>
-                        </select>
-                    </div>
-                    
-                    <label class="opt">
-                        <input type="checkbox" id="inc-stats" checked> 
-                        Include match stats (possession, shots, etc.)
-                    </label>
-                    
-                    <label class="opt">
-                        <input type="checkbox" id="inc-players" checked> 
-                        Include top performers
-                    </label>
-                </div>
-            </div>
-
-            <!-- Generate Button -->
-            <button class="btn btn-amber btn-full" id="gen-btn" onclick="generate()">
-                ✦ Generate AI Message
-            </button>
-
-            <!-- Data Preview Box -->
-            <div class="data-box" id="data-box"></div>
+          <div class="emb-score" id="ev-score">—</div>
+          <div class="emb-info" id="ev-info">—</div>
         </div>
+        <button class="mb sky" onclick="loadEvents()">↻ Refresh</button>
+      </div>
+      <div class="scrollable" id="ev-list">
+        <div class="empty">Select a match to see live events</div>
+      </div>
+      <div class="ev-bottom">
+        <button class="gen-btn" onclick="quickPost('summary','','','')" style="font-size:14px;padding:10px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          GENERATE LIVE SUMMARY
+        </button>
+      </div>
+    </div>
 
-        <!-- RIGHT COLUMN -->
-        <div style="position: sticky; top: 70px;">
-            <!-- Generated Message Card -->
-            <div class="card">
-                <div class="card-hdr">
-                    <div class="card-title">Generated Message</div>
-                    <div style="display: flex; gap: 6px;">
-                        <button class="btn btn-ghost btn-sm" onclick="copyMsg()">📋 Copy</button>
-                        <button class="btn btn-cyan btn-sm" onclick="sendAll()">📤 Send</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="preview-box" id="preview-box">
-                        <div class="preview-placeholder" id="preview-ph">
-                            Select a match and click <strong style="color: var(--amber);">✦ Generate</strong>
-                        </div>
-                        <div id="preview-txt" style="display: none;"></div>
-                        <div class="gen-overlay" id="gen-overlay">
-                            <div class="gen-spinner"></div>
-                            <div class="gen-label">AI is writing your message...</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 10px; color: var(--muted2); font-family: var(--mono); text-align: right; margin-top: 6px;" id="gen-ts"></div>
-
-                    <!-- Image Widget Section -->
-                    <div class="widget-section" style="margin-top: 14px;">
-                        <div class="widget-toggle" onclick="toggleWidget()">
-                            <span style="font-size: 12px; font-weight: 600;">🖼 Match Image Widget</span>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); loadWidget()" id="widget-load-btn" style="display: none;">Load</button>
-                                <span id="widget-chevron" style="color: var(--muted2);">▼</span>
-                            </div>
-                        </div>
-                        <div id="widget-body" style="display: none;">
-                            <div id="widget-loading" style="text-align: center; padding: 20px; display: none;">
-                                <div class="gen-spinner" style="width: 24px; height: 24px; margin: 0 auto 10px;"></div>
-                                <div style="font-size: 12px; color: var(--muted2);">Loading widget data...</div>
-                            </div>
-                            <div id="widget-render"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Send To Card -->
-            <div class="card">
-                <div class="card-hdr">
-                    <div class="card-title">Send To</div>
-                </div>
-                <div class="card-body">
-                    <div id="ch-list">
-                        <div class="loading">No channels. Add in Settings.</div>
-                    </div>
-                    <div style="margin-top: 12px;">
-                        <button class="btn btn-cyan btn-full" onclick="sendAll()">
-                            📤 Send to Telegram
-                        </button>
-                    </div>
-                    <div style="margin-top: 8px; font-size: 11px; color: var(--muted2); text-align: center;">
-                        Or <button onclick="copyMsg()" style="background: none; border: none; color: var(--cyan); cursor: pointer; font-size: 11px;">copy</button> and paste into WhatsApp
-                    </div>
-                </div>
-            </div>
+    <!-- ── FIXTURES ── -->
+    <div id="view-fixtures">
+      <div class="sec">
+        <div class="sec-title">Today's Fixtures</div>
+        <div class="sec-actions">
+          <button class="mb" onclick="copyAllFixtures()">📋 Copy All</button>
+          <button class="mb" onclick="genDigest()">✦ Digest</button>
+          <button class="mb sky" onclick="loadFixtures()">↻</button>
         </div>
-    </main>
+      </div>
+      <div class="scrollable" id="fixtures-list">
+        <div class="empty">Loading fixtures…</div>
+      </div>
+      <div style="padding:12px 16px;border-top:1px solid var(--rim);display:flex;gap:8px;flex-shrink:0;">
+        <button class="gen-btn" onclick="genDigest()" style="font-size:14px;padding:10px;">✦ GENERATE FULL DIGEST</button>
+        <button class="action-btn" onclick="copyAllFixtures()" style="white-space:nowrap;padding:10px 16px;">📋 Copy All</button>
+      </div>
+    </div>
 
-    <div id="toast"></div>
+    <!-- ── STATS ── -->
+    <div id="view-stats">
+      <div class="stats-header">
+        <div><div class="sh-team" style="color:var(--volt);" id="st-home">—</div></div>
+        <div><div class="sh-score" id="st-score">–</div><div class="sh-status" id="st-min"></div></div>
+        <div><div class="sh-team" style="color:var(--sky);" id="st-away">—</div></div>
+      </div>
+      <div class="scrollable" id="stats-list">
+        <div class="empty">Select a match to see stats</div>
+      </div>
+      <div style="padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;">
+        <button class="gen-btn" onclick="generate()" style="font-size:14px;padding:10px;">✦ GENERATE STATS REPORT</button>
+      </div>
+    </div>
 
-    <script>
-        // ============================================================
-        // CONFIGURATION
-        // ============================================================
-        const LEAGUES = [
-            {id: 39, name: 'Premier League', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿'},
-            {id: 140, name: 'La Liga', flag: '🇪🇸'},
-            {id: 135, name: 'Serie A', flag: '🇮🇹'},
-            {id: 78, name: 'Bundesliga', flag: '🇩🇪'},
-            {id: 61, name: 'Ligue 1', flag: '🇫🇷'},
-            {id: 2, name: 'Champions League', flag: '⭐'},
-            {id: 3, name: 'Europa League', flag: '🌍'},
-            {id: 848, name: 'Conference League', flag: '🌐'},
-            {id: 94, name: 'Primeira Liga', flag: '🇵🇹'},
-            {id: 88, name: 'Eredivisie', flag: '🇳🇱'},
-            {id: 144, name: 'Jupiler League', flag: '🇧🇪'},
-            {id: 203, name: 'Süper Lig', flag: '🇹🇷'},
-            {id: 253, name: 'MLS', flag: '🇺🇸'},
-            {id: 262, name: 'Liga MX', flag: '🇲🇽'},
-            {id: 71, name: 'Brasileirão', flag: '🇧🇷'},
-            {id: 128, name: 'Liga Argentina', flag: '🇦🇷'},
-            {id: 98, name: 'J1 League', flag: '🇯🇵'},
-            {id: 307, name: 'Saudi League', flag: '🇸🇦'},
-            {id: 480, name: 'Nations League', flag: '⚽'}
-        ];
+    <!-- ── HISTORY ── -->
+    <div id="view-history">
+      <div class="sec"><div class="sec-title">Message History</div><button class="mb red" onclick="clearHistory()">Clear</button></div>
+      <div class="scrollable" id="hist-list"></div>
+    </div>
 
-        // ============================================================
-        // STATE
-        // ============================================================
-        let sessionToken = localStorage.getItem('session_token');
-        let userStatus = null;
-        let allMatches = [];
-        let selectedMatch = null;
-        let generatedMsg = '';
+    <!-- ── AUTOMATION ── -->
+    <div id="view-automation">
+      <div class="sec"><div class="sec-title">Auto-Post Rules</div><button class="mb" onclick="openModal('modal-auto')">+ Add Rule</button></div>
+      <div class="scrollable" id="auto-list">
+        <!-- will be populated from localStorage -->
+      </div>
+      <div class="auto-bottom">
+        <button class="gen-btn" onclick="openModal('modal-auto')" style="font-size:14px;padding:10px;">+ CREATE NEW RULE</button>
+      </div>
+    </div>
 
-        // ============================================================
-        // INITIALIZATION
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Check authentication
-            if (!sessionToken) {
-                window.location.href = '/activate.html';
-                return;
-            }
-            
-            // Verify session with server
-            try {
-                const res = await fetch('/api/auth/check', {
-                    headers: { 'session': sessionToken }
-                });
-                
-                if (!res.ok) {
-                    localStorage.removeItem('session_token');
-                    window.location.href = '/activate.html';
-                    return;
-                }
-                
-                const data = await res.json();
-                userStatus = data;
-                
-                // Update UI
-                updateStatusBadge(data.status);
-                updateQuotaDisplay(data.used_today, data.quota);
-                
-                // Load initial data
-                populateLeagues();
-                loadChannels();
-                loadMatches();
-                
-            } catch (error) {
-                console.error('Auth check failed:', error);
-                localStorage.removeItem('session_token');
-                window.location.href = '/activate.html';
-            }
-        });
+    <!-- ── SCHEDULE ── -->
+    <div id="view-schedule">
+      <div class="sec"><div class="sec-title">Scheduled Posts</div><button class="mb" onclick="openModal('modal-schedule')">+ New</button></div>
+      <div class="scrollable" id="sched-list"></div>
+      <div style="padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;">
+        <button class="gen-btn" onclick="openModal('modal-schedule')" style="font-size:14px;padding:10px;">+ SCHEDULE NEW POST</button>
+      </div>
+    </div>
+  </div>
 
-        // ============================================================
-        // AUTH FUNCTIONS
-        // ============================================================
-        async function logout() {
-            try {
-                await fetch('/api/auth/logout', {
-                    method: 'POST',
-                    headers: { 'session': sessionToken }
-                });
-            } catch (e) {
-                // Ignore errors
-            }
-            
-            localStorage.removeItem('session_token');
-            window.location.href = '/activate.html';
-        }
+  <!-- ██████████ RIGHT COLUMN ██████████ -->
+  <div class="col col-r">
 
-        function updateStatusBadge(status) {
-            const badge = document.getElementById('status-badge');
-            const emoji = status === 'active' ? '✅' : status === 'trial' ? '⏳' : '⚪';
-            
-            badge.className = `status-badge badge-${status === 'active' ? 'premium' : 'trial'}`;
-            badge.innerHTML = `${emoji} ${status.toUpperCase()}`;
-        }
+    <!-- Match focus -->
+    <div class="sec"><div class="sec-title">Match Focus</div><button class="mb sky" onclick="loadMatches()">↻</button></div>
+    <div class="focus-card">
+      <div class="fc-league" id="fc-league">—</div>
+      <div class="fc-score-grid">
+        <div><div style="font-size:22px;margin-bottom:5px;">🔴</div><div class="fc-team-name" id="fc-home">—</div></div>
+        <div class="fc-score-box">
+          <div class="fc-score" id="fc-score">–</div>
+          <div class="fc-min" id="fc-min"></div>
+        </div>
+        <div><div style="font-size:22px;margin-bottom:5px;">🔵</div><div class="fc-team-name" id="fc-away">—</div></div>
+      </div>
+      <div class="fc-actions">
+        <button class="mb" onclick="switchMid('events',null)">Events</button>
+        <button class="mb" onclick="switchMid('stats',null)">Stats</button>
+        <button class="mb on" onclick="generate()">✦ Generate</button>
+      </div>
+    </div>
 
-        function updateQuotaDisplay(used, quota) {
-            const remaining = Math.max(quota - used, 0);
-            document.getElementById('quota-txt').textContent = `${remaining} left`;
-            
-            const percentage = (remaining / quota) * 100;
-            const fill = document.getElementById('quota-fill');
-            fill.style.width = `${Math.max(percentage, 0)}%`;
-            
-            // Color based on remaining
-            if (percentage < 20) {
-                fill.style.background = 'var(--red)';
-            } else if (percentage < 50) {
-                fill.style.background = 'var(--amber)';
-            } else {
-                fill.style.background = 'var(--green)';
-            }
-        }
+    <!-- Quick event buttons -->
+    <div class="sec"><div class="sec-title">Quick Event Posts</div></div>
+    <div class="qev-grid">
+      <button class="qev-btn" onclick="quickPost('goal','','','')">⚽ Goal Alert</button>
+      <button class="qev-btn" onclick="quickPost('halftime','','','')">🔔 Half Time</button>
+      <button class="qev-btn" onclick="quickPost('fulltime','','','')">🏁 Full Time</button>
+      <button class="qev-btn" onclick="quickPost('red','','','')">🟥 Red Card</button>
+      <button class="qev-btn" onclick="quickPost('penalty','','','')">🎯 Penalty</button>
+      <button class="qev-btn" onclick="quickPost('var','','','')">📺 VAR Review</button>
+      <button class="qev-btn" onclick="quickPost('kickoff','','','')">🏟️ Kick Off</button>
+      <button class="qev-btn" onclick="quickPost('injury','','','')">🚑 Injury</button>
+    </div>
 
-        // ============================================================
-        // FETCH WRAPPER (includes auth)
-        // ============================================================
-        async function authFetch(url, options = {}) {
-            options.headers = {
-                ...(options.headers || {}),
-                'session': sessionToken
-            };
-            
-            const response = await fetch(url, options);
-            
-            // Handle auth errors
-            if (response.status === 401 || response.status === 403) {
-                localStorage.removeItem('session_token');
-                window.location.href = '/activate.html';
-                throw new Error('Session expired');
-            }
-            
-            return response;
-        }
+    <!-- Scorers -->
+    <div class="sec"><div class="sec-title">Scorers</div></div>
+    <div id="scorers-list"></div>
 
-        // ============================================================
-        // UI FUNCTIONS
-        // ============================================================
-        function populateLeagues() {
-            const sel = document.getElementById('league-sel');
-            sel.innerHTML = '<option value="">All Top-25 Leagues</option>';
-            
-            LEAGUES.sort((a, b) => a.name.localeCompare(b.name)).forEach(l => {
-                sel.innerHTML += `<option value="${l.id}">${l.flag} ${l.name}</option>`;
-            });
-        }
+    <!-- AFFILIATE SECTION - PROMINENT PLACEMENT -->
+    <div class="aff-panel">
+      <div class="aff-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        SUPPORT US – IT'S FREE!
+        <span class="aff-badge">AFFILIATE</span>
+      </div>
+      <div class="aff-inputs">
+        <div class="aff-row">
+          <input class="inp" id="aff-label" type="text" placeholder="Link label e.g. 🔗 Bet365" value="🔗 Bet Now">
+          <span style="color:var(--volt);font-size:12px;">⚡</span>
+        </div>
+        <div class="aff-row">
+          <input class="inp" id="aff-url" type="text" placeholder="https://your-affiliate-link.com" value="">
+          <button class="mb" onclick="saveAffiliate()" style="white-space:nowrap;">Save</button>
+        </div>
+        <div style="font-size:10px;color:var(--dim);margin-top:6px;font-family:var(--mono);">
+          ✅ Affiliate link will be added to every post (if toggled on)
+        </div>
+      </div>
+    </div>
 
-        function toggleType() {
-            const type = document.getElementById('msg-type').value;
-            const isMatch = ['live', 'preview'].includes(type);
-            const isLeague = ['standings', 'digest'].includes(type);
-            
-            document.getElementById('match-section').style.display = isMatch ? 'block' : 'none';
-            document.getElementById('league-section').style.display = isLeague ? 'block' : 'none';
-        }
+    <!-- Upcoming scheduled (mini) -->
+    <div class="sec"><div class="sec-title">Upcoming Scheduled</div><button class="mb" onclick="switchMid('schedule',null)">View all</button></div>
+    <div class="sched-mini" id="sched-mini-list"></div>
+  </div>
 
-        // ============================================================
-        // MATCHES
-        // ============================================================
-        async function loadMatches() {
-            const listEl = document.getElementById('match-list');
-            listEl.innerHTML = '<div class="loading">⏳ Loading matches...</div>';
-            
-            try {
-                const [liveRes, todayRes] = await Promise.all([
-                    authFetch('/api/matches/live'),
-                    authFetch('/api/matches/today')
-                ]);
-                
-                const liveData = await liveRes.json();
-                const todayData = await todayRes.json();
-                
-                const live = liveData.matches || [];
-                const today = todayData.matches || [];
-                
-                const liveSet = new Set(live.map(m => m.fixture.id));
-                allMatches = [...live, ...today.filter(m => !liveSet.has(m.fixture.id))];
-                
-                if (!allMatches.length) {
-                    listEl.innerHTML = '<div class="loading">No top-25 fixtures today</div>';
-                    return;
-                }
-                
-                listEl.innerHTML = allMatches.map(m => {
-                    const isLive = liveSet.has(m.fixture.id);
-                    const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
-                    const time = new Date(m.fixture.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    
-                    return `
-                        <div class="match-item" onclick="selectMatch(${m.fixture.id})" id="mi-${m.fixture.id}">
-                            <div class="mi-teams">
-                                <span>${m.teams.home.name}</span>
-                                <span class="mi-score">${score}</span>
-                                <span>${m.teams.away.name}</span>
-                            </div>
-                            <div class="mi-meta">
-                                ${isLive ? `<span class="live-dot"></span><span style="color: var(--amber);">${m.fixture.status.elapsed}'</span>` : `<span>${time}</span>`}
-                                <span>·</span>
-                                <span>${m.league.name}</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-                // Select first match by default
-                if (allMatches.length) {
-                    selectMatch(allMatches[0].fixture.id);
-                }
-                
-            } catch (error) {
-                console.error('Error loading matches:', error);
-                listEl.innerHTML = '<div class="error">Failed to load matches</div>';
-            }
-        }
+</div><!-- /app -->
 
-        function selectMatch(id) {
-            document.querySelectorAll('.match-item').forEach(el => el.classList.remove('sel'));
-            const el = document.getElementById(`mi-${id}`);
-            if (el) {
-                el.classList.add('sel');
-                selectedMatch = allMatches.find(m => m.fixture.id === id) || null;
-                
-                // Show widget load button
-                document.getElementById('widget-load-btn').style.display = 'inline-flex';
-            }
-        }
+<!-- ═══ MODALS ═══ -->
 
-        // ============================================================
-        // AI GENERATION
-        // ============================================================
-        async function generate() {
-            const type = document.getElementById('msg-type').value;
-            
-            // Validate selections
-            if (['live', 'preview'].includes(type) && !selectedMatch) {
-                toast('Please select a match first', 'error');
-                return;
-            }
-            
-            if (type === 'standings' && !document.getElementById('league-sel').value) {
-                toast('Please select a league', 'error');
-                return;
-            }
-            
-            // Show loading state
-            const btn = document.getElementById('gen-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span class="gen-spinner" style="width: 16px; height: 16px; margin-right: 8px;"></span> Generating...';
-            btn.disabled = true;
-            
-            document.getElementById('preview-ph').style.display = 'none';
-            document.getElementById('preview-txt').style.display = 'none';
-            document.getElementById('gen-overlay').style.display = 'flex';
-            
-            try {
-                // Build payload
-                const payload = {
-                    message_type: type,
-                    tone: document.getElementById('tone').value,
-                    length: document.getElementById('length').value,
-                    include_stats: document.getElementById('inc-stats').checked,
-                    include_players: document.getElementById('inc-players').checked
-                };
-                
-                // Add affiliate link if exists
-                const aff = JSON.parse(localStorage.getItem('ap_affiliate') || '{}');
-                if (aff.url) {
-                    payload.affiliate_line = `━━━━━━━━━━━━━━━\n${aff.label || '🔗 Join us'} → ${aff.url}`;
-                }
-                
-                // Add match data
-                if (type === 'live' || type === 'preview') {
-                    payload.match_data = selectedMatch;
-                    
-                    // Fetch additional data
-                    if (type === 'live' && payload.include_stats) {
-                        const statsRes = await authFetch(`/api/matches/stats?fixture=${selectedMatch.fixture.id}`);
-                        const statsData = await statsRes.json();
-                        if (statsData.stats) payload.stats_data = statsData.stats;
-                    }
-                    
-                    if (type === 'preview') {
-                        const h2hRes = await authFetch(`/api/matches/h2h?h2h=${selectedMatch.teams.home.id}-${selectedMatch.teams.away.id}&last=5`);
-                        const h2hData = await h2hRes.json();
-                        if (h2hData.fixtures) payload.h2h_data = h2hData.fixtures;
-                    }
-                }
-                
-                // Add standings data
-                if (type === 'standings') {
-                    const lid = document.getElementById('league-sel').value;
-                    const season = document.getElementById('season-sel').value;
-                    const standingsRes = await authFetch(`/api/standings?league=${lid}&season=${season}`);
-                    const standingsData = await standingsRes.json();
-                    
-                    if (standingsData.standings?.[0]?.league?.standings?.[0]) {
-                        payload.standings_data = standingsData.standings[0].league.standings[0];
-                        payload.league_name = standingsData.standings[0].league.name;
-                    }
-                }
-                
-                // Add fixtures digest
-                if (type === 'digest') {
-                    const lid = document.getElementById('league-sel').value;
-                    const url = lid ? `/api/matches/today?league=${lid}` : '/api/matches/today';
-                    const fixturesRes = await authFetch(url);
-                    const fixturesData = await fixturesRes.json();
-                    payload.fixtures_data = fixturesData.matches || [];
-                }
-                
-                // Generate message
-                const genRes = await authFetch('/api/ai/generate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const genData = await genRes.json();
-                
-                // Display message
-                generatedMsg = genData.message;
-                document.getElementById('preview-txt').textContent = generatedMsg;
-                document.getElementById('preview-txt').style.display = 'block';
-                document.getElementById('gen-ts').textContent = `Generated ${new Date().toLocaleTimeString()}`;
-                
-                // Update quota display
-                if (userStatus) {
-                    userStatus.used_today++;
-                    updateQuotaDisplay(userStatus.used_today, userStatus.quota);
-                }
-                
-                toast('✨ Message generated successfully!');
-                
-            } catch (error) {
-                console.error('Generation error:', error);
-                toast('Error: ' + error.message, 'error');
-                document.getElementById('preview-ph').style.display = 'block';
-                
-            } finally {
-                document.getElementById('gen-overlay').style.display = 'none';
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        }
+<!-- Template -->
+<div class="modal-bg" id="modal-tpl">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-tpl')">✕</button>
+    <h3>New Template</h3>
+    <p>Define a reusable message structure</p>
+    <div class="field" style="padding:0 0 12px;"><label class="lbl">Name</label><input class="inp" type="text" placeholder="e.g. Goal Alert Arabic"></div>
+    <div class="field" style="padding:0 0 12px;"><label class="lbl">Trigger</label><div class="sel-wrap"><select class="sel"><option>Goal scored</option><option>Half time</option><option>Full time</option><option>Red card</option><option>Penalty</option><option>Manual</option></select></div></div>
+    <div class="field" style="padding:0;"><label class="lbl">Prompt Instructions</label><textarea class="textarea" placeholder="Write a 3-line goal alert in Arabic. Include player name, minute, score. Use fire emoji."></textarea></div>
+    <div class="modal-footer"><button class="btn-volt-solid" onclick="closeModal('modal-tpl');toast('Template saved!','volt')">SAVE TEMPLATE</button><button class="btn-cancel" onclick="closeModal('modal-tpl')">Cancel</button></div>
+  </div>
+</div>
 
-        // ============================================================
-        // WIDGET
-        // ============================================================
-        let widgetOpen = false;
-        
-        function toggleWidget() {
-            widgetOpen = !widgetOpen;
-            document.getElementById('widget-body').style.display = widgetOpen ? 'block' : 'none';
-            document.getElementById('widget-chevron').textContent = widgetOpen ? '▲' : '▼';
-        }
-        
-        async function loadWidget() {
-            if (!selectedMatch) {
-                toast('Select a match first', 'error');
-                return;
-            }
-            
-            const body = document.getElementById('widget-body');
-            const loading = document.getElementById('widget-loading');
-            
-            if (!widgetOpen) toggleWidget();
-            
-            loading.style.display = 'block';
-            document.getElementById('widget-render').innerHTML = '';
-            
-            try {
-                const res = await authFetch(`/api/widget/match?fixture=${selectedMatch.fixture.id}`);
-                const widgetData = await res.json();
-                
-                renderWidget(widgetData);
-                
-            } catch (error) {
-                document.getElementById('widget-render').innerHTML = 
-                    `<div class="error">Failed to load widget: ${error.message}</div>`;
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-        
-        function renderWidget(w) {
-            const statusStr = w.status.short === 'FT' ? 'Full Time' :
-                             w.status.short === 'HT' ? 'Half Time' :
-                             w.status.elapsed ? `${w.status.elapsed}'` : w.status.long || '';
-            
-            // Group events
-            const goals = w.events.filter(e => e.type === 'Goal');
-            
-            const evHtml = w.events.length ? `
-                <div class="widget-events">
-                    ${w.events.map(e => {
-                        const icon = e.type === 'Goal' ? '⚽' : '🟨';
-                        const isHome = e.team_name === w.home.name;
-                        const time = e.minute + (e.extra_minute ? `+${e.extra_minute}` : '');
-                        
-                        return `
-                            <div class="widget-event">
-                                <span class="widget-event-min">${time}'</span>
-                                <span class="widget-event-icon">${icon}</span>
-                                <span style="flex: 1; text-align: ${isHome ? 'left' : 'right'};">${e.player || ''}</span>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            ` : '';
-            
-            document.getElementById('widget-render').innerHTML = `
-                <div class="match-widget" id="widget-card">
-                    <div class="widget-league">
-                        <span class="widget-league-name">${w.league.name}</span>
-                    </div>
-                    <div class="widget-teams">
-                        <div class="widget-team">
-                            <div class="widget-team-name">${w.home.name}</div>
-                        </div>
-                        <div class="widget-score-box">
-                            <div class="widget-score">${w.home.score ?? '–'}–${w.away.score ?? '–'}</div>
-                            <div class="widget-status">${statusStr}</div>
-                        </div>
-                        <div class="widget-team">
-                            <div class="widget-team-name">${w.away.name}</div>
-                        </div>
-                    </div>
-                    ${evHtml}
-                </div>
-            `;
-        }
+<!-- Automation -->
+<div class="modal-bg" id="modal-auto">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-auto')">✕</button>
+    <h3>New Auto Rule</h3>
+    <p>AutoPost Pro will detect this event and post automatically</p>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">Rule Name</label><input class="inp" type="text" placeholder="e.g. PL Goal Alerts"></div>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">Trigger Event</label><div class="sel-wrap"><select class="sel"><option>⚽ Goal scored</option><option>🔔 Half time</option><option>🏁 Full time</option><option>🟥 Red card</option><option>🟨 Yellow card</option><option>🎯 Penalty awarded</option><option>📺 VAR decision</option><option>🏟️ Match kick-off</option><option>🔄 Substitution</option></select></div></div>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">League Filter</label><div class="sel-wrap"><select class="sel"><option>All leagues</option><option>Premier League only</option><option>Champions League only</option><option>La Liga only</option><option>Serie A only</option></select></div></div>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">Tone</label><div class="sel-wrap"><select class="sel"><option>🔥 Excited</option><option>📰 Professional</option><option>⚡ Dramatic</option><option>😎 Casual</option></select></div></div>
+    <div class="field" style="padding:0;"><label class="lbl">Send To</label><div class="sel-wrap"><select class="sel"><option>All channels</option><option>Arsenal Fan Zone only</option><option>Football Daily only</option><option>UCL Hub only</option></select></div></div>
+    <div class="modal-footer"><button class="btn-volt-solid" onclick="addAutoRule()">CREATE RULE</button><button class="btn-cancel" onclick="closeModal('modal-auto')">Cancel</button></div>
+  </div>
+</div>
 
-        // ============================================================
-        // CHANNELS
-        // ============================================================
-        function loadChannels() {
-            const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
-            const el = document.getElementById('ch-list');
-            
-            if (!channels.length) {
-                el.innerHTML = '<div class="loading">No channels. <a href="index.html" style="color: var(--cyan);">Add in Settings →</a></div>';
-                return;
-            }
-            
-            el.innerHTML = channels.map((ch, i) => `
-                <div class="ch-row">
-                    <label>
-                        <input type="checkbox" class="ch-cb" value="${i}" checked>
-                        📢 ${ch.name}
-                        <span style="font-family: var(--mono); font-size: 10px; color: var(--muted2); margin-left: 8px;">${ch.chatId}</span>
-                    </label>
-                </div>
-            `).join('');
-        }
+<!-- Schedule -->
+<div class="modal-bg" id="modal-schedule">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-schedule')">✕</button>
+    <h3>Schedule Post</h3>
+    <p>Choose when to send this message</p>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">Date & Time</label><input class="inp" type="datetime-local"></div>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">Message</label><textarea class="textarea" id="sched-msg-preview" placeholder="Generate a message first, or type here…" style="min-height:80px;"></textarea></div>
+    <div class="field" style="padding:0;"><label class="lbl">Send To</label><div class="sel-wrap"><select class="sel"><option>All selected channels</option><option>Arsenal Fan Zone</option><option>Football Daily</option><option>UCL Hub</option></select></div></div>
+    <div class="modal-footer"><button class="btn-volt-solid" onclick="schedulePost()">SCHEDULE</button><button class="btn-cancel" onclick="closeModal('modal-schedule')">Cancel</button></div>
+  </div>
+</div>
 
-        // ============================================================
-        // SEND & COPY
-        // ============================================================
-        async function sendAll() {
-            if (!generatedMsg) {
-                toast('Generate a message first', 'error');
-                return;
-            }
-            
-            const token = localStorage.getItem('ap_botToken');
-            if (!token) {
-                toast('No bot token. Add in Settings.', 'error');
-                return;
-            }
-            
-            const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
-            const selected = [...document.querySelectorAll('.ch-cb:checked')]
-                .map(cb => channels[parseInt(cb.value)])
-                .filter(Boolean);
-            
-            if (!selected.length) {
-                toast('Select at least one channel', 'error');
-                return;
-            }
-            
-            let sent = 0;
-            for (const ch of selected) {
-                try {
-                    const res = await fetch('/api/telegram/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: ch.chatId,
-                            text: generatedMsg,
-                            bot_token: token
-                        })
-                    });
-                    
-                    const data = await res.json();
-                    if (data.ok) sent++;
-                    
-                } catch (e) {
-                    console.error('Send error:', e);
-                }
-            }
-            
-            if (sent > 0) {
-                // Save to history
-                const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
-                posts.unshift({
-                    id: Date.now(),
-                    preview: generatedMsg.substring(0, 80),
-                    platform: 'Telegram',
-                    type: 'AI',
-                    timestamp: new Date().toISOString()
-                });
-                localStorage.setItem('ap_posts', JSON.stringify(posts.slice(0, 50)));
-                
-                toast(`✅ Sent to ${sent} channel(s)`);
-            } else {
-                toast('Send failed. Check bot token.', 'error');
-            }
-        }
-        
-        function copyMsg() {
-            if (!generatedMsg) {
-                toast('Nothing to copy yet', 'error');
-                return;
-            }
-            
-            navigator.clipboard.writeText(generatedMsg)
-                .then(() => toast('✓ Copied to clipboard!'))
-                .catch(() => toast('Copy failed', 'error'));
-        }
+<!-- Add Channel -->
+<div class="modal-bg" id="modal-channel">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-channel')">✕</button>
+    <h3>Connect Channel</h3>
+    <p>Add your Telegram channel in 3 steps</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--s3);border-radius:8px;padding:14px;font-size:13px;color:var(--grey);line-height:1.6;">
+        <strong style="color:var(--white);display:block;margin-bottom:6px;">Step 1</strong>
+        Add <code style="background:var(--s4);padding:2px 6px;border-radius:3px;color:var(--volt);">@AutoPostProBot</code> as admin to your Telegram channel
+      </div>
+      <div style="background:var(--s3);border-radius:8px;padding:14px;font-size:13px;color:var(--grey);line-height:1.6;">
+        <strong style="color:var(--white);display:block;margin-bottom:6px;">Step 2</strong>
+        Forward any message from your channel to <code style="background:var(--s4);padding:2px 6px;border-radius:3px;color:var(--volt);">@userinfobot</code> to get your Channel ID
+      </div>
+    </div>
+    <div class="field" style="padding:0 0 10px;"><label class="lbl">Channel Name</label><input class="inp" type="text" id="new-ch-name" placeholder="e.g. Arsenal Fan Zone"></div>
+    <div class="field" style="padding:0;"><label class="lbl">Channel ID</label><input class="inp" type="text" id="new-ch-id" placeholder="e.g. -1001234567890"></div>
+    <div class="modal-footer"><button class="btn-volt-solid" onclick="addChannel()">CONNECT CHANNEL</button><button class="btn-cancel" onclick="closeModal('modal-channel')">Cancel</button></div>
+  </div>
+</div>
 
-        // ============================================================
-        // TOAST
-        // ============================================================
-        function toast(message, type = 'success') {
-            const el = document.getElementById('toast');
-            el.textContent = message;
-            el.style.background = type === 'error' ? '#ef4444' : 
-                                 type === 'info' ? '#3b82f6' : '#10b981';
-            el.style.display = 'block';
-            
-            setTimeout(() => {
-                el.style.display = 'none';
-            }, 3000);
-        }
-    </script>
+<div id="toast"></div>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+// ── STATE ──────────────────────────────────────────
+let currentType = 'live';
+let currentTpl  = 'default';
+let currentMid  = 'message';
+let selectedMatchId = null;
+let allMatches = [];
+let generatedMsg = '';
+
+// No auth needed - completely free!
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+  loadMatches();
+  loadChannelsFromStorage();
+  loadHistoryFromStorage();
+  loadAutoRules();
+  loadScheduledPosts();
+  loadAffiliate();
+  updateTicker();
+  setInterval(updateTicker, 30000);
+});
+
+// ============================================================
+// LIVE TICKER
+// ============================================================
+async function updateTicker() {
+  try {
+    const res = await fetch('/api/matches/live');
+    const data = await res.json();
+    const live = data.matches || [];
+    const ticker = document.getElementById('ticker-data');
+    if (!live.length) {
+      ticker.innerHTML = '<span class="tm-item">⚽ No live matches</span>'.repeat(4);
+      return;
+    }
+    let html = '';
+    for (let i = 0; i < 8; i++) {
+      const m = live[i % live.length];
+      html += `<span class="tm-item"><span class="live">LIVE</span>${m.teams.home.name} vs ${m.teams.away.name}<span class="sc">${m.goals.home}–${m.goals.away}</span><span style="color:var(--red);font-size:9px;">${m.fixture.status.elapsed || 0}'</span></span>`;
+    }
+    ticker.innerHTML = html;
+  } catch { /* ignore */ }
+}
+
+// ============================================================
+// MATCHES & SELECTION
+// ============================================================
+async function loadMatches() {
+  const list = document.getElementById('match-list');
+  list.innerHTML = '<div class="empty">⏳ Loading matches…</div>';
+  try {
+    const [liveRes, todayRes] = await Promise.all([
+      fetch('/api/matches/live'),
+      fetch('/api/matches/today')
+    ]);
+    const liveData = await liveRes.json();
+    const todayData = await todayRes.json();
+    const live = liveData.matches || [];
+    const today = todayData.matches || [];
+    const liveSet = new Set(live.map(m => m.fixture.id));
+    allMatches = [...live, ...today.filter(m => !liveSet.has(m.fixture.id))];
+    renderMatchList(allMatches, liveSet);
+    if (allMatches.length) selectMatch(allMatches[0].fixture.id);
+  } catch (e) {
+    list.innerHTML = '<div class="empty">⚠️ Failed to load matches</div>';
+  }
+}
+
+function renderMatchList(matches, liveSet) {
+  const list = document.getElementById('match-list');
+  if (!matches.length) {
+    list.innerHTML = '<div class="empty">No top-25 fixtures today</div>';
+    return;
+  }
+  let lastLeague = '';
+  let html = '';
+  matches.slice(0, 20).forEach(m => {
+    const league = m.league.name;
+    if (league !== lastLeague) {
+      html += `<div class="league-hdr">${league}</div>`;
+      lastLeague = league;
+    }
+    const isLive = liveSet && liveSet.has(m.fixture.id);
+    const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
+    const time = isLive ? `<span class="tag-live"><span class="p"></span>LIVE</span> ${m.fixture.status.elapsed || 0}'` :
+                 m.fixture.status.short === 'FT' ? '<span class="tag-ft">FT</span>' :
+                 `<span class="tag-sch">${new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>`;
+    html += `<div class="match-row" onclick="selectMatch(${m.fixture.id})" id="mi-${m.fixture.id}">
+      <div class="mr-top"><span class="mr-home">${m.teams.home.name}</span><span class="mr-score">${score}</span><span class="mr-away">${m.teams.away.name}</span></div>
+      <div class="mr-bot">${time} <span>·</span> ${m.fixture.venue?.name || ''}</div>
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+
+function selectMatch(id) {
+  document.querySelectorAll('.match-row').forEach(r => r.classList.remove('sel'));
+  const el = document.getElementById('mi-' + id);
+  if (el) el.classList.add('sel');
+  selectedMatchId = id;
+  const m = allMatches.find(m => m.fixture.id === id);
+  if (!m) return;
+  // Update focus card
+  document.getElementById('fc-home').textContent = m.teams.home.name;
+  document.getElementById('fc-away').textContent = m.teams.away.name;
+  document.getElementById('fc-score').textContent = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
+  document.getElementById('fc-league').textContent = `${m.league.name} · ${m.league.round || ''}`;
+  const status = m.fixture.status;
+  document.getElementById('fc-min').textContent = status.elapsed ? `● ${status.elapsed}'` : status.short === 'FT' ? 'FT' : '';
+  // Update stats header
+  document.getElementById('st-home').textContent = m.teams.home.name;
+  document.getElementById('st-away').textContent = m.teams.away.name;
+  document.getElementById('st-score').textContent = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
+  document.getElementById('st-min').textContent = status.elapsed ? `● ${status.elapsed}'` : status.short === 'FT' ? 'FT' : '';
+  // Update events bar
+  document.getElementById('ev-score').textContent = `${m.teams.home.name} ${m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs'} ${m.teams.away.name}`;
+  document.getElementById('ev-info').textContent = `${m.league.name} · ${status.elapsed ? status.elapsed + "'" : status.short === 'FT' ? 'FT' : new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${m.fixture.venue?.name || ''}`;
+  // Load events, stats, scorers
+  loadEvents();
+  loadStats();
+  loadScorers();
+}
+
+function filterBy(f) {
+  document.getElementById('f-all').classList.toggle('on', f === 'all');
+  document.getElementById('f-live').classList.toggle('on', f === 'live');
+  document.querySelectorAll('.match-row').forEach(r => {
+    if (f === 'live') {
+      r.style.display = r.querySelector('.tag-live') ? '' : 'none';
+    } else {
+      r.style.display = '';
+    }
+  });
+}
+
+function searchMatches(q) {
+  document.querySelectorAll('.match-row').forEach(r => {
+    const txt = r.textContent.toLowerCase();
+    r.style.display = (!q || txt.includes(q.toLowerCase())) ? '' : 'none';
+  });
+}
+
+// ============================================================
+// EVENTS
+// ============================================================
+async function loadEvents() {
+  if (!selectedMatchId) return;
+  const list = document.getElementById('ev-list');
+  list.innerHTML = '<div class="empty">⏳ Loading events…</div>';
+  try {
+    const res = await fetch(`/api/matches/events?fixture=${selectedMatchId}`);
+    const data = await res.json();
+    const events = data.events || [];
+    if (!events.length) {
+      list.innerHTML = '<div class="empty">No events yet</div>';
+      return;
+    }
+    list.innerHTML = events.filter(e => e.type === 'Goal' || e.type === 'Card').map(e => `
+      <div class="ev-item">
+        <span class="ev-min">${e.minute}${e.extra_minute ? '+' + e.extra_minute : ''}'</span>
+        <span class="ev-icon">${e.type === 'Goal' ? '⚽' : e.detail === 'Red Card' ? '🟥' : '🟨'}</span>
+        <div class="ev-detail"><div class="ev-player">${e.player || ''}</div><div class="ev-team">${e.team_name} · ${e.type === 'Goal' && e.assist ? 'Assist: ' + e.assist : ''}</div></div>
+        <button class="action-btn ev-post-btn" onclick="quickPost('${e.type === 'Goal' ? 'goal' : e.detail === 'Red Card' ? 'red' : 'yellow'}','${e.player || ''}',${e.minute},'${e.team_name}')">✦ Post</button>
+      </div>
+    `).join('');
+  } catch {
+    list.innerHTML = '<div class="empty">Could not load events</div>';
+  }
+}
+
+// ============================================================
+// STATS
+// ============================================================
+async function loadStats() {
+  if (!selectedMatchId) return;
+  const list = document.getElementById('stats-list');
+  list.innerHTML = '<div class="empty">⏳ Loading stats…</div>';
+  try {
+    const res = await fetch(`/api/matches/stats?fixture=${selectedMatchId}`);
+    const data = await res.json();
+    const stats = data.stats || [];
+    if (!stats.length) {
+      list.innerHTML = '<div class="empty">No stats available</div>';
+      return;
+    }
+    const home = stats[0]?.statistics || [];
+    const away = stats[1]?.statistics || [];
+    const statMap = (arr, type) => {
+      const found = arr.find(s => s.type === type);
+      return found ? found.value : '0';
+    };
+    const rows = [
+      { label: 'Possession', key: 'Ball Possession', unit: '%' },
+      { label: 'Shots on Target', key: 'Shots on Goal' },
+      { label: 'Total Shots', key: 'Total Shots' },
+      { label: 'Corners', key: 'Corners' },
+      { label: 'Fouls', key: 'Fouls' },
+      { label: 'Yellow Cards', key: 'Yellow Cards' },
+      { label: 'Red Cards', key: 'Red Cards' },
+    ];
+    list.innerHTML = rows.map(r => {
+      const hv = statMap(home, r.key);
+      const av = statMap(away, r.key);
+      const hNum = parseInt(hv) || 0;
+      const aNum = parseInt(av) || 0;
+      const total = hNum + aNum;
+      const hp = total ? (hNum / total) * 100 : 50;
+      const ap = total ? (aNum / total) * 100 : 50;
+      return `
+        <div class="stat-row">
+          <div class="stat-lbl"><span class="v1">${hv}</span><span>${r.label}</span><span class="v2">${av}</span></div>
+          <div class="stat-track"><div class="stat-left" style="--w:${hp}%;"></div><div class="stat-right" style="--w:${ap}%;"></div></div>
+        </div>
+      `;
+    }).join('');
+  } catch {
+    list.innerHTML = '<div class="empty">Could not load stats</div>';
+  }
+}
+
+async function loadScorers() {
+  if (!selectedMatchId) return;
+  const list = document.getElementById('scorers-list');
+  try {
+    const res = await fetch(`/api/matches/events?fixture=${selectedMatchId}`);
+    const data = await res.json();
+    const goals = (data.events || []).filter(e => e.type === 'Goal');
+    if (!goals.length) {
+      list.innerHTML = '<div class="scorer-row" style="justify-content:center;">No goals yet</div>';
+      return;
+    }
+    list.innerHTML = goals.map(g => `
+      <div class="scorer-row">
+        <div class="sr-left"><span>⚽</span><span class="sr-name">${g.player || 'Unknown'}</span><span class="sr-min">${g.minute}'</span></div>
+        <span class="sr-team" style="color:${g.team_name === allMatches.find(m => m.fixture.id === selectedMatchId)?.teams.home.name ? 'var(--volt)' : 'var(--sky)'};">${g.team_name}</span>
+      </div>
+    `).join('');
+  } catch {
+    list.innerHTML = '<div class="scorer-row" style="justify-content:center;">Could not load scorers</div>';
+  }
+}
+
+// ============================================================
+// FIXTURES
+// ============================================================
+async function loadFixtures() {
+  const list = document.getElementById('fixtures-list');
+  try {
+    const res = await fetch('/api/matches/today');
+    const data = await res.json();
+    const matches = data.matches || [];
+    if (!matches.length) {
+      list.innerHTML = '<div class="empty">No fixtures today</div>';
+      return;
+    }
+    let lastLeague = '';
+    let html = '';
+    matches.forEach(m => {
+      const league = m.league.name;
+      if (league !== lastLeague) {
+        html += `<div class="league-hdr">${league}</div>`;
+        lastLeague = league;
+      }
+      const time = new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : '–';
+      html += `<div class="fix-item">
+        <span class="fix-time">${time}</span>
+        <span class="fix-teams">${m.teams.home.name} <span class="sep">vs</span> ${m.teams.away.name}</span>
+        <span class="fix-score">${score}</span>
+        <div class="fix-acts">
+          <button class="action-btn" onclick="selectMatch(${m.fixture.id});switchMid('message',null);generate()">✦ AI</button>
+          <button class="action-btn" onclick="copyFixtureLine('${m.teams.home.name}','${m.teams.away.name}','${score}','${time}')">📋</button>
+        </div>
+      </div>`;
+    });
+    list.innerHTML = html;
+  } catch {
+    list.innerHTML = '<div class="empty">Failed to load fixtures</div>';
+  }
+}
+
+function copyFixtureLine(h, a, sc, time) {
+  const txt = `${time} | ${h} ${sc} ${a}`;
+  navigator.clipboard.writeText(txt).then(() => toast('Fixture copied!', 'ok'));
+}
+
+function copyAllFixtures() {
+  const items = document.querySelectorAll('#fixtures-list .fix-item');
+  let out = "📋 TODAY'S FIXTURES\n" + "━".repeat(26) + "\n\n";
+  let lastLeague = '';
+  document.querySelectorAll('#fixtures-list .league-hdr, #fixtures-list .fix-item').forEach(el => {
+    if (el.classList.contains('league-hdr')) out += `\n${el.textContent.trim()}\n`;
+    else {
+      const teams = el.querySelector('.fix-teams').textContent.replace(/\s+/g,' ').trim();
+      const score = el.querySelector('.fix-score').textContent.trim();
+      const time  = el.querySelector('.fix-time').textContent.trim();
+      out += `  ${time.padEnd(10)} ${teams.replace(' vs ', ' – ')} · ${score}\n`;
+    }
+  });
+  navigator.clipboard.writeText(out).then(() => toast('All fixtures copied!', 'ok'));
+}
+
+function genDigest() {
+  setType('digest', document.querySelectorAll('.ttab')[3]);
+  switchMid('message', null);
+  generate();
+}
+
+// ============================================================
+// GENERATE
+// ============================================================
+async function generate() {
+  if (['live','preview'].includes(currentType) && !selectedMatchId && !allMatches.length) {
+    toast('Select a match first', 'err'); return;
+  }
+  const ph  = document.getElementById('msg-ph');
+  const txt = document.getElementById('msg-txt');
+  const ov  = document.getElementById('gen-overlay');
+  const btn = document.getElementById('gen-btn');
+  const st  = document.getElementById('gen-status');
+  const bar = document.getElementById('copy-bar');
+
+  switchMid('message', null);
+  ph.style.display  = 'none';
+  txt.style.display = 'none';
+  ov.style.display  = 'flex';
+  bar.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = 'GENERATING…';
+
+  let si = 0; st.textContent = 'Crafting your message…';
+  const statuses = ['Fetching live data…','Analysing events…','Applying tone…','Adding finishing touches…'];
+  const interval = setInterval(() => { st.textContent = statuses[++si % statuses.length]; }, 1200);
+
+  try {
+    const aff = JSON.parse(localStorage.getItem('ap_affiliate') || '{}');
+    const payload = {
+      message_type: currentType,
+      tone: document.getElementById('tone').value,
+      length: document.getElementById('length').value,
+      language: document.getElementById('lang').value,
+      include_stats: document.getElementById('inc-stats').checked,
+      include_players: document.getElementById('inc-players').checked,
+      include_h2h: document.getElementById('inc-h2h').checked,
+      include_emojis: document.getElementById('inc-emojis').checked,
+      template: currentTpl,
+      custom_prompt: document.getElementById('custom-txt')?.value || '',
+    };
+    if (aff.url && document.getElementById('inc-aff').checked)
+      payload.affiliate_line = `━━━━━━━━━━━━\n${aff.label || '🔗 Support us'} → ${aff.url}`;
+
+    if (currentType === 'live' || currentType === 'preview') {
+      const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+      if (m) payload.match_data = m;
+      if (currentType === 'live' && payload.include_stats) {
+        const statsRes = await fetch(`/api/matches/stats?fixture=${selectedMatchId}`);
+        const statsData = await statsRes.json();
+        if (statsData.stats) payload.stats_data = statsData.stats;
+      }
+      if (currentType === 'preview' && m) {
+        const h2hRes = await fetch(`/api/matches/h2h?h2h=${m.teams.home.id}-${m.teams.away.id}&last=5`);
+        const h2hData = await h2hRes.json();
+        if (h2hData.fixtures) payload.h2h_data = h2hData.fixtures;
+      }
+    } else if (currentType === 'standings') {
+      const standingsRes = await fetch('/api/standings?league=39&season=2024');
+      const standingsData = await standingsRes.json();
+      payload.standings_data = standingsData.standings?.[0]?.league?.standings?.[0] || [];
+      payload.league_name = 'Premier League';
+    } else if (currentType === 'digest') {
+      const fixturesRes = await fetch('/api/matches/today');
+      const fixturesData = await fixturesRes.json();
+      payload.fixtures_data = fixturesData.matches || [];
+    }
+
+    const genRes = await fetch('/api/ai/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const genData = await genRes.json();
+    generatedMsg = genData.message;
+  } catch (e) {
+    // fallback demo messages
+    await new Promise(r => setTimeout(r, 1500));
+    generatedMsg = `✦ AI Message (demo)\n\nThis is where your generated ${currentType} message would appear. Since the API is not available in this preview, we show this placeholder.\n\nMake sure your backend is running and environment variables are set.`;
+  }
+
+  clearInterval(interval);
+  ov.style.display = 'none';
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> GENERATE MESSAGE`;
+  txt.textContent = generatedMsg;
+  txt.className = 'msg-generated';
+  txt.style.display = 'block';
+  document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('char-count').textContent = generatedMsg.length + ' chars';
+  document.getElementById('msg-footer-l').textContent = 'Generated · ready to send';
+  bar.style.display = 'flex';
+  document.getElementById('sched-msg-preview').value = generatedMsg.substring(0,120) + '…';
+  saveToHistory(generatedMsg);
+}
+
+function regenerate() { generate(); }
+function editMsg() {
+  const txt = document.getElementById('msg-txt');
+  const btn = document.getElementById('edit-btn');
+  if (txt.contentEditable === 'true') {
+    txt.contentEditable = 'false';
+    generatedMsg = txt.textContent;
+    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit`;
+    toast('Edits saved', 'ok');
+  } else {
+    txt.contentEditable = 'true';
+    txt.focus();
+    btn.innerHTML = '✓ Done';
+  }
+}
+function saveMsg() { if (generatedMsg) saveToHistory(generatedMsg); toast('Saved to history', 'ok'); }
+
+// ============================================================
+// QUICK POSTS
+// ============================================================
+function quickPost(type, player, minute, team) {
+  if (!selectedMatchId) { toast('Select a match first', 'err'); return; }
+  const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+  if (!m) return;
+  const posts = {
+    goal:`⚽ GOAL! ${minute ? minute + "'" : ''}\n${player ? player.toUpperCase() : ''} scores!\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\n\n${team ? team + ' take the lead!' : ''}`,
+    halftime:`🔔 HALF TIME\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\n\n${m.league.name}\nStats and analysis incoming.`,
+    fulltime:`🏁 FULL TIME\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\n\n${m.league.name}\nMatch report coming up!`,
+    red:`🟥 RED CARD! ${minute ? minute + "'" : ''}\n${player || 'A player'} sent off!\n${team} down to 10 men.`,
+    penalty:`🎯 PENALTY AWARDED!\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nThe referee points to the spot.`,
+    var:`📺 VAR CHECK\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nReview in progress…`,
+    kickoff:`🏟️ KICK OFF!\n${m.teams.home.name} vs ${m.teams.away.name}\n${m.league.name}\nHere we go!`,
+    injury:`🚑 INJURY CONCERN\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nPlayer down receiving treatment.`,
+    summary:`🔴 LIVE UPDATE\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nStay tuned for more.`,
+  };
+  generatedMsg = posts[type] || posts.summary;
+  document.getElementById('msg-txt').textContent = generatedMsg;
+  document.getElementById('msg-txt').style.display = 'block';
+  document.getElementById('msg-ph').style.display = 'none';
+  document.getElementById('copy-bar').style.display = 'flex';
+  document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('char-count').textContent = generatedMsg.length + ' chars';
+  document.getElementById('msg-footer-l').textContent = 'Quick post ready';
+  switchMid('message', null);
+  toast('Quick post ready!', 'volt');
+}
+
+// ============================================================
+// SEND & COPY
+// ============================================================
+async function sendAll() {
+  if (!generatedMsg) { toast('Generate a message first', 'err'); return; }
+  const token = localStorage.getItem('ap_botToken');
+  if (!token) { toast('No bot token — add in Settings', 'err'); return; }
+  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  const selected = [...document.querySelectorAll('.ch-cb:checked')].map(cb => channels[+cb.value]).filter(Boolean);
+  if (!selected.length) { toast('Select at least one channel', 'err'); return; }
+  let sent = 0;
+  for (const ch of selected) {
+    try {
+      const r = await fetch('/api/telegram/send', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({chat_id: ch.chatId, text: generatedMsg, bot_token: token})
+      });
+      if ((await r.json()).ok) sent++;
+    } catch {}
+  }
+  if (sent > 0) { toast(`Sent to ${sent} channel(s)! ✓`, 'ok'); }
+  else { toast('Send failed — check bot token', 'err'); }
+}
+function copyMsg() {
+  if (!generatedMsg) { toast('Nothing to copy yet', 'err'); return; }
+  navigator.clipboard.writeText(generatedMsg).then(() => toast('Copied! ✓', 'ok')).catch(() => toast('Copy failed', 'err'));
+}
+function selAllCh(v) { document.querySelectorAll('.ch-cb').forEach(cb => cb.checked = v); }
+
+// ============================================================
+// CHANNELS
+// ============================================================
+function loadChannelsFromStorage() {
+  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  const el = document.getElementById('ch-list');
+  if (!channels.length) {
+    el.innerHTML = '<div class="empty">No channels. <a href="#" onclick="openModal(\'modal-channel\');return false;">Add in Settings →</a></div>';
+    return;
+  }
+  el.innerHTML = channels.map((ch, i) => `
+    <div class="ch-row"><label><input type="checkbox" class="ch-cb" value="${i}" checked>📢 ${ch.name}<span class="ch-cid">${ch.chatId}</span></label></div>
+  `).join('');
+}
+function addChannel() {
+  const name = document.getElementById('new-ch-name').value.trim();
+  const id   = document.getElementById('new-ch-id').value.trim();
+  if (!name || !id) { toast('Fill in channel name and ID', 'err'); return; }
+  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  channels.push({ name, chatId: id });
+  localStorage.setItem('ap_channels', JSON.stringify(channels));
+  loadChannelsFromStorage();
+  closeModal('modal-channel');
+  toast('Channel connected! ✓', 'ok');
+}
+
+// ============================================================
+// HISTORY
+// ============================================================
+function saveToHistory(msg) {
+  if (!msg) return;
+  const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
+  const m = allMatches.find(m => m.fixture.id === selectedMatchId) || { teams:{home:{name:'Match'},away:{name:''}} };
+  posts.unshift({
+    id: Date.now(),
+    title: `${m.teams.home.name} vs ${m.teams.away.name} · ${currentType}`,
+    preview: msg.substring(0, 80),
+    message: msg,
+    timestamp: new Date().toISOString()
+  });
+  localStorage.setItem('ap_posts', JSON.stringify(posts.slice(0, 50)));
+  loadHistoryFromStorage();
+}
+function loadHistoryFromStorage() {
+  const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
+  const el = document.getElementById('hist-list');
+  if (!posts.length) {
+    el.innerHTML = '<div class="empty">No history yet</div>';
+    return;
+  }
+  el.innerHTML = posts.slice(0, 20).map((p, i) => `
+    <div class="hist-item" onclick="loadHistoryMsg('${(p.message || p.preview).replace(/'/g,"\\'")}')">
+      <div class="hi-top"><span class="hi-title">${p.title || 'Message'}</span><span class="hi-time">${new Date(p.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
+      <div class="hi-prev">${(p.preview||'').substring(0,70)}…</div>
+    </div>
+  `).join('');
+}
+function loadHistoryMsg(msg) {
+  if (msg) {
+    generatedMsg = msg;
+    document.getElementById('msg-txt').textContent = msg;
+    document.getElementById('msg-txt').style.display = 'block';
+    document.getElementById('msg-ph').style.display = 'none';
+    document.getElementById('copy-bar').style.display = 'flex';
+    document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('char-count').textContent = msg.length + ' chars';
+    document.getElementById('msg-footer-l').textContent = 'Loaded from history';
+    switchMid('message', null);
+  }
+}
+function clearHistory() {
+  localStorage.removeItem('ap_posts');
+  document.getElementById('hist-list').innerHTML = '<div class="empty">History cleared</div>';
+  toast('History cleared', 'inf');
+}
+
+// ============================================================
+// AUTOMATION RULES
+// ============================================================
+function loadAutoRules() {
+  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
+  const list = document.getElementById('auto-list');
+  if (!rules.length) {
+    list.innerHTML = '<div class="empty">No automation rules yet</div>';
+    return;
+  }
+  list.innerHTML = rules.map(r => `
+    <div class="auto-item">
+      <div class="auto-info"><div class="auto-name">${r.name}</div><div class="auto-desc">${r.desc}</div></div>
+      <button class="auto-badge ${r.on ? 'ab-on' : 'ab-off'}" onclick="toggleAuto(this, '${r.name}')">${r.on ? 'ON' : 'OFF'}</button>
+    </div>
+  `).join('');
+}
+function toggleAuto(btn, name) {
+  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
+  const rule = rules.find(r => r.name === name);
+  if (rule) rule.on = !rule.on;
+  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
+  btn.className = `auto-badge ${rule.on ? 'ab-on' : 'ab-off'}`;
+  btn.textContent = rule.on ? 'ON' : 'OFF';
+  toast(rule.on ? 'Rule activated' : 'Rule paused', 'ok');
+}
+function addAutoRule() {
+  const name = document.querySelector('#modal-auto input').value || 'New Rule';
+  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
+  rules.push({ name, desc: 'Custom rule · All channels', on: true });
+  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
+  loadAutoRules();
+  closeModal('modal-auto');
+  toast('Automation rule created!', 'volt');
+}
+
+// ============================================================
+// SCHEDULED POSTS
+// ============================================================
+function loadScheduledPosts() {
+  const sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
+  const list = document.getElementById('sched-list');
+  const mini = document.getElementById('sched-mini-list');
+  if (!sched.length) {
+    list.innerHTML = '<div class="empty">No scheduled posts</div>';
+    mini.innerHTML = '<div class="sm-row"><span class="sm-title">No upcoming</span></div>';
+    return;
+  }
+  const sorted = sched.sort((a,b) => new Date(a.datetime) - new Date(b.datetime));
+  list.innerHTML = sorted.map(s => `
+    <div class="sched-item">
+      <div class="si-time">${new Date(s.datetime).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="si-info"><div class="si-title">${s.title}</div><div class="si-ch">${s.channels || 'All channels'}</div></div>
+      <button class="action-btn si-del" onclick="removeScheduled('${s.id}')">✕</button>
+    </div>
+  `).join('');
+  mini.innerHTML = sorted.slice(0,3).map(s => `
+    <div class="sm-row"><span class="sm-title">${s.title}</span><span class="sm-time">${new Date(s.datetime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
+  `).join('');
+}
+function schedulePost() {
+  const dt = document.querySelector('#modal-schedule input[type=datetime-local]').value;
+  if (!dt) { toast('Pick a date and time', 'err'); return; }
+  const sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
+  sched.push({
+    id: Date.now(),
+    datetime: dt,
+    title: generatedMsg ? generatedMsg.substring(0,30) + '…' : 'Scheduled post',
+    channels: 'All selected channels',
+    message: generatedMsg || ''
+  });
+  localStorage.setItem('ap_scheduled', JSON.stringify(sched));
+  loadScheduledPosts();
+  closeModal('modal-schedule');
+  toast(`Scheduled for ${new Date(dt).toLocaleString()} ✓`, 'ok');
+}
+function removeScheduled(id) {
+  let sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
+  sched = sched.filter(s => s.id != id);
+  localStorage.setItem('ap_scheduled', JSON.stringify(sched));
+  loadScheduledPosts();
+  toast('Removed', 'inf');
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function setType(type, el) {
+  currentType = type;
+  document.querySelectorAll('.ttab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  const isMatch = ['live','preview'].includes(type);
+  document.getElementById('match-sec-hdr').style.display = isMatch ? 'flex' : 'none';
+  document.getElementById('match-search-wrap').style.display = isMatch ? 'block' : 'none';
+  document.getElementById('custom-prompt').style.display = type === 'custom' ? 'block' : 'none';
+}
+
+function switchMid(view, el) {
+  currentMid = view;
+  ['message','events','fixtures','stats','history','automation','schedule'].forEach(v => {
+    const e = document.getElementById('view-' + v);
+    if (e) e.style.display = v === view ? (v === 'message' ? 'flex' : 'flex') : 'none';
+  });
+  ['events','fixtures','stats','history','automation','schedule'].forEach(v => {
+    const e = document.getElementById('view-' + v);
+    if (e) e.style.flexDirection = 'column';
+  });
+  document.querySelectorAll('.mtab').forEach(t => t.classList.remove('on'));
+  if (el) el.classList.add('on');
+  else document.querySelectorAll('.mtab').forEach((t,i) => t.classList.toggle('on', i === 0));
+  if (view === 'fixtures') loadFixtures();
+}
+
+function pickTpl(el, tpl) {
+  document.querySelectorAll('.tpl-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  currentTpl = tpl;
+}
+
+// ============================================================
+// AFFILIATE
+// ============================================================
+function loadAffiliate() {
+  const aff = JSON.parse(localStorage.getItem('ap_affiliate') || '{}');
+  if (aff.label) document.getElementById('aff-label').value = aff.label;
+  if (aff.url)   document.getElementById('aff-url').value = aff.url;
+}
+function saveAffiliate() {
+  const aff = { label: document.getElementById('aff-label').value, url: document.getElementById('aff-url').value };
+  localStorage.setItem('ap_affiliate', JSON.stringify(aff));
+  toast('Affiliate link saved ✓', 'ok');
+}
+
+// ============================================================
+// MODALS
+// ============================================================
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+// ============================================================
+// TOAST
+// ============================================================
+const TOAST_CLASSES = { ok:'t-ok', err:'t-err', inf:'t-inf', volt:'t-volt' };
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = TOAST_CLASSES[type] || 't-ok';
+  el.style.display = 'block';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.style.display = 'none', 3000);
+}
+</script>
 </body>
 </html>
