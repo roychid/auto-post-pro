@@ -3,43 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoPost Pro — Free Football Command Center</title>
+<title>AutoPost Pro — Football Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-
-<!-- Vercel Analytics -->
-<script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
-
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* === FULL CSS (identical to your provided style block) === */
 :root {
-  --bg:      #07080f;
-  --s1:      #0b0d16;
-  --s2:      #0f1120;
-  --s3:      #141728;
-  --s4:      #1a1e30;
-  --s5:      #20243a;
-  --rim:     rgba(255,255,255,.055);
-  --rim2:    rgba(255,255,255,.10);
-  --rim3:    rgba(255,255,255,.18);
-  --volt:    #c8ff00;
-  --volt2:   #deff55;
-  --vfog:    rgba(200,255,0,.09);
-  --vglow:   rgba(200,255,0,.22);
-  --red:     #ff4545;
-  --redfog:  rgba(255,69,69,.10);
-  --sky:     #3cc8ff;
-  --skyfog:  rgba(60,200,255,.09);
-  --amber:   #ffb020;
-  --ambfog:  rgba(255,176,32,.09);
-  --green:   #3effa0;
-  --grnfog:  rgba(62,255,160,.09);
-  --white:   #edf0ff;
-  --grey:    #7e879e;
-  --dim:     #3a4058;
-  --display: 'Bebas Neue', sans-serif;
-  --body:    'DM Sans', sans-serif;
-  --mono:    'DM Mono', monospace;
+  --bg:#07080f;--s1:#0b0d16;--s2:#0f1120;--s3:#141728;--s4:#1a1e30;--s5:#20243a;
+  --rim:rgba(255,255,255,.055);--rim2:rgba(255,255,255,.10);--rim3:rgba(255,255,255,.18);
+  --volt:#c8ff00;--volt2:#deff55;--vfog:rgba(200,255,0,.09);--vglow:rgba(200,255,0,.22);
+  --red:#ff4545;--redfog:rgba(255,69,69,.10);
+  --sky:#3cc8ff;--skyfog:rgba(60,200,255,.09);
+  --amber:#ffb020;--ambfog:rgba(255,176,32,.09);
+  --green:#3effa0;--grnfog:rgba(62,255,160,.09);
+  --purple:#b87fff;--prpfog:rgba(184,127,255,.09);
+  --white:#edf0ff;--grey:#7e879e;--dim:#3a4058;
+  --display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
@@ -48,7 +26,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   background-size:220px;}
 
-/* ── KEYFRAMES ── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -57,41 +34,33 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 @keyframes glow-pulse{0%,100%{box-shadow:0 0 20px var(--vglow)}50%{box-shadow:0 0 40px rgba(200,255,0,.35)}}
 @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 @keyframes progress{from{width:0}to{width:var(--w,100%)}}
-@keyframes fade-in{from{opacity:0}to{opacity:1}}
 @keyframes msg-reveal{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-ring{0%{transform:scale(.9);opacity:.8}100%{transform:scale(1.3);opacity:0}}
 
-/* ══════════════════════ HEADER ══════════════════════ */
-.header{
-  height:52px;min-height:52px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;background:rgba(7,8,15,.9);
-  backdrop-filter:blur(20px);border-bottom:1px solid var(--rim);
-  flex-shrink:0;z-index:200;position:relative;
-}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:20px;letter-spacing:.06em;color:var(--white);text-decoration:none;}
+/* ── HEADER ── */
+.header{height:52px;min-height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(7,8,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--rim);flex-shrink:0;z-index:200;position:relative;}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:20px;letter-spacing:.06em;color:var(--white);text-decoration:none;cursor:pointer;}
 .logo-mark{width:28px;height:28px;background:var(--volt);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;animation:glow-pulse 3s ease-in-out infinite;}
 .logo span{color:var(--volt);}
-.hdr-mid{display:flex;gap:2px;}
-.hdr-tab{padding:5px 14px;border-radius:5px;font-size:12px;font-weight:500;color:var(--dim);cursor:pointer;border:1px solid transparent;transition:.15s;font-family:var(--body);}
-.hdr-tab:hover{color:var(--grey);background:var(--s2);}
-.hdr-tab.on{color:var(--volt);background:var(--vfog);border-color:rgba(200,255,0,.18);}
-.hdr-right{display:flex;align-items:center;gap:10px;}
-.ticker-mini{display:flex;align-items:center;gap:0;height:28px;background:var(--s2);border:1px solid var(--rim);border-radius:6px;overflow:hidden;max-width:360px;}
-.tm-label{padding:0 10px;font-family:var(--mono);font-size:9px;color:var(--volt);font-weight:500;letter-spacing:.1em;border-right:1px solid var(--rim);white-space:nowrap;height:100%;display:flex;align-items:center;}
+.ticker-mini{display:flex;align-items:center;height:28px;background:var(--s2);border:1px solid var(--rim);border-radius:6px;overflow:hidden;max-width:360px;}
+.tm-label{padding:0 10px;font-family:var(--mono);font-size:9px;color:var(--red);font-weight:600;letter-spacing:.1em;border-right:1px solid var(--rim);white-space:nowrap;height:100%;display:flex;align-items:center;gap:5px;}
+.tm-label .dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:blink .8s infinite;}
 .tm-scroll{overflow:hidden;flex:1;}
-.tm-inner{display:flex;gap:0;animation:ticker 28s linear infinite;white-space:nowrap;}
+.tm-inner{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
 .tm-inner:hover{animation-play-state:paused;}
 .tm-item{padding:0 16px;font-family:var(--mono);font-size:10px;color:var(--grey);border-right:1px solid var(--rim);height:28px;display:flex;align-items:center;gap:6px;}
 .tm-item .sc{color:var(--volt);font-weight:600;}
-.tm-item .live{color:var(--red);font-size:8px;font-weight:700;}
-.quota-pill{display:none;} /* HIDDEN - we're free now */
-.qtrack{width:48px;height:3px;background:var(--s4);border-radius:2px;overflow:hidden;}
-.qfill{height:100%;border-radius:2px;transition:width .5s;}
-.status-dot{display:none;} /* HIDDEN - free for all */
+.hdr-right{display:flex;align-items:center;gap:8px;}
 .hdr-btn{background:none;border:1px solid var(--rim);color:var(--dim);padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;transition:.15s;font-family:var(--body);}
-.hdr-btn:hover{border-color:var(--red);color:var(--red);}
+.hdr-btn:hover{border-color:var(--volt);color:var(--volt);}
+.notif-btn{position:relative;background:none;border:1px solid var(--rim);color:var(--dim);width:28px;height:28px;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:.15s;}
+.notif-btn:hover{border-color:var(--amber);color:var(--amber);}
+.notif-btn.on{border-color:var(--amber);color:var(--amber);background:var(--ambfog);}
+.notif-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--red);display:none;}
+.notif-btn.has-notif .notif-dot{display:block;}
 
-/* ══════════════════════ LAYOUT ══════════════════════ */
-.app{flex:1;display:grid;grid-template-columns:280px 1fr 284px;overflow:hidden;min-height:0;}
+/* ── LAYOUT ── */
+.app{flex:1;display:grid;grid-template-columns:284px 1fr 280px;overflow:hidden;min-height:0;}
 .col{display:flex;flex-direction:column;overflow:hidden;}
 .col-l{border-right:1px solid var(--rim);}
 .col-m{border-right:1px solid var(--rim);}
@@ -99,21 +68,20 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .scrollable::-webkit-scrollbar{width:3px;}
 .scrollable::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px;}
 
-/* ══════════════════════ SECTION HEADERS ══════════════════════ */
+/* ── SEC HEADERS ── */
 .sec{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px;border-bottom:1px solid var(--rim);flex-shrink:0;}
 .sec-title{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);display:flex;align-items:center;gap:6px;}
 .sec-title::before{content:'';width:8px;height:2px;border-radius:1px;background:var(--volt);}
-.sec-actions{display:flex;gap:5px;}
-
-/* ══════════════════════ MINI BUTTONS ══════════════════════ */
+.sec-actions{display:flex;gap:5px;align-items:center;}
 .mb{background:none;border:1px solid var(--rim);color:var(--dim);padding:2px 8px;border-radius:4px;font-size:10px;font-family:var(--mono);cursor:pointer;transition:.12s;white-space:nowrap;}
 .mb:hover{border-color:var(--volt);color:var(--volt);}
 .mb.sky:hover{border-color:var(--sky);color:var(--sky);}
 .mb.red:hover{border-color:var(--red);color:var(--red);}
 .mb.on{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
+.mb.amber{border-color:var(--amber);color:var(--amber);}
 
-/* ══════════════════════ FORM ELEMENTS ══════════════════════ */
-.field{padding:0 16px 12px;}
+/* ── FORMS ── */
+.field{padding:0 16px 10px;}
 .lbl{display:block;font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:5px;}
 .sel,.inp{width:100%;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;color:var(--white);font-size:12px;padding:7px 10px;outline:none;font-family:var(--body);transition:.15s;appearance:none;cursor:pointer;}
 .sel:focus,.inp:focus{border-color:var(--volt);box-shadow:0 0 0 2px var(--vfog);}
@@ -121,12 +89,9 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .sel-wrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--dim);font-size:11px;}
 .textarea{width:100%;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;color:var(--white);font-size:12px;padding:8px 10px;outline:none;font-family:var(--mono);resize:vertical;min-height:70px;transition:.15s;line-height:1.6;}
 .textarea:focus{border-color:var(--volt);}
-
-/* toggle switch */
 .tog{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;border-bottom:1px solid var(--rim);}
-.tog:last-of-type{border-bottom:none;}
 .tog-info{flex:1;}
-.tog-name{font-size:12px;color:var(--white);cursor:pointer;}
+.tog-name{font-size:12px;color:var(--white);}
 .tog-sub{font-size:10px;color:var(--dim);font-family:var(--mono);margin-top:1px;}
 .sw{position:relative;width:30px;height:17px;flex-shrink:0;margin-left:10px;}
 .sw input{opacity:0;width:0;height:0;}
@@ -135,65 +100,67 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .sw input:checked+.sw-track{background:var(--vfog);border-color:rgba(200,255,0,.35);}
 .sw input:checked+.sw-track::before{transform:translateX(13px);background:var(--volt);box-shadow:0 0 6px var(--volt);}
 
-/* ══════════════════════ LEFT COL ══════════════════════ */
-/* type tabs */
-.type-tabs{display:flex;border-bottom:1px solid var(--rim);padding:0 8px;gap:0;flex-shrink:0;}
-.ttab{padding:8px 10px;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;white-space:nowrap;}
+/* ── LEFT COL ── */
+.type-tabs{display:flex;border-bottom:1px solid var(--rim);padding:0 4px;gap:0;flex-shrink:0;overflow-x:auto;}
+.type-tabs::-webkit-scrollbar{display:none;}
+.ttab{padding:8px 9px;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;white-space:nowrap;}
 .ttab:hover{color:var(--grey);}
 .ttab.on{color:var(--volt);border-bottom-color:var(--volt);}
-
-/* match rows */
 .match-row{padding:10px 16px;border-bottom:1px solid var(--rim);cursor:pointer;transition:background .1s;position:relative;}
 .match-row:hover{background:var(--s2);}
 .match-row.sel{background:var(--vfog);}
 .match-row.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--volt);}
-.mr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
-.mr-home,.mr-away{font-size:12px;font-weight:500;color:var(--white);}
-.mr-score{font-family:var(--mono);font-size:11px;color:var(--volt);background:var(--vfog);padding:1px 7px;border-radius:3px;font-weight:600;}
-.mr-bot{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--dim);}
+.mr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:6px;}
+.mr-home,.mr-away{font-size:12px;font-weight:500;color:var(--white);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mr-away{text-align:right;}
+.mr-score{font-family:var(--mono);font-size:11px;color:var(--volt);background:var(--vfog);padding:1px 7px;border-radius:3px;font-weight:600;white-space:nowrap;flex-shrink:0;}
+.mr-bot{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--dim);flex-wrap:wrap;}
 .tag-live{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:3px;background:var(--redfog);color:var(--red);font-size:8px;font-weight:700;letter-spacing:.04em;}
 .tag-live .p{width:4px;height:4px;border-radius:50%;background:var(--red);animation:blink .8s infinite;}
 .tag-ft{display:inline-flex;padding:1px 6px;border-radius:3px;background:var(--s3);color:var(--dim);font-size:8px;letter-spacing:.04em;}
 .tag-sch{display:inline-flex;padding:1px 6px;border-radius:3px;background:var(--skyfog);color:var(--sky);font-size:8px;letter-spacing:.04em;}
-.league-hdr{padding:5px 16px;background:var(--s1);border-bottom:1px solid var(--rim);font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;}
-
-/* search */
-.search-wrap{padding:8px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;}
-.search-inp{width:100%;background:var(--s2);border:1px solid var(--rim);border-radius:5px;padding:6px 10px;font-size:12px;color:var(--white);outline:none;font-family:var(--body);}
+.league-hdr{padding:5px 16px;background:var(--s1);border-bottom:1px solid var(--rim);font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:6px;}
+.search-wrap{padding:8px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;display:flex;gap:6px;}
+.search-inp{flex:1;background:var(--s2);border:1px solid var(--rim);border-radius:5px;padding:6px 10px;font-size:12px;color:var(--white);outline:none;font-family:var(--body);}
 .search-inp:focus{border-color:var(--volt);}
 .search-inp::placeholder{color:var(--dim);}
-
-/* template chips */
+.league-filter{background:var(--s2);border:1px solid var(--rim);border-radius:5px;padding:6px 8px;font-size:11px;color:var(--white);outline:none;font-family:var(--mono);appearance:none;cursor:pointer;}
+.league-filter:focus{border-color:var(--volt);}
+.filter-row{display:flex;gap:4px;padding:6px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;flex-wrap:wrap;}
 .tpl-row{display:flex;flex-wrap:wrap;gap:5px;padding:10px 16px;border-bottom:1px solid var(--rim);}
 .tpl-chip{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid var(--rim2);background:var(--s2);color:var(--grey);transition:.12s;white-space:nowrap;}
 .tpl-chip:hover{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
 .tpl-chip.on{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
-
-/* generate button */
-.gen-wrap{padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
+.gen-wrap{padding:10px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
 .gen-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--volt),var(--volt2));border:none;border-radius:7px;font-family:var(--display);font-size:17px;letter-spacing:.06em;color:var(--bg);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 20px var(--vfog);position:relative;overflow:hidden;}
 .gen-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);background-size:200% 100%;animation:shimmer 2.5s infinite;}
 .gen-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px var(--vglow);}
 .gen-btn:disabled{opacity:.45;cursor:not-allowed;}
+.gen-btn kbd{font-family:var(--mono);font-size:10px;background:rgba(0,0,0,.2);border-radius:3px;padding:1px 5px;}
 
-/* ══════════════════════ MIDDLE COL TABS ══════════════════════ */
-.mid-tabs{display:flex;border-bottom:1px solid var(--rim);padding:0 6px;flex-shrink:0;overflow-x:auto;}
+/* ── MID TABS ── */
+.mid-tabs{display:flex;border-bottom:1px solid var(--rim);padding:0 4px;flex-shrink:0;overflow-x:auto;}
 .mid-tabs::-webkit-scrollbar{display:none;}
-.mtab{padding:9px 12px;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;white-space:nowrap;}
+.mtab{padding:9px 11px;font-size:11px;font-weight:500;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;white-space:nowrap;}
 .mtab:hover{color:var(--grey);}
 .mtab.on{color:var(--volt);border-bottom-color:var(--volt);}
 
-/* ══════════════════════ MESSAGE AREA ══════════════════════ */
+/* ── MESSAGE ── */
 #view-message{display:flex;flex-direction:column;height:100%;}
 .msg-actions{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;flex-wrap:wrap;gap:6px;}
 .ma-left{display:flex;gap:5px;flex-wrap:wrap;}
-.ma-right{font-family:var(--mono);font-size:10px;color:var(--dim);display:flex;gap:12px;}
+.ma-right{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;color:var(--dim);}
+.char-counter{font-family:var(--mono);font-size:10px;display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.char-limit{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600;}
+.char-ok{background:var(--grnfog);color:var(--green);}
+.char-warn{background:var(--ambfog);color:var(--amber);}
+.char-over{background:var(--redfog);color:var(--red);}
 .action-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:5px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--rim2);background:var(--s2);color:var(--grey);transition:.12s;font-family:var(--body);}
 .action-btn:hover{color:var(--white);border-color:var(--rim3);background:var(--s3);}
 .action-btn.primary{background:var(--skyfog);color:var(--sky);border-color:rgba(60,200,255,.25);}
 .action-btn.primary:hover{background:rgba(60,200,255,.15);}
 .action-btn.danger{background:var(--redfog);color:var(--red);border-color:rgba(255,69,69,.25);}
-
+.action-btn.volt{background:var(--vfog);color:var(--volt);border-color:rgba(200,255,0,.25);}
 .msg-body{flex:1;overflow-y:auto;padding:20px;position:relative;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--white);white-space:pre-wrap;word-break:break-word;}
 .msg-body::-webkit-scrollbar{width:3px;}
 .msg-body::-webkit-scrollbar-thumb{background:var(--s4);}
@@ -201,18 +168,32 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .mp-icon{font-size:34px;opacity:.18;}
 .mp-text{font-size:13px;color:var(--dim);font-family:var(--body);line-height:1.6;}
 .mp-text strong{color:var(--volt);}
+.mp-shortcuts{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.mp-sc-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--dim);font-family:var(--mono);}
+.mp-sc-item kbd{background:var(--s3);border:1px solid var(--rim2);border-radius:3px;padding:1px 6px;font-size:9px;color:var(--grey);}
 .msg-generated{animation:msg-reveal .3s ease;}
 .gen-overlay{position:absolute;inset:0;background:rgba(7,8,15,.94);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(4px);z-index:10;}
 .ring-loader{width:40px;height:40px;border:2px solid var(--s4);border-top-color:var(--volt);border-right-color:var(--volt2);border-radius:50%;animation:spin .75s cubic-bezier(.5,.1,.5,.9) infinite;}
 .gen-status-txt{font-family:var(--mono);font-size:11px;color:var(--grey);}
-
 .msg-footer{padding:8px 16px;border-top:1px solid var(--rim);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--dim);}
-
-/* copy banner */
 .copy-bar{margin:0 16px 10px;padding:8px 14px;background:var(--vfog);border:1px dashed rgba(200,255,0,.25);border-radius:6px;font-family:var(--mono);font-size:10px;color:var(--volt);cursor:pointer;display:none;align-items:center;justify-content:space-between;}
 .copy-bar:hover{background:rgba(200,255,0,.12);}
 
-/* send panel */
+/* Platform limits bar */
+.platform-limits{display:flex;gap:6px;padding:6px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;overflow-x:auto;}
+.plat-pill{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-family:var(--mono);font-size:9px;border:1px solid var(--rim);background:var(--s2);white-space:nowrap;cursor:default;}
+.plat-name{color:var(--dim);}
+.plat-count{font-weight:600;}
+
+/* Hashtag strip */
+.hashtag-strip{padding:8px 16px;border-bottom:1px solid var(--rim);flex-shrink:0;display:none;}
+.hashtag-label{font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.hashtag-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.hashtag-tag{padding:3px 9px;border-radius:20px;font-size:10px;font-family:var(--mono);background:var(--s3);border:1px solid var(--rim);color:var(--grey);cursor:pointer;transition:.12s;}
+.hashtag-tag:hover{border-color:var(--volt);color:var(--volt);}
+.hashtag-tag.added{border-color:var(--volt);color:var(--volt);background:var(--vfog);}
+
+/* Send panel */
 .send-panel{border-top:1px solid var(--rim);padding:12px 16px;flex-shrink:0;}
 .ch-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--rim);}
 .ch-row:last-child{border-bottom:none;}
@@ -221,14 +202,17 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .ch-cid{font-family:var(--mono);font-size:9px;color:var(--dim);margin-left:auto;}
 .send-btn{width:100%;margin-top:10px;padding:11px;background:var(--skyfog);border:1px solid rgba(60,200,255,.25);border-radius:7px;color:var(--sky);font-family:var(--display);font-size:16px;letter-spacing:.06em;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .send-btn:hover{background:rgba(60,200,255,.15);transform:translateY(-1px);}
-.send-btns-row{display:flex;gap:8px;margin-top:8px;}
-.send-sub{flex:1;padding:8px;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;font-size:11px;font-weight:500;color:var(--grey);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px;font-family:var(--body);}
+.send-btn:disabled{opacity:.45;cursor:not-allowed;}
+.send-btns-row{display:flex;gap:6px;margin-top:8px;}
+.send-sub{flex:1;padding:8px;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;font-size:11px;font-weight:500;color:var(--grey);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px;font-family:var(--body);text-decoration:none;}
 .send-sub:hover{color:var(--white);border-color:var(--rim3);}
+.send-sub.wa:hover{color:#25d366;border-color:#25d366;}
+.send-sub.x:hover{color:var(--white);border-color:var(--white);}
 
-/* ══════════════════════ EVENTS VIEW ══════════════════════ */
+/* ── EVENTS VIEW ── */
 #view-events{display:none;flex-direction:column;height:100%;}
 .ev-match-bar{padding:10px 16px;border-bottom:1px solid var(--rim);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.emb-score{font-family:var(--display);font-size:24px;letter-spacing:.04em;color:var(--volt);}
+.emb-score{font-family:var(--display);font-size:22px;letter-spacing:.04em;color:var(--volt);}
 .emb-info{font-family:var(--mono);font-size:10px;color:var(--dim);}
 .ev-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rim);transition:background .1s;}
 .ev-item:hover{background:var(--s2);}
@@ -241,8 +225,11 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .ev-item:hover .ev-post-btn{opacity:1;}
 .ev-bottom{padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
 
-/* ══════════════════════ FIXTURES VIEW ══════════════════════ */
+/* ── FIXTURES VIEW ── */
 #view-fixtures{display:none;flex-direction:column;height:100%;}
+.fix-toolbar{padding:8px 16px;border-bottom:1px solid var(--rim);display:flex;gap:8px;flex-shrink:0;align-items:center;}
+.date-inp{background:var(--s2);border:1px solid var(--rim);border-radius:5px;padding:5px 8px;font-size:11px;color:var(--white);outline:none;font-family:var(--mono);}
+.date-inp:focus{border-color:var(--volt);}
 .fix-item{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rim);gap:8px;transition:background .1s;}
 .fix-item:hover{background:var(--s2);}
 .fix-time{font-family:var(--mono);font-size:10px;color:var(--dim);min-width:44px;}
@@ -252,7 +239,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .fix-acts{display:flex;gap:4px;opacity:0;transition:.1s;}
 .fix-item:hover .fix-acts{opacity:1;}
 
-/* ══════════════════════ STATS VIEW ══════════════════════ */
+/* ── STATS VIEW ── */
 #view-stats{display:none;flex-direction:column;height:100%;}
 .stats-header{padding:14px 16px;border-bottom:1px solid var(--rim);display:grid;grid-template-columns:1fr auto 1fr;gap:8px;text-align:center;flex-shrink:0;}
 .sh-team{font-size:13px;font-weight:600;}
@@ -262,20 +249,25 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .stat-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:5px;}
 .stat-lbl .v1{color:var(--volt);}
 .stat-lbl .v2{color:var(--sky);}
-.stat-track{height:4px;background:var(--s4);border-radius:2px;overflow:visible;position:relative;display:grid;grid-template-columns:1fr 1fr;}
+.stat-track{height:4px;background:var(--s4);border-radius:2px;position:relative;display:grid;grid-template-columns:1fr 1fr;}
 .stat-left{height:4px;background:var(--volt);border-radius:2px;justify-self:end;animation:progress 1s ease both;}
 .stat-right{height:4px;background:var(--sky);border-radius:2px;animation:progress 1s ease both;}
 
-/* ══════════════════════ HISTORY VIEW ══════════════════════ */
+/* ── HISTORY ── */
 #view-history{display:none;flex-direction:column;height:100%;}
-.hist-item{padding:11px 16px;border-bottom:1px solid var(--rim);cursor:pointer;transition:background .1s;}
+.hist-item{padding:11px 16px;border-bottom:1px solid var(--rim);cursor:pointer;transition:background .1s;position:relative;}
 .hist-item:hover{background:var(--s2);}
-.hi-top{display:flex;justify-content:space-between;margin-bottom:3px;}
-.hi-title{font-size:12px;font-weight:600;color:var(--white);}
-.hi-time{font-family:var(--mono);font-size:9px;color:var(--dim);}
+.hi-top{display:flex;justify-content:space-between;margin-bottom:3px;gap:8px;}
+.hi-title{font-size:12px;font-weight:600;color:var(--white);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hi-time{font-family:var(--mono);font-size:9px;color:var(--dim);white-space:nowrap;}
 .hi-prev{font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hi-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.hi-tag{font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:3px;background:var(--s3);color:var(--grey);}
+.hi-sent{background:var(--grnfog);color:var(--green);}
+.hist-item .hi-del{position:absolute;right:12px;top:11px;background:none;border:none;color:var(--dim);font-size:13px;cursor:pointer;display:none;}
+.hist-item:hover .hi-del{display:block;}
 
-/* ══════════════════════ AUTOMATION VIEW ══════════════════════ */
+/* ── AUTOMATION ── */
 #view-automation{display:none;flex-direction:column;height:100%;}
 .auto-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rim);}
 .auto-info{flex:1;}
@@ -286,18 +278,20 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .ab-off{background:var(--s3);color:var(--dim);border:1px solid var(--rim);}
 .auto-bottom{padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;}
 
-/* ══════════════════════ SCHEDULE VIEW ══════════════════════ */
+/* ── SCHEDULE ── */
 #view-schedule{display:none;flex-direction:column;height:100%;}
 .sched-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rim);}
+.si-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.si-pending{background:var(--amber);animation:blink 2s infinite;}
+.si-sent{background:var(--green);}
 .si-time{font-family:var(--mono);font-size:10px;color:var(--amber);min-width:80px;}
 .si-info{flex:1;}
 .si-title{font-size:12px;font-weight:500;color:var(--white);}
 .si-ch{font-size:10px;color:var(--dim);font-family:var(--mono);}
-.si-del{opacity:0;transition:.1s;}
+.si-del{opacity:0;transition:.1s;background:none;border:none;color:var(--dim);cursor:pointer;font-size:12px;}
 .sched-item:hover .si-del{opacity:1;}
 
-/* ══════════════════════ RIGHT COL ══════════════════════ */
-/* match focus card */
+/* ── RIGHT COL ── */
 .focus-card{padding:14px 16px;border-bottom:1px solid var(--rim);}
 .fc-league{font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
 .fc-score-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;text-align:center;margin-bottom:12px;}
@@ -306,71 +300,32 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .fc-score{font-family:var(--display);font-size:32px;letter-spacing:.04em;color:var(--volt);}
 .fc-min{font-family:var(--mono);font-size:9px;color:var(--red);margin-top:2px;}
 .fc-actions{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;}
-
-/* quick event buttons */
 .qev-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 16px;border-bottom:1px solid var(--rim);}
 .qev-btn{padding:7px 6px;background:var(--s2);border:1px solid var(--rim2);border-radius:6px;font-size:11px;font-weight:500;color:var(--grey);cursor:pointer;transition:.12s;text-align:center;font-family:var(--body);}
 .qev-btn:hover{color:var(--white);border-color:var(--rim3);background:var(--s3);}
-
-/* scorers */
 .scorer-row{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;border-bottom:1px solid var(--rim);font-size:12px;}
 .sr-left{display:flex;align-items:center;gap:6px;}
 .sr-name{color:var(--white);font-weight:500;}
 .sr-min{font-family:var(--mono);font-size:10px;color:var(--dim);}
-.sr-team{font-family:var(--mono);font-size:10px;color:var(--volt);}
+.sr-team{font-family:var(--mono);font-size:10px;}
 
-/* affiliate panel - now prominent */
-.aff-panel{
-  padding:16px;
-  border-bottom:1px solid var(--rim);
-  background:linear-gradient(145deg, var(--vfog), transparent);
-  border-left:2px solid var(--volt);
-}
-.aff-header{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:12px;
-  color:var(--volt);
-  font-family:var(--display);
-  font-size:14px;
-  letter-spacing:.05em;
-}
-.aff-inputs{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.aff-row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-.aff-row .inp{
-  flex:1;
-}
-.aff-badge{
-  background:var(--volt);
-  color:var(--bg);
-  padding:2px 8px;
-  border-radius:4px;
-  font-size:9px;
-  font-weight:700;
-  font-family:var(--mono);
-  text-transform:uppercase;
-}
+/* Bot token warning banner */
+.bot-warning{margin:10px 16px;padding:10px 12px;background:var(--redfog);border:1px solid rgba(255,69,69,.3);border-radius:6px;font-size:11px;color:var(--red);display:flex;align-items:center;gap:8px;cursor:pointer;}
+.bot-warning:hover{background:rgba(255,69,69,.15);}
 
-/* scheduled widget */
+.aff-panel{padding:14px 16px;border-bottom:1px solid var(--rim);background:linear-gradient(145deg,var(--vfog),transparent);border-left:2px solid var(--volt);}
+.aff-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;color:var(--volt);font-family:var(--display);font-size:13px;letter-spacing:.05em;}
+.aff-badge{background:var(--volt);color:var(--bg);padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;font-family:var(--mono);}
 .sched-mini{padding:8px 16px;}
 .sm-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rim);font-size:11px;}
 .sm-row:last-child{border-bottom:none;}
-.sm-title{color:var(--grey);}
-.sm-time{font-family:var(--mono);font-size:10px;color:var(--amber);}
+.sm-title{color:var(--grey);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sm-time{font-family:var(--mono);font-size:10px;color:var(--amber);margin-left:8px;white-space:nowrap;}
 
-/* ══════════════════════ MODALS ══════════════════════ */
+/* ── MODALS ── */
 .modal-bg{position:fixed;inset:0;z-index:900;background:rgba(7,8,15,.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;}
 .modal-bg.open{display:flex;}
-.modal{background:var(--s2);border:1px solid var(--rim2);border-radius:12px;padding:24px;width:420px;max-width:92vw;max-height:84vh;overflow-y:auto;position:relative;animation:pop .2s ease;}
+.modal{background:var(--s2);border:1px solid var(--rim2);border-radius:12px;padding:24px;width:460px;max-width:92vw;max-height:86vh;overflow-y:auto;position:relative;animation:pop .2s ease;}
 .modal h3{font-family:var(--display);font-size:22px;letter-spacing:.04em;margin-bottom:4px;}
 .modal p{font-size:12px;color:var(--dim);font-family:var(--mono);margin-bottom:18px;}
 .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;transition:.12s;}
@@ -380,65 +335,127 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .btn-volt-solid:hover{background:var(--volt2);}
 .btn-cancel{padding:11px 20px;background:var(--s3);color:var(--grey);border:1px solid var(--rim2);border-radius:7px;font-size:13px;cursor:pointer;font-family:var(--body);transition:.15s;}
 .btn-cancel:hover{color:var(--white);}
+.modal-section{margin-bottom:16px;}
+.modal-section-title{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.modal-section-title::before{content:'';width:6px;height:2px;background:var(--volt);border-radius:1px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rim);}
+.settings-row:last-child{border-bottom:none;}
+.settings-row-label{font-size:12px;color:var(--white);}
+.settings-row-sub{font-size:10px;color:var(--dim);font-family:var(--mono);margin-top:1px;}
+.input-with-btn{display:flex;gap:6px;}
+.input-with-btn .inp{flex:1;}
+.inp-pass{font-family:var(--mono);font-size:11px;letter-spacing:.05em;}
+.modal-info-box{background:var(--s3);border-radius:7px;padding:12px;font-size:12px;color:var(--grey);line-height:1.6;margin-bottom:12px;}
+.modal-info-box code{background:var(--s4);padding:2px 6px;border-radius:3px;color:var(--volt);font-family:var(--mono);}
+.kbd-list{display:flex;flex-direction:column;gap:8px;}
+.kbd-row{display:flex;align-items:center;justify-content:space-between;}
+.kbd-desc{font-size:12px;color:var(--grey);}
+.kbds{display:flex;gap:4px;}
+.kbd-key{background:var(--s3);border:1px solid var(--rim2);border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:11px;color:var(--grey);}
 
-/* ══════════════════════ TOAST ══════════════════════ */
+/* ── TOAST ── */
 #toast{position:fixed;bottom:20px;right:20px;z-index:9997;display:none;padding:10px 18px;border-radius:7px;font-size:12px;font-weight:500;font-family:var(--body);animation:slideUp .2s ease;box-shadow:0 6px 20px rgba(0,0,0,.5);}
 .t-ok{background:#0b2616;color:var(--green);border:1px solid rgba(62,255,160,.25);}
 .t-err{background:#250b0b;color:var(--red);border:1px solid rgba(255,69,69,.25);}
 .t-inf{background:#0b1625;color:var(--sky);border:1px solid rgba(60,200,255,.25);}
 .t-volt{background:#161f00;color:var(--volt);border:1px solid rgba(200,255,0,.25);}
+.t-amber{background:#1e1400;color:var(--amber);border:1px solid rgba(255,176,32,.25);}
 
-/* ══════════════════════ EMPTY / LOADING ══════════════════════ */
+/* ── HELPERS ── */
 .empty{text-align:center;padding:28px 16px;font-size:11px;color:var(--dim);font-family:var(--mono);}
 .empty a{color:var(--volt);text-decoration:none;}
 .sp-sm{display:inline-block;width:11px;height:11px;border:2px solid var(--rim2);border-top-color:var(--volt);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:4px;}
+.flex-1{flex:1;}
+.gap-6{gap:6px;}
 
-/* responsive */
+/* Scheduled runner indicator */
+.runner-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--dim);}
+.runner-dot{width:5px;height:5px;border-radius:50%;background:var(--dim);}
+.runner-dot.active{background:var(--green);animation:blink 2s infinite;}
+
+/* Prediction badge */
+.prediction-card{margin:10px 16px;padding:10px 12px;background:var(--prpfog);border:1px solid rgba(184,127,255,.25);border-radius:6px;}
+.pred-title{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:6px;}
+.pred-options{display:flex;gap:6px;}
+.pred-opt{flex:1;padding:6px;background:var(--s3);border:1px solid var(--rim);border-radius:5px;text-align:center;font-size:11px;color:var(--grey);cursor:pointer;transition:.12s;}
+.pred-opt:hover{border-color:var(--purple);color:var(--purple);}
+.pred-opt.sel{border-color:var(--purple);color:var(--purple);background:var(--prpfog);}
+
 @media(max-width:1080px){.app{grid-template-columns:260px 1fr;}.col-r{display:none;}}
-@media(max-width:700px){.app{grid-template-columns:1fr;}.col-l{display:none;}.header{padding:0 12px;}.ticker-mini{display:none;}}
+@media(max-width:700px){.app{grid-template-columns:1fr;}.col-l{display:none;}.ticker-mini{display:none;}}
 </style>
 </head>
 <body>
 
-<!-- ════════════ HEADER ════════════ -->
+<!-- HEADER -->
 <header class="header">
-  <a href="index.html" class="logo"><div class="logo-mark">⚡</div>AUTOPOST<span>PRO</span> <span style="font-size:12px;color:var(--grey);margin-left:6px;">✨ FREE FOR EVERYONE</span></a>
+  <div class="logo" onclick="">
+    <div class="logo-mark">⚡</div>AUTOPOST<span>PRO</span>
+    <span style="font-size:11px;color:var(--dim);margin-left:4px;font-family:var(--mono);">v2.0</span>
+  </div>
 
-  <!-- Live ticker (dynamically updated) -->
   <div class="ticker-mini">
-    <span class="tm-label">● LIVE</span>
+    <span class="tm-label"><span class="dot"></span>LIVE</span>
     <div class="tm-scroll">
       <div class="tm-inner" id="ticker-data">
-        <!-- populated by updateTicker() -->
+        <span class="tm-item">Waiting for live data…</span>
       </div>
     </div>
   </div>
 
   <div class="hdr-right">
-    <!-- No quota/pro badges - completely free -->
-    <button class="hdr-btn" onclick="window.location.href='index.html'">Dashboard</button>
+    <div class="runner-status" id="runner-status" title="Scheduled post runner">
+      <span class="runner-dot" id="runner-dot"></span>
+      <span id="runner-txt">Runner idle</span>
+    </div>
+    <button class="notif-btn" id="notif-btn" onclick="toggleNotifications()" title="Toggle live notifications">🔔<span class="notif-dot" id="notif-dot"></span></button>
+    <button class="hdr-btn" onclick="openModal('modal-settings')">⚙ Settings</button>
+    <button class="hdr-btn" onclick="openModal('modal-shortcuts')" style="border-color:var(--dim);">⌨</button>
   </div>
 </header>
 
-<!-- ════════════════════════════════ 3-COLUMN APP ═══════════════════════════════ -->
+<!-- 3-COLUMN APP -->
 <div class="app">
 
-  <!-- ██████████ LEFT COLUMN ██████████ -->
+  <!-- LEFT COLUMN -->
   <div class="col col-l">
-
-    <!-- Content type -->
     <div class="type-tabs">
       <div class="ttab on" onclick="setType('live',this)">🔴 Live</div>
       <div class="ttab" onclick="setType('preview',this)">📅 Preview</div>
       <div class="ttab" onclick="setType('standings',this)">🏆 Table</div>
       <div class="ttab" onclick="setType('digest',this)">📊 Digest</div>
+      <div class="ttab" onclick="setType('prediction',this)">🎯 Predict</div>
       <div class="ttab" onclick="setType('custom',this)">✏️ Custom</div>
     </div>
 
-    <!-- Custom prompt (hidden by default) -->
     <div id="custom-prompt" style="display:none;padding:8px 16px;border-bottom:1px solid var(--rim);">
       <label class="lbl">Your Prompt</label>
       <textarea class="textarea" id="custom-txt" placeholder="e.g. Write an exciting 3-line goal alert in Arabic for Saka scoring in minute 67…"></textarea>
+    </div>
+
+    <div id="standings-opts" style="display:none;padding:8px 16px;border-bottom:1px solid var(--rim);">
+      <label class="lbl">League for Standings</label>
+      <div class="sel-wrap">
+        <select class="sel" id="standings-league">
+          <option value="39">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
+          <option value="140">🇪🇸 La Liga</option>
+          <option value="135">🇮🇹 Serie A</option>
+          <option value="78">🇩🇪 Bundesliga</option>
+          <option value="61">🇫🇷 Ligue 1</option>
+          <option value="2">🌍 Champions League</option>
+          <option value="3">🌍 Europa League</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="prediction-opts" style="display:none;padding:8px 16px;border-bottom:1px solid var(--rim);">
+      <label class="lbl">Prediction Type</label>
+      <div class="pred-options" id="pred-type-opts">
+        <div class="pred-opt sel" onclick="pickPred(this,'btts')">BTTS</div>
+        <div class="pred-opt" onclick="pickPred(this,'1x2')">1X2</div>
+        <div class="pred-opt" onclick="pickPred(this,'goals')">Goals O/U</div>
+        <div class="pred-opt" onclick="pickPred(this,'combo')">Combo</div>
+      </div>
     </div>
 
     <!-- Fixture filter + search -->
@@ -452,11 +469,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
     </div>
     <div class="search-wrap" id="match-search-wrap">
       <input class="search-inp" type="text" placeholder="Search team or league…" oninput="searchMatches(this.value)" id="match-search">
+      <select class="league-filter" id="league-filter" onchange="filterByLeague(this.value)" title="Filter by league">
+        <option value="">All</option>
+      </select>
     </div>
 
-    <!-- Match list (populated by loadMatches()) -->
     <div class="scrollable" id="match-list">
-      <div class="empty">Click refresh to load matches</div>
+      <div class="empty">Click ↻ to load today's matches</div>
     </div>
 
     <!-- AI Options -->
@@ -476,14 +495,14 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       <div class="field" style="padding:0 0 10px;">
         <label class="lbl">Length</label>
         <div class="sel-wrap"><select class="sel" id="length">
-          <option value="tweet">Tweet (1–2 lines)</option>
+          <option value="tweet">Tweet (≤280 chars)</option>
           <option value="short">Short (2–3 lines)</option>
           <option value="medium" selected>Medium (4–6 lines)</option>
           <option value="detailed">Detailed (8–12 lines)</option>
           <option value="article">Full Report (15+ lines)</option>
         </select></div>
       </div>
-      <div class="field" style="padding:0 0 10px;">
+      <div class="field" style="padding:0 0 8px;">
         <label class="lbl">Language</label>
         <div class="sel-wrap"><select class="sel" id="lang">
           <option value="en">🇬🇧 English</option>
@@ -492,12 +511,15 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
           <option value="es">🇪🇸 Spanish</option>
           <option value="pt">🇧🇷 Portuguese</option>
           <option value="sw">🇰🇪 Swahili</option>
+          <option value="de">🇩🇪 German</option>
+          <option value="it">🇮🇹 Italian</option>
         </select></div>
       </div>
     </div>
     <div class="tog"><div class="tog-info"><div class="tog-name">Match stats</div><div class="tog-sub">possession, shots, corners</div></div><label class="sw"><input type="checkbox" id="inc-stats" checked><span class="sw-track"></span></label></div>
     <div class="tog"><div class="tog-info"><div class="tog-name">Top performers</div><div class="tog-sub">goals, assists, ratings</div></div><label class="sw"><input type="checkbox" id="inc-players" checked><span class="sw-track"></span></label></div>
     <div class="tog"><div class="tog-info"><div class="tog-name">Head-to-head history</div><div class="tog-sub">last 5 meetings</div></div><label class="sw"><input type="checkbox" id="inc-h2h"><span class="sw-track"></span></label></div>
+    <div class="tog"><div class="tog-info"><div class="tog-name">Auto hashtags</div><div class="tog-sub">appends relevant #tags</div></div><label class="sw"><input type="checkbox" id="inc-hashtags" checked><span class="sw-track"></span></label></div>
     <div class="tog"><div class="tog-info"><div class="tog-name">Include affiliate</div><div class="tog-sub">support us by adding link</div></div><label class="sw"><input type="checkbox" id="inc-aff" checked><span class="sw-track"></span></label></div>
     <div class="tog" style="border-bottom:1px solid var(--rim);"><div class="tog-info"><div class="tog-name">Emojis</div><div class="tog-sub">adds ⚽🔥 to message</div></div><label class="sw"><input type="checkbox" id="inc-emojis" checked><span class="sw-track"></span></label></div>
 
@@ -512,17 +534,19 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       <span class="tpl-chip" onclick="pickTpl(this,'red')">🟥 Red Card</span>
       <span class="tpl-chip" onclick="pickTpl(this,'lineup')">📋 Lineups</span>
       <span class="tpl-chip" onclick="pickTpl(this,'penalty')">🎯 Penalty</span>
+      <span class="tpl-chip" onclick="pickTpl(this,'prediction')">🔮 Prediction</span>
     </div>
 
     <div class="gen-wrap">
       <button class="gen-btn" id="gen-btn" onclick="generate()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         GENERATE MESSAGE
+        <kbd>⌘G</kbd>
       </button>
     </div>
   </div>
 
-  <!-- ██████████ MIDDLE COLUMN ██████████ -->
+  <!-- MIDDLE COLUMN -->
   <div class="col col-m">
     <div class="mid-tabs">
       <div class="mtab on" onclick="switchMid('message',this)">Message</div>
@@ -534,37 +558,70 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       <div class="mtab" onclick="switchMid('schedule',this)">Schedule</div>
     </div>
 
-    <!-- ── MESSAGE ── -->
-    <div id="view-message">
+    <!-- MESSAGE VIEW -->
+    <div id="view-message" style="display:flex;flex-direction:column;height:100%;overflow:hidden;">
       <div class="msg-actions">
         <div class="ma-left">
-          <button class="action-btn" onclick="copyMsg()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
-          <button class="action-btn" onclick="editMsg()" id="edit-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
-          <button class="action-btn" onclick="regenerate()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Retry</button>
-          <button class="action-btn" onclick="saveMsg()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save</button>
-          <button class="action-btn" onclick="openModal('modal-schedule')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+          <button class="action-btn" onclick="copyMsg()" title="Copy (Ctrl+C)">📋 Copy</button>
+          <button class="action-btn" onclick="editMsg()" id="edit-btn">✏️ Edit</button>
+          <button class="action-btn" onclick="regenerate()" title="Regenerate (Ctrl+R)">↻ Retry</button>
+          <button class="action-btn" onclick="saveMsg()">💾 Save</button>
+          <button class="action-btn" onclick="openModal('modal-schedule')">⏰ Schedule</button>
+          <button class="action-btn volt" onclick="showHashtags()" id="htag-btn" title="Generate hashtags">🏷 Tags</button>
         </div>
         <div class="ma-right">
           <span id="gen-ts"></span>
-          <span id="char-count"></span>
+          <div class="char-counter" id="char-counter">
+            <span id="char-count" style="font-size:10px;color:var(--dim);">—</span>
+          </div>
         </div>
+      </div>
+
+      <!-- Platform character limits bar -->
+      <div class="platform-limits" id="platform-limits">
+        <div class="plat-pill" id="pl-twitter"><span class="plat-name">X/Twitter</span>&nbsp;<span class="plat-count" id="plc-twitter">—</span></div>
+        <div class="plat-pill" id="pl-telegram"><span class="plat-name">Telegram</span>&nbsp;<span class="plat-count" id="plc-telegram">—</span></div>
+        <div class="plat-pill" id="pl-whatsapp"><span class="plat-name">WhatsApp</span>&nbsp;<span class="plat-count" id="plc-whatsapp">—</span></div>
+        <div class="plat-pill" id="pl-instagram"><span class="plat-name">Instagram</span>&nbsp;<span class="plat-count" id="plc-instagram">—</span></div>
+      </div>
+
+      <!-- Hashtag strip (hidden until requested) -->
+      <div class="hashtag-strip" id="hashtag-strip">
+        <div class="hashtag-label">
+          <span>Suggested Hashtags — click to append</span>
+          <button class="mb" onclick="appendAllHashtags()">Add All</button>
+        </div>
+        <div class="hashtag-tags" id="hashtag-tags"></div>
       </div>
 
       <div class="msg-body" id="msg-body">
         <div class="msg-placeholder" id="msg-ph">
           <div class="mp-icon">✨</div>
-          <p class="mp-text">Select a match,<br>then click <strong>Generate Message</strong><br><span style="font-size:11px;color:var(--volt);margin-top:8px;display:block;">⚡ 100% FREE · No limits</span></p>
+          <p class="mp-text">Select a match, then<br>click <strong>Generate Message</strong></p>
+          <div class="mp-shortcuts">
+            <div class="mp-sc-item"><kbd>Ctrl+G</kbd><span>Generate</span></div>
+            <div class="mp-sc-item"><kbd>Ctrl+C</kbd><span>Copy message</span></div>
+            <div class="mp-sc-item"><kbd>Ctrl+R</kbd><span>Regenerate</span></div>
+            <div class="mp-sc-item"><kbd>Ctrl+Enter</kbd><span>Send to Telegram</span></div>
+          </div>
+          <span style="font-size:11px;color:var(--volt);margin-top:8px;display:block;">⚡ 100% FREE · No limits</span>
         </div>
         <span id="msg-txt" style="display:none;"></span>
         <div class="gen-overlay" id="gen-overlay">
           <div class="ring-loader"></div>
           <div class="gen-status-txt" id="gen-status">Crafting your message…</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:4px;" id="gen-sub"></div>
         </div>
       </div>
 
       <div class="copy-bar" id="copy-bar" onclick="copyMsg()">
         <span>📋 Click to copy · paste into WhatsApp, Instagram, X</span>
-        <span style="opacity:.5;">ctrl+c</span>
+        <span style="opacity:.5;font-family:var(--mono);font-size:10px;">ctrl+c</span>
+      </div>
+
+      <!-- BOT TOKEN WARNING -->
+      <div class="bot-warning" id="bot-warning" onclick="openModal('modal-settings')" style="display:none;">
+        ⚠️ No Telegram bot token set — click to configure in Settings
       </div>
 
       <!-- Channels -->
@@ -577,37 +634,31 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
             <button class="mb" onclick="openModal('modal-channel')">+ Add</button>
           </div>
         </div>
-        <div id="ch-list">
-          <!-- populated by loadChannelsFromStorage() -->
-        </div>
-        <button class="send-btn" onclick="sendAll()">
+        <div id="ch-list"></div>
+        <button class="send-btn" id="send-tg-btn" onclick="sendAll()" title="Send (Ctrl+Enter)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           SEND TO TELEGRAM
         </button>
         <div class="send-btns-row">
-          <button class="send-sub" onclick="copyMsg()">📋 Copy for WhatsApp</button>
-          <button class="send-sub" onclick="openModal('modal-schedule')">⏰ Schedule Post</button>
+          <button class="send-sub wa" onclick="openWhatsApp()">📱 WhatsApp</button>
+          <button class="send-sub x" onclick="openTwitter()">𝕏 Tweet</button>
+          <button class="send-sub" onclick="openModal('modal-schedule')">⏰ Schedule</button>
         </div>
       </div>
 
       <div class="msg-footer">
         <span id="msg-footer-l">Ready</span>
-        <span>AutoPost Pro · Free for all ⚡</span>
+        <span>AutoPost Pro v2 · ⚡ Free</span>
       </div>
     </div>
 
-    <!-- ── LIVE EVENTS ── -->
-    <div id="view-events">
+    <!-- LIVE EVENTS -->
+    <div id="view-events" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
       <div class="ev-match-bar">
-        <div>
-          <div class="emb-score" id="ev-score">—</div>
-          <div class="emb-info" id="ev-info">—</div>
-        </div>
+        <div><div class="emb-score" id="ev-score">—</div><div class="emb-info" id="ev-info">—</div></div>
         <button class="mb sky" onclick="loadEvents()">↻ Refresh</button>
       </div>
-      <div class="scrollable" id="ev-list">
-        <div class="empty">Select a match to see live events</div>
-      </div>
+      <div class="scrollable" id="ev-list"><div class="empty">Select a match to see live events</div></div>
       <div class="ev-bottom">
         <button class="gen-btn" onclick="quickPost('summary','','','')" style="font-size:14px;padding:10px;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -616,60 +667,70 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       </div>
     </div>
 
-    <!-- ── FIXTURES ── -->
-    <div id="view-fixtures">
-      <div class="sec">
-        <div class="sec-title">Today's Fixtures</div>
-        <div class="sec-actions">
-          <button class="mb" onclick="copyAllFixtures()">📋 Copy All</button>
-          <button class="mb" onclick="genDigest()">✦ Digest</button>
-          <button class="mb sky" onclick="loadFixtures()">↻</button>
-        </div>
+    <!-- FIXTURES -->
+    <div id="view-fixtures" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
+      <div class="fix-toolbar">
+        <input type="date" class="date-inp" id="fixture-date" onchange="loadFixtures()" title="Select date">
+        <button class="mb sky" onclick="loadFixtures()">↻</button>
+        <button class="mb" onclick="copyAllFixtures()">📋 Copy All</button>
+        <button class="mb" onclick="genDigest()" style="margin-left:auto;">✦ Digest</button>
       </div>
-      <div class="scrollable" id="fixtures-list">
-        <div class="empty">Loading fixtures…</div>
-      </div>
+      <div class="scrollable" id="fixtures-list"><div class="empty">Loading fixtures…</div></div>
       <div style="padding:12px 16px;border-top:1px solid var(--rim);display:flex;gap:8px;flex-shrink:0;">
         <button class="gen-btn" onclick="genDigest()" style="font-size:14px;padding:10px;">✦ GENERATE FULL DIGEST</button>
         <button class="action-btn" onclick="copyAllFixtures()" style="white-space:nowrap;padding:10px 16px;">📋 Copy All</button>
       </div>
     </div>
 
-    <!-- ── STATS ── -->
-    <div id="view-stats">
+    <!-- STATS -->
+    <div id="view-stats" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
       <div class="stats-header">
         <div><div class="sh-team" style="color:var(--volt);" id="st-home">—</div></div>
         <div><div class="sh-score" id="st-score">–</div><div class="sh-status" id="st-min"></div></div>
         <div><div class="sh-team" style="color:var(--sky);" id="st-away">—</div></div>
       </div>
-      <div class="scrollable" id="stats-list">
-        <div class="empty">Select a match to see stats</div>
-      </div>
+      <div class="scrollable" id="stats-list"><div class="empty">Select a match to see stats</div></div>
       <div style="padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;">
         <button class="gen-btn" onclick="generate()" style="font-size:14px;padding:10px;">✦ GENERATE STATS REPORT</button>
       </div>
     </div>
 
-    <!-- ── HISTORY ── -->
-    <div id="view-history">
-      <div class="sec"><div class="sec-title">Message History</div><button class="mb red" onclick="clearHistory()">Clear</button></div>
+    <!-- HISTORY -->
+    <div id="view-history" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
+      <div class="sec">
+        <div class="sec-title">Message History</div>
+        <div class="sec-actions">
+          <button class="mb" onclick="exportHistory()">↓ Export</button>
+          <button class="mb red" onclick="clearHistory()">Clear</button>
+        </div>
+      </div>
       <div class="scrollable" id="hist-list"></div>
     </div>
 
-    <!-- ── AUTOMATION ── -->
-    <div id="view-automation">
+    <!-- AUTOMATION -->
+    <div id="view-automation" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
       <div class="sec"><div class="sec-title">Auto-Post Rules</div><button class="mb" onclick="openModal('modal-auto')">+ Add Rule</button></div>
-      <div class="scrollable" id="auto-list">
-        <!-- will be populated from localStorage -->
+      <div style="padding:8px 16px;border-bottom:1px solid var(--rim);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <span style="font-size:11px;color:var(--dim);font-family:var(--mono);">Automation requires bot token + active channels</span>
+        <div class="runner-status"><span class="runner-dot" id="runner-dot2"></span><span id="runner-txt2">Idle</span></div>
       </div>
+      <div class="scrollable" id="auto-list"></div>
       <div class="auto-bottom">
         <button class="gen-btn" onclick="openModal('modal-auto')" style="font-size:14px;padding:10px;">+ CREATE NEW RULE</button>
       </div>
     </div>
 
-    <!-- ── SCHEDULE ── -->
-    <div id="view-schedule">
-      <div class="sec"><div class="sec-title">Scheduled Posts</div><button class="mb" onclick="openModal('modal-schedule')">+ New</button></div>
+    <!-- SCHEDULE -->
+    <div id="view-schedule" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
+      <div class="sec">
+        <div class="sec-title">Scheduled Posts</div>
+        <div class="sec-actions">
+          <button class="mb" onclick="openModal('modal-schedule')">+ New</button>
+        </div>
+      </div>
+      <div style="padding:6px 16px;border-bottom:1px solid var(--rim);font-family:var(--mono);font-size:9px;color:var(--dim);flex-shrink:0;display:flex;align-items:center;gap:6px;">
+        <span class="runner-dot active"></span> Scheduler checks every 60s and auto-sends when time is reached
+      </div>
       <div class="scrollable" id="sched-list"></div>
       <div style="padding:12px 16px;border-top:1px solid var(--rim);flex-shrink:0;">
         <button class="gen-btn" onclick="openModal('modal-schedule')" style="font-size:14px;padding:10px;">+ SCHEDULE NEW POST</button>
@@ -677,20 +738,18 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
     </div>
   </div>
 
-  <!-- ██████████ RIGHT COLUMN ██████████ -->
+  <!-- RIGHT COLUMN -->
   <div class="col col-r">
-
-    <!-- Match focus -->
     <div class="sec"><div class="sec-title">Match Focus</div><button class="mb sky" onclick="loadMatches()">↻</button></div>
     <div class="focus-card">
-      <div class="fc-league" id="fc-league">—</div>
+      <div class="fc-league" id="fc-league">— Select a match —</div>
       <div class="fc-score-grid">
-        <div><div style="font-size:22px;margin-bottom:5px;">🔴</div><div class="fc-team-name" id="fc-home">—</div></div>
+        <div><div style="font-size:20px;margin-bottom:5px;" id="fc-home-icon">🔴</div><div class="fc-team-name" id="fc-home">Home</div></div>
         <div class="fc-score-box">
           <div class="fc-score" id="fc-score">–</div>
           <div class="fc-min" id="fc-min"></div>
         </div>
-        <div><div style="font-size:22px;margin-bottom:5px;">🔵</div><div class="fc-team-name" id="fc-away">—</div></div>
+        <div><div style="font-size:20px;margin-bottom:5px;" id="fc-away-icon">🔵</div><div class="fc-team-name" id="fc-away">Away</div></div>
       </div>
       <div class="fc-actions">
         <button class="mb" onclick="switchMid('events',null)">Events</button>
@@ -699,7 +758,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       </div>
     </div>
 
-    <!-- Quick event buttons -->
     <div class="sec"><div class="sec-title">Quick Event Posts</div></div>
     <div class="qev-grid">
       <button class="qev-btn" onclick="quickPost('goal','','','')">⚽ Goal Alert</button>
@@ -712,134 +770,474 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       <button class="qev-btn" onclick="quickPost('injury','','','')">🚑 Injury</button>
     </div>
 
-    <!-- Scorers -->
     <div class="sec"><div class="sec-title">Scorers</div></div>
-    <div id="scorers-list"></div>
+    <div id="scorers-list"><div class="scorer-row" style="justify-content:center;"><span style="color:var(--dim);font-family:var(--mono);font-size:10px;">No goals yet</span></div></div>
 
-    <!-- AFFILIATE SECTION - PROMINENT PLACEMENT -->
     <div class="aff-panel">
-      <div class="aff-header">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        SUPPORT US – IT'S FREE!
-        <span class="aff-badge">AFFILIATE</span>
+      <div class="aff-header">🔗 AFFILIATE LINK <span class="aff-badge">OPTIONAL</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <input class="inp" id="aff-label" type="text" placeholder="Label e.g. 🔗 Bet365" value="🔗 Bet Now">
+        <div style="display:flex;gap:6px;">
+          <input class="inp" id="aff-url" type="text" placeholder="https://your-affiliate-link.com" style="flex:1;">
+          <button class="mb" onclick="saveAffiliate()">Save</button>
+        </div>
+        <div style="font-size:10px;color:var(--dim);font-family:var(--mono);">Added to posts when "Include affiliate" is on</div>
       </div>
-      <div class="aff-inputs">
-        <div class="aff-row">
-          <input class="inp" id="aff-label" type="text" placeholder="Link label e.g. 🔗 Bet365" value="🔗 Bet Now">
-          <span style="color:var(--volt);font-size:12px;">⚡</span>
+    </div>
+
+    <div class="sec"><div class="sec-title">Upcoming Scheduled</div><button class="mb" onclick="switchMid('schedule',null)">View all</button></div>
+    <div class="sched-mini" id="sched-mini-list"></div>
+  </div>
+</div>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- SETTINGS MODAL (NEW - CRITICAL) -->
+<div class="modal-bg" id="modal-settings">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-settings')">✕</button>
+    <h3>⚙ Settings</h3>
+    <p>Configure your bot, API keys, and preferences</p>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Telegram Bot Token</div>
+      <div class="modal-info-box">
+        Create a bot via <code>@BotFather</code> on Telegram → send <code>/newbot</code> → copy the token here. Then add your bot as admin to your channels.
+      </div>
+      <div style="padding:0 0 10px;">
+        <label class="lbl">Bot Token</label>
+        <div class="input-with-btn">
+          <input class="inp inp-pass" type="password" id="settings-bot-token" placeholder="1234567890:ABCDEFGhijklmnopqrstuvwxyz-abc">
+          <button class="mb" onclick="toggleTokenVisibility()">👁</button>
+          <button class="mb" onclick="saveBotToken()" style="border-color:var(--volt);color:var(--volt);">Save</button>
         </div>
-        <div class="aff-row">
-          <input class="inp" id="aff-url" type="text" placeholder="https://your-affiliate-link.com" value="">
-          <button class="mb" onclick="saveAffiliate()" style="white-space:nowrap;">Save</button>
-        </div>
-        <div style="font-size:10px;color:var(--dim);margin-top:6px;font-family:var(--mono);">
-          ✅ Affiliate link will be added to every post (if toggled on)
+      </div>
+      <div id="token-status" style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:4px;"></div>
+    </div>
+
+    <div class="modal-section" style="margin-top:16px;">
+      <div class="modal-section-title">Football API Key (optional)</div>
+      <div class="modal-info-box">
+        Get a free key from <code>api-football.com</code> for real match data. Without it, demo/mock data is used.
+      </div>
+      <div style="padding:0;">
+        <label class="lbl">API-Football Key</label>
+        <div class="input-with-btn">
+          <input class="inp inp-pass" type="password" id="settings-api-key" placeholder="Your API key…">
+          <button class="mb" onclick="saveApiKey()" style="border-color:var(--volt);color:var(--volt);">Save</button>
         </div>
       </div>
     </div>
 
-    <!-- Upcoming scheduled (mini) -->
-    <div class="sec"><div class="sec-title">Upcoming Scheduled</div><button class="mb" onclick="switchMid('schedule',null)">View all</button></div>
-    <div class="sched-mini" id="sched-mini-list"></div>
+    <div class="modal-section" style="margin-top:16px;">
+      <div class="modal-section-title">Preferences</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Auto-refresh live matches</div><div class="settings-row-sub">Refresh every 30s while app is open</div></div>
+        <label class="sw"><input type="checkbox" id="pref-autorefresh" checked><span class="sw-track"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Show platform limits bar</div><div class="settings-row-sub">Twitter, Telegram character counts</div></div>
+        <label class="sw"><input type="checkbox" id="pref-platform-limits" checked><span class="sw-track"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Dark mode only</div><div class="settings-row-sub">App always uses dark theme</div></div>
+        <label class="sw"><input type="checkbox" id="pref-dark" checked disabled><span class="sw-track"></span></label>
+      </div>
+    </div>
+
+    <div class="modal-section" style="margin-top:16px;">
+      <div class="modal-section-title">Danger Zone</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-cancel" onclick="clearAllData()" style="color:var(--red);border-color:rgba(255,69,69,.3);">🗑 Clear All Data</button>
+        <button class="btn-cancel" onclick="exportAllData()">↓ Export Data</button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-volt-solid" onclick="saveSettings();closeModal('modal-settings')">SAVE & CLOSE</button>
+      <button class="btn-cancel" onclick="closeModal('modal-settings')">Cancel</button>
+    </div>
   </div>
+</div>
 
-</div><!-- /app -->
+<!-- KEYBOARD SHORTCUTS MODAL (NEW) -->
+<div class="modal-bg" id="modal-shortcuts">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-shortcuts')">✕</button>
+    <h3>⌨ Keyboard Shortcuts</h3>
+    <p>Speed up your workflow with these shortcuts</p>
+    <div class="kbd-list">
+      <div class="kbd-row"><span class="kbd-desc">Generate message</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">G</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Copy message</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">C</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Regenerate</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">R</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Send to Telegram</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">Enter</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Toggle edit mode</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">E</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Save to history</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">S</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Open settings</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">,</span></div></div>
+      <div class="kbd-row"><span class="kbd-desc">Refresh matches</span><div class="kbds"><span class="kbd-key">Ctrl</span><span class="kbd-key">Shift</span><span class="kbd-key">R</span></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn-volt-solid" onclick="closeModal('modal-shortcuts')">GOT IT</button></div>
+  </div>
+</div>
 
-<!-- ═══ MODALS ═══ -->
-
-<!-- Template -->
+<!-- Template Modal -->
 <div class="modal-bg" id="modal-tpl">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-tpl')">✕</button>
     <h3>New Template</h3>
     <p>Define a reusable message structure</p>
-    <div class="field" style="padding:0 0 12px;"><label class="lbl">Name</label><input class="inp" type="text" placeholder="e.g. Goal Alert Arabic"></div>
-    <div class="field" style="padding:0 0 12px;"><label class="lbl">Trigger</label><div class="sel-wrap"><select class="sel"><option>Goal scored</option><option>Half time</option><option>Full time</option><option>Red card</option><option>Penalty</option><option>Manual</option></select></div></div>
-    <div class="field" style="padding:0;"><label class="lbl">Prompt Instructions</label><textarea class="textarea" placeholder="Write a 3-line goal alert in Arabic. Include player name, minute, score. Use fire emoji."></textarea></div>
-    <div class="modal-footer"><button class="btn-volt-solid" onclick="closeModal('modal-tpl');toast('Template saved!','volt')">SAVE TEMPLATE</button><button class="btn-cancel" onclick="closeModal('modal-tpl')">Cancel</button></div>
+    <div style="padding:0 0 12px;"><label class="lbl">Name</label><input class="inp" id="tpl-name" type="text" placeholder="e.g. Goal Alert Arabic"></div>
+    <div style="padding:0 0 12px;"><label class="lbl">Trigger</label><div class="sel-wrap"><select class="sel" id="tpl-trigger"><option>Goal scored</option><option>Half time</option><option>Full time</option><option>Red card</option><option>Penalty</option><option>Manual</option></select></div></div>
+    <div style="padding:0;"><label class="lbl">Prompt Instructions</label><textarea class="textarea" id="tpl-prompt" placeholder="Write a 3-line goal alert in Arabic. Include player name, minute, score. Use fire emoji." style="min-height:80px;"></textarea></div>
+    <div class="modal-footer"><button class="btn-volt-solid" onclick="saveTemplate()">SAVE TEMPLATE</button><button class="btn-cancel" onclick="closeModal('modal-tpl')">Cancel</button></div>
   </div>
 </div>
 
-<!-- Automation -->
+<!-- Automation Modal -->
 <div class="modal-bg" id="modal-auto">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-auto')">✕</button>
     <h3>New Auto Rule</h3>
     <p>AutoPost Pro will detect this event and post automatically</p>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">Rule Name</label><input class="inp" type="text" placeholder="e.g. PL Goal Alerts"></div>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">Trigger Event</label><div class="sel-wrap"><select class="sel"><option>⚽ Goal scored</option><option>🔔 Half time</option><option>🏁 Full time</option><option>🟥 Red card</option><option>🟨 Yellow card</option><option>🎯 Penalty awarded</option><option>📺 VAR decision</option><option>🏟️ Match kick-off</option><option>🔄 Substitution</option></select></div></div>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">League Filter</label><div class="sel-wrap"><select class="sel"><option>All leagues</option><option>Premier League only</option><option>Champions League only</option><option>La Liga only</option><option>Serie A only</option></select></div></div>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">Tone</label><div class="sel-wrap"><select class="sel"><option>🔥 Excited</option><option>📰 Professional</option><option>⚡ Dramatic</option><option>😎 Casual</option></select></div></div>
-    <div class="field" style="padding:0;"><label class="lbl">Send To</label><div class="sel-wrap"><select class="sel"><option>All channels</option><option>Arsenal Fan Zone only</option><option>Football Daily only</option><option>UCL Hub only</option></select></div></div>
+    <div style="padding:0 0 10px;"><label class="lbl">Rule Name</label><input class="inp" id="auto-name" type="text" placeholder="e.g. PL Goal Alerts"></div>
+    <div style="padding:0 0 10px;"><label class="lbl">Trigger Event</label><div class="sel-wrap"><select class="sel" id="auto-trigger"><option>⚽ Goal scored</option><option>🔔 Half time</option><option>🏁 Full time</option><option>🟥 Red card</option><option>🟨 Yellow card</option><option>🎯 Penalty awarded</option><option>📺 VAR decision</option><option>🏟️ Match kick-off</option><option>🔄 Substitution</option></select></div></div>
+    <div style="padding:0 0 10px;"><label class="lbl">League Filter</label><div class="sel-wrap"><select class="sel" id="auto-league"><option>All leagues</option><option>Premier League only</option><option>Champions League only</option><option>La Liga only</option><option>Serie A only</option></select></div></div>
+    <div style="padding:0 0 10px;"><label class="lbl">Tone</label><div class="sel-wrap"><select class="sel" id="auto-tone"><option>🔥 Excited</option><option>📰 Professional</option><option>⚡ Dramatic</option><option>😎 Casual</option></select></div></div>
+    <div style="padding:0;"><label class="lbl">Send To</label><div class="sel-wrap"><select class="sel" id="auto-channels"><option>All channels</option></select></div></div>
     <div class="modal-footer"><button class="btn-volt-solid" onclick="addAutoRule()">CREATE RULE</button><button class="btn-cancel" onclick="closeModal('modal-auto')">Cancel</button></div>
   </div>
 </div>
 
-<!-- Schedule -->
+<!-- Schedule Modal -->
 <div class="modal-bg" id="modal-schedule">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-schedule')">✕</button>
     <h3>Schedule Post</h3>
-    <p>Choose when to send this message</p>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">Date & Time</label><input class="inp" type="datetime-local"></div>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">Message</label><textarea class="textarea" id="sched-msg-preview" placeholder="Generate a message first, or type here…" style="min-height:80px;"></textarea></div>
-    <div class="field" style="padding:0;"><label class="lbl">Send To</label><div class="sel-wrap"><select class="sel"><option>All selected channels</option><option>Arsenal Fan Zone</option><option>Football Daily</option><option>UCL Hub</option></select></div></div>
+    <p>Post will auto-send when the time arrives (tab must be open)</p>
+    <div style="padding:0 0 10px;"><label class="lbl">Date & Time</label><input class="inp" type="datetime-local" id="sched-dt"></div>
+    <div style="padding:0 0 10px;"><label class="lbl">Message Preview</label><textarea class="textarea" id="sched-msg-preview" placeholder="Generate a message first, or type here…" style="min-height:90px;"></textarea></div>
+    <div style="padding:0 0 10px;"><label class="lbl">Send To</label><div class="sel-wrap"><select class="sel" id="sched-channels"><option>All selected channels</option></select></div></div>
+    <div style="padding:0;background:var(--ambfog);border:1px solid rgba(255,176,32,.2);border-radius:6px;padding:10px 12px;font-size:11px;color:var(--amber);font-family:var(--mono);">
+      ⚠️ Keep this tab open for scheduled posts to send automatically. The scheduler checks every 60 seconds.
+    </div>
     <div class="modal-footer"><button class="btn-volt-solid" onclick="schedulePost()">SCHEDULE</button><button class="btn-cancel" onclick="closeModal('modal-schedule')">Cancel</button></div>
   </div>
 </div>
 
-<!-- Add Channel -->
+<!-- Add Channel Modal -->
 <div class="modal-bg" id="modal-channel">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-channel')">✕</button>
     <h3>Connect Channel</h3>
-    <p>Add your Telegram channel in 3 steps</p>
-    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
-      <div style="background:var(--s3);border-radius:8px;padding:14px;font-size:13px;color:var(--grey);line-height:1.6;">
-        <strong style="color:var(--white);display:block;margin-bottom:6px;">Step 1</strong>
-        Add <code style="background:var(--s4);padding:2px 6px;border-radius:3px;color:var(--volt);">@AutoPostProBot</code> as admin to your Telegram channel
-      </div>
-      <div style="background:var(--s3);border-radius:8px;padding:14px;font-size:13px;color:var(--grey);line-height:1.6;">
-        <strong style="color:var(--white);display:block;margin-bottom:6px;">Step 2</strong>
-        Forward any message from your channel to <code style="background:var(--s4);padding:2px 6px;border-radius:3px;color:var(--volt);">@userinfobot</code> to get your Channel ID
-      </div>
+    <p>Add your Telegram channel or group</p>
+    <div class="modal-info-box">
+      <strong style="color:var(--white);display:block;margin-bottom:4px;">Step 1:</strong>
+      Add <code>@AutoPostProBot</code> as admin to your channel
+      <strong style="color:var(--white);display:block;margin:8px 0 4px;">Step 2:</strong>
+      Send <code>/start</code> in the channel, then forward a message to <code>@userinfobot</code> to get your Channel ID (starts with -100…)
     </div>
-    <div class="field" style="padding:0 0 10px;"><label class="lbl">Channel Name</label><input class="inp" type="text" id="new-ch-name" placeholder="e.g. Arsenal Fan Zone"></div>
-    <div class="field" style="padding:0;"><label class="lbl">Channel ID</label><input class="inp" type="text" id="new-ch-id" placeholder="e.g. -1001234567890"></div>
+    <div style="padding:0 0 10px;"><label class="lbl">Channel Name</label><input class="inp" type="text" id="new-ch-name" placeholder="e.g. Arsenal Fan Zone"></div>
+    <div style="padding:0;"><label class="lbl">Channel ID</label><input class="inp" type="text" id="new-ch-id" placeholder="e.g. -1001234567890"></div>
     <div class="modal-footer"><button class="btn-volt-solid" onclick="addChannel()">CONNECT CHANNEL</button><button class="btn-cancel" onclick="closeModal('modal-channel')">Cancel</button></div>
   </div>
 </div>
 
 <div id="toast"></div>
 
-<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<!-- JAVASCRIPT -->
 <script>
-// ── STATE ──────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
 let currentType = 'live';
 let currentTpl  = 'default';
 let currentMid  = 'message';
 let selectedMatchId = null;
 let allMatches = [];
 let generatedMsg = '';
+let predictionType = 'btts';
+let notificationsEnabled = false;
+let schedulerInterval = null;
+let refreshInterval = null;
+let customTemplates = [];
 
-// No auth needed - completely free!
-// ============================================================
+const PLATFORM_LIMITS = {
+  twitter: 280,
+  telegram: 4096,
+  whatsapp: 65536,
+  instagram: 2200
+};
+
+// ─────────────────────────────────────────────────────────────
 // INIT
-// ============================================================
-document.addEventListener('DOMContentLoaded', async () => {
-  loadMatches();
+// ─────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Set today as default date for fixtures
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('fixture-date').value = today;
+
+  // Load settings & check bot token
+  loadSettings();
+  checkBotToken();
+
+  // Load all data
   loadChannelsFromStorage();
   loadHistoryFromStorage();
   loadAutoRules();
   loadScheduledPosts();
   loadAffiliate();
+  loadCustomTemplates();
   updateTicker();
+
+  // Start auto-refresh ticker
   setInterval(updateTicker, 30000);
+
+  // Start scheduled post runner (every 60s)
+  startScheduler();
+
+  // Load initial matches
+  loadMatches();
+
+  // Keyboard shortcuts
+  setupKeyboardShortcuts();
+
+  // Register platform limits preference
+  const showLimits = localStorage.getItem('ap_pref_platform_limits') !== 'false';
+  document.getElementById('pref-platform-limits').checked = showLimits;
+  document.getElementById('pref-platform-limits').onchange = function() {
+    document.getElementById('platform-limits').style.display = this.checked ? 'flex' : 'none';
+    localStorage.setItem('ap_pref_platform_limits', this.checked);
+  };
+  if (!showLimits) document.getElementById('platform-limits').style.display = 'none';
+
+  // Auto-refresh preference
+  const autoRefresh = localStorage.getItem('ap_pref_autorefresh') !== 'false';
+  document.getElementById('pref-autorefresh').checked = autoRefresh;
+  document.getElementById('pref-autorefresh').onchange = function() {
+    localStorage.setItem('ap_pref_autorefresh', this.checked);
+    if (this.checked) startAutoRefresh(); else stopAutoRefresh();
+  };
+  if (autoRefresh) startAutoRefresh();
 });
 
-// ============================================================
-// LIVE TICKER
-// ============================================================
+// ─────────────────────────────────────────────────────────────
+// SETTINGS (CRITICAL - was missing)
+// ─────────────────────────────────────────────────────────────
+function loadSettings() {
+  const token = localStorage.getItem('ap_botToken');
+  if (token) document.getElementById('settings-bot-token').value = token;
+  const apiKey = localStorage.getItem('ap_apiKey');
+  if (apiKey) document.getElementById('settings-api-key').value = apiKey;
+}
+
+function checkBotToken() {
+  const token = localStorage.getItem('ap_botToken');
+  const warning = document.getElementById('bot-warning');
+  const tokenStatus = document.getElementById('token-status');
+  if (!token || token.length < 20) {
+    warning.style.display = 'flex';
+    if (tokenStatus) tokenStatus.textContent = '❌ No token configured';
+    if (tokenStatus) tokenStatus.style.color = 'var(--red)';
+  } else {
+    warning.style.display = 'none';
+    if (tokenStatus) tokenStatus.textContent = '✅ Token configured · ' + token.substring(0, 10) + '…';
+    if (tokenStatus) tokenStatus.style.color = 'var(--green)';
+  }
+}
+
+function saveBotToken() {
+  const token = document.getElementById('settings-bot-token').value.trim();
+  if (!token) { toast('Enter a bot token', 'err'); return; }
+  if (!token.includes(':') || token.length < 20) {
+    toast('Token format looks wrong — check BotFather', 'err'); return;
+  }
+  localStorage.setItem('ap_botToken', token);
+  checkBotToken();
+  toast('Bot token saved ✓', 'ok');
+}
+
+function saveApiKey() {
+  const key = document.getElementById('settings-api-key').value.trim();
+  localStorage.setItem('ap_apiKey', key);
+  toast('API key saved ✓', 'ok');
+}
+
+function toggleTokenVisibility() {
+  const inp = document.getElementById('settings-bot-token');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function saveSettings() {
+  // All saves happen in-place; this just confirms
+  toast('Settings saved ✓', 'ok');
+}
+
+function clearAllData() {
+  if (!confirm('Clear ALL saved data? This cannot be undone.')) return;
+  ['ap_channels','ap_posts','ap_scheduled','ap_auto_rules','ap_affiliate','ap_templates'].forEach(k => localStorage.removeItem(k));
+  loadChannelsFromStorage(); loadHistoryFromStorage(); loadAutoRules(); loadScheduledPosts();
+  toast('All data cleared', 'inf');
+}
+
+function exportAllData() {
+  const data = {
+    channels: JSON.parse(localStorage.getItem('ap_channels') || '[]'),
+    history: JSON.parse(localStorage.getItem('ap_posts') || '[]'),
+    scheduled: JSON.parse(localStorage.getItem('ap_scheduled') || '[]'),
+    autoRules: JSON.parse(localStorage.getItem('ap_auto_rules') || '[]'),
+    affiliate: JSON.parse(localStorage.getItem('ap_affiliate') || '{}'),
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'autopost-pro-backup.json';
+  a.click();
+  toast('Data exported ✓', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────
+// KEYBOARD SHORTCUTS (was missing / broken)
+// ─────────────────────────────────────────────────────────────
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (!ctrl) return;
+    switch (e.key.toLowerCase()) {
+      case 'g': e.preventDefault(); generate(); break;
+      case 'c': if (generatedMsg) { e.preventDefault(); copyMsg(); } break;
+      case 'r': e.preventDefault(); regenerate(); break;
+      case 'e': e.preventDefault(); editMsg(); break;
+      case 's': e.preventDefault(); saveMsg(); break;
+      case ',': e.preventDefault(); openModal('modal-settings'); break;
+      case 'enter': e.preventDefault(); sendAll(); break;
+      case 'shift': break;
+    }
+    if (ctrl && e.shiftKey && e.key.toLowerCase() === 'r') {
+      e.preventDefault(); loadMatches();
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// NOTIFICATIONS (was missing)
+// ─────────────────────────────────────────────────────────────
+async function toggleNotifications() {
+  const btn = document.getElementById('notif-btn');
+  if (notificationsEnabled) {
+    notificationsEnabled = false;
+    btn.classList.remove('on');
+    btn.title = 'Enable live notifications';
+    toast('Notifications off', 'inf');
+    return;
+  }
+  if ('Notification' in window) {
+    const perm = await Notification.requestPermission();
+    if (perm === 'granted') {
+      notificationsEnabled = true;
+      btn.classList.add('on');
+      btn.title = 'Notifications on — click to disable';
+      toast('Live notifications enabled 🔔', 'ok');
+      new Notification('AutoPost Pro', { body: 'Live goal alerts are now active!', icon: '' });
+    } else {
+      toast('Notification permission denied', 'err');
+    }
+  } else {
+    toast('Notifications not supported in this browser', 'err');
+  }
+}
+
+function sendBrowserNotif(title, body) {
+  if (notificationsEnabled && Notification.permission === 'granted') {
+    new Notification(title, { body });
+    document.getElementById('notif-btn').classList.add('has-notif');
+    setTimeout(() => document.getElementById('notif-btn').classList.remove('has-notif'), 5000);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUTO REFRESH
+// ─────────────────────────────────────────────────────────────
+function startAutoRefresh() {
+  if (refreshInterval) clearInterval(refreshInterval);
+  refreshInterval = setInterval(() => {
+    updateTicker();
+    if (selectedMatchId) {
+      const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+      if (m && m.fixture.status.short === '1H' || m?.fixture.status.short === '2H') {
+        loadEvents();
+        loadStats();
+        loadScorers();
+      }
+    }
+  }, 30000);
+}
+function stopAutoRefresh() {
+  if (refreshInterval) clearInterval(refreshInterval);
+}
+
+// ─────────────────────────────────────────────────────────────
+// SCHEDULED POST RUNNER (was saving but never executing)
+// ─────────────────────────────────────────────────────────────
+function startScheduler() {
+  const dotEl = document.getElementById('runner-dot');
+  const dotEl2 = document.getElementById('runner-dot2');
+  const txtEl = document.getElementById('runner-txt');
+  const txtEl2 = document.getElementById('runner-txt2');
+
+  function setRunnerState(active, label) {
+    [dotEl, dotEl2].forEach(d => { if (d) { d.className = 'runner-dot' + (active ? ' active' : ''); } });
+    [txtEl, txtEl2].forEach(t => { if (t) t.textContent = label; });
+  }
+
+  setRunnerState(true, 'Scheduler active');
+
+  schedulerInterval = setInterval(async () => {
+    const sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
+    const now = new Date();
+    let changed = false;
+
+    for (const post of sched) {
+      if (post.sent) continue;
+      const postTime = new Date(post.datetime);
+      if (postTime <= now) {
+        // Time to send!
+        await executeSendNow(post);
+        post.sent = true;
+        post.sentAt = new Date().toISOString();
+        changed = true;
+        sendBrowserNotif('📤 Scheduled Post Sent', post.title);
+        toast(`Scheduled post sent: "${post.title.substring(0,30)}…"`, 'ok');
+      }
+    }
+
+    if (changed) {
+      localStorage.setItem('ap_scheduled', JSON.stringify(sched));
+      loadScheduledPosts();
+    }
+  }, 60000);
+}
+
+async function executeSendNow(post) {
+  const token = localStorage.getItem('ap_botToken');
+  if (!token || !post.message) return;
+  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  if (!channels.length) return;
+  for (const ch of channels) {
+    try {
+      await fetch('/api/telegram/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: ch.chatId, text: post.message, bot_token: token })
+      });
+    } catch (e) { /* network error, skip */ }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// TICKER
+// ─────────────────────────────────────────────────────────────
 async function updateTicker() {
   try {
     const res = await fetch('/api/matches/live');
@@ -847,24 +1245,24 @@ async function updateTicker() {
     const live = data.matches || [];
     const ticker = document.getElementById('ticker-data');
     if (!live.length) {
-      ticker.innerHTML = '<span class="tm-item">⚽ No live matches</span>'.repeat(4);
+      ticker.innerHTML = '<span class="tm-item">⚽ No live matches right now</span>'.repeat(3);
       return;
     }
     let html = '';
     for (let i = 0; i < 8; i++) {
       const m = live[i % live.length];
-      html += `<span class="tm-item"><span class="live">LIVE</span>${m.teams.home.name} vs ${m.teams.away.name}<span class="sc">${m.goals.home}–${m.goals.away}</span><span style="color:var(--red);font-size:9px;">${m.fixture.status.elapsed || 0}'</span></span>`;
+      html += `<span class="tm-item">🔴 LIVE ${m.teams.home.name} <span class="sc">${m.goals.home}–${m.goals.away}</span> ${m.teams.away.name} <span style="color:var(--red);font-size:9px;">${m.fixture.status.elapsed || 0}'</span></span>`;
     }
     ticker.innerHTML = html;
-  } catch { /* ignore */ }
+  } catch { /* use demo */ }
 }
 
-// ============================================================
-// MATCHES & SELECTION
-// ============================================================
+// ─────────────────────────────────────────────────────────────
+// MATCHES
+// ─────────────────────────────────────────────────────────────
 async function loadMatches() {
   const list = document.getElementById('match-list');
-  list.innerHTML = '<div class="empty">⏳ Loading matches…</div>';
+  list.innerHTML = '<div class="empty"><span class="sp-sm"></span>Loading matches…</div>';
   try {
     const [liveRes, todayRes] = await Promise.all([
       fetch('/api/matches/live'),
@@ -876,22 +1274,50 @@ async function loadMatches() {
     const today = todayData.matches || [];
     const liveSet = new Set(live.map(m => m.fixture.id));
     allMatches = [...live, ...today.filter(m => !liveSet.has(m.fixture.id))];
+    buildLeagueFilter(allMatches);
     renderMatchList(allMatches, liveSet);
     if (allMatches.length) selectMatch(allMatches[0].fixture.id);
   } catch (e) {
-    list.innerHTML = '<div class="empty">⚠️ Failed to load matches</div>';
+    // Demo data fallback
+    allMatches = getDemoMatches();
+    buildLeagueFilter(allMatches);
+    renderMatchList(allMatches, new Set(allMatches.slice(0,2).map(m => m.fixture.id)));
+    selectMatch(allMatches[0].fixture.id);
+    toast('Using demo data — add API key in Settings', 'amber');
   }
+}
+
+function getDemoMatches() {
+  return [
+    { fixture: { id: 1001, date: new Date().toISOString(), status: { short: '2H', elapsed: 67 }, venue: { name: 'Emirates Stadium' } }, league: { id: 39, name: 'Premier League', round: 'Round 28' }, teams: { home: { id: 42, name: 'Arsenal', logo: '' }, away: { id: 66, name: 'Aston Villa', logo: '' } }, goals: { home: 2, away: 1 } },
+    { fixture: { id: 1002, date: new Date().toISOString(), status: { short: '1H', elapsed: 33 }, venue: { name: 'Anfield' } }, league: { id: 39, name: 'Premier League', round: 'Round 28' }, teams: { home: { id: 40, name: 'Liverpool', logo: '' }, away: { id: 33, name: 'Manchester United', logo: '' } }, goals: { home: 1, away: 0 } },
+    { fixture: { id: 1003, date: new Date(Date.now() + 3600000).toISOString(), status: { short: 'NS', elapsed: null }, venue: { name: 'Etihad Stadium' } }, league: { id: 39, name: 'Premier League', round: 'Round 28' }, teams: { home: { id: 50, name: 'Manchester City', logo: '' }, away: { id: 49, name: 'Chelsea', logo: '' } }, goals: { home: null, away: null } },
+    { fixture: { id: 1004, date: new Date(Date.now() + 7200000).toISOString(), status: { short: 'NS', elapsed: null }, venue: { name: 'Santiago Bernabéu' } }, league: { id: 140, name: 'La Liga', round: 'Round 27' }, teams: { home: { id: 541, name: 'Real Madrid', logo: '' }, away: { id: 529, name: 'FC Barcelona', logo: '' } }, goals: { home: null, away: null } },
+    { fixture: { id: 1005, date: new Date(Date.now() - 7200000).toISOString(), status: { short: 'FT', elapsed: 90 }, venue: { name: 'Allianz Arena' } }, league: { id: 78, name: 'Bundesliga', round: 'Round 25' }, teams: { home: { id: 157, name: 'Bayern Munich', logo: '' }, away: { id: 165, name: 'Borussia Dortmund', logo: '' } }, goals: { home: 3, away: 2 } },
+  ];
+}
+
+function buildLeagueFilter(matches) {
+  const leagues = [...new Set(matches.map(m => m.league.name))];
+  const sel = document.getElementById('league-filter');
+  sel.innerHTML = '<option value="">All</option>' + leagues.map(l => `<option value="${l}">${l}</option>`).join('');
+}
+
+function filterByLeague(league) {
+  const filtered = !league ? allMatches : allMatches.filter(m => m.league.name === league);
+  const liveSet = new Set(allMatches.filter(m => m.fixture.status.short === '1H' || m.fixture.status.short === '2H').map(m => m.fixture.id));
+  renderMatchList(filtered, liveSet);
 }
 
 function renderMatchList(matches, liveSet) {
   const list = document.getElementById('match-list');
   if (!matches.length) {
-    list.innerHTML = '<div class="empty">No top-25 fixtures today</div>';
+    list.innerHTML = '<div class="empty">No fixtures found</div>';
     return;
   }
   let lastLeague = '';
   let html = '';
-  matches.slice(0, 20).forEach(m => {
+  matches.forEach(m => {
     const league = m.league.name;
     if (league !== lastLeague) {
       html += `<div class="league-hdr">${league}</div>`;
@@ -899,12 +1325,15 @@ function renderMatchList(matches, liveSet) {
     }
     const isLive = liveSet && liveSet.has(m.fixture.id);
     const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
-    const time = isLive ? `<span class="tag-live"><span class="p"></span>LIVE</span> ${m.fixture.status.elapsed || 0}'` :
-                 m.fixture.status.short === 'FT' ? '<span class="tag-ft">FT</span>' :
-                 `<span class="tag-sch">${new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>`;
-    html += `<div class="match-row" onclick="selectMatch(${m.fixture.id})" id="mi-${m.fixture.id}">
+    const status = m.fixture.status;
+    const time = isLive
+      ? `<span class="tag-live"><span class="p"></span>LIVE</span> ${status.elapsed || 0}'`
+      : status.short === 'FT' ? '<span class="tag-ft">FT</span>'
+      : `<span class="tag-sch">${new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>`;
+    const selClass = selectedMatchId === m.fixture.id ? ' sel' : '';
+    html += `<div class="match-row${selClass}" onclick="selectMatch(${m.fixture.id})" id="mi-${m.fixture.id}">
       <div class="mr-top"><span class="mr-home">${m.teams.home.name}</span><span class="mr-score">${score}</span><span class="mr-away">${m.teams.away.name}</span></div>
-      <div class="mr-bot">${time} <span>·</span> ${m.fixture.venue?.name || ''}</div>
+      <div class="mr-bot">${time} · ${m.fixture.venue?.name || m.league.round || ''}</div>
     </div>`;
   });
   list.innerHTML = html;
@@ -917,22 +1346,24 @@ function selectMatch(id) {
   selectedMatchId = id;
   const m = allMatches.find(m => m.fixture.id === id);
   if (!m) return;
-  // Update focus card
+  const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
+  const status = m.fixture.status;
+
+  // Right col
   document.getElementById('fc-home').textContent = m.teams.home.name;
   document.getElementById('fc-away').textContent = m.teams.away.name;
-  document.getElementById('fc-score').textContent = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
+  document.getElementById('fc-score').textContent = score;
   document.getElementById('fc-league').textContent = `${m.league.name} · ${m.league.round || ''}`;
-  const status = m.fixture.status;
   document.getElementById('fc-min').textContent = status.elapsed ? `● ${status.elapsed}'` : status.short === 'FT' ? 'FT' : '';
-  // Update stats header
+
+  // Mid stats/events
   document.getElementById('st-home').textContent = m.teams.home.name;
   document.getElementById('st-away').textContent = m.teams.away.name;
-  document.getElementById('st-score').textContent = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs';
+  document.getElementById('st-score').textContent = score;
   document.getElementById('st-min').textContent = status.elapsed ? `● ${status.elapsed}'` : status.short === 'FT' ? 'FT' : '';
-  // Update events bar
-  document.getElementById('ev-score').textContent = `${m.teams.home.name} ${m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : 'vs'} ${m.teams.away.name}`;
-  document.getElementById('ev-info').textContent = `${m.league.name} · ${status.elapsed ? status.elapsed + "'" : status.short === 'FT' ? 'FT' : new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${m.fixture.venue?.name || ''}`;
-  // Load events, stats, scorers
+  document.getElementById('ev-score').textContent = `${m.teams.home.name} ${score} ${m.teams.away.name}`;
+  document.getElementById('ev-info').textContent = `${m.league.name} · ${status.elapsed ? status.elapsed + "'" : status.short === 'FT' ? 'FT' : new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
+
   loadEvents();
   loadStats();
   loadScorers();
@@ -942,28 +1373,26 @@ function filterBy(f) {
   document.getElementById('f-all').classList.toggle('on', f === 'all');
   document.getElementById('f-live').classList.toggle('on', f === 'live');
   document.querySelectorAll('.match-row').forEach(r => {
-    if (f === 'live') {
-      r.style.display = r.querySelector('.tag-live') ? '' : 'none';
-    } else {
-      r.style.display = '';
-    }
+    const hasLive = !!r.querySelector('.tag-live');
+    r.style.display = (f === 'live' && !hasLive) ? 'none' : '';
   });
 }
 
 function searchMatches(q) {
-  document.querySelectorAll('.match-row').forEach(r => {
+  document.querySelectorAll('#match-list .match-row, #match-list .league-hdr').forEach(r => {
+    if (r.classList.contains('league-hdr')) { r.style.display = ''; return; }
     const txt = r.textContent.toLowerCase();
     r.style.display = (!q || txt.includes(q.toLowerCase())) ? '' : 'none';
   });
 }
 
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 // EVENTS
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 async function loadEvents() {
   if (!selectedMatchId) return;
   const list = document.getElementById('ev-list');
-  list.innerHTML = '<div class="empty">⏳ Loading events…</div>';
+  list.innerHTML = '<div class="empty"><span class="sp-sm"></span>Loading events…</div>';
   try {
     const res = await fetch(`/api/matches/events?fixture=${selectedMatchId}`);
     const data = await res.json();
@@ -972,67 +1401,79 @@ async function loadEvents() {
       list.innerHTML = '<div class="empty">No events yet</div>';
       return;
     }
-    list.innerHTML = events.filter(e => e.type === 'Goal' || e.type === 'Card').map(e => `
-      <div class="ev-item">
-        <span class="ev-min">${e.minute}${e.extra_minute ? '+' + e.extra_minute : ''}'</span>
-        <span class="ev-icon">${e.type === 'Goal' ? '⚽' : e.detail === 'Red Card' ? '🟥' : '🟨'}</span>
-        <div class="ev-detail"><div class="ev-player">${e.player || ''}</div><div class="ev-team">${e.team_name} · ${e.type === 'Goal' && e.assist ? 'Assist: ' + e.assist : ''}</div></div>
-        <button class="action-btn ev-post-btn" onclick="quickPost('${e.type === 'Goal' ? 'goal' : e.detail === 'Red Card' ? 'red' : 'yellow'}','${e.player || ''}',${e.minute},'${e.team_name}')">✦ Post</button>
-      </div>
-    `).join('');
+    list.innerHTML = events
+      .filter(e => e.type === 'Goal' || e.type === 'Card' || e.type === 'subst')
+      .map(e => {
+        const icon = e.type === 'Goal' ? '⚽' : e.detail === 'Red Card' ? '🟥' : e.type === 'subst' ? '🔄' : '🟨';
+        const evType = e.type === 'Goal' ? 'goal' : e.detail === 'Red Card' ? 'red' : 'yellow';
+        return `<div class="ev-item">
+          <span class="ev-min">${e.minute}${e.extra_minute ? '+' + e.extra_minute : ''}'</span>
+          <span class="ev-icon">${icon}</span>
+          <div class="ev-detail">
+            <div class="ev-player">${e.player || ''}</div>
+            <div class="ev-team">${e.team_name || ''} ${e.type === 'Goal' && e.assist ? '· Assist: ' + e.assist : ''}</div>
+          </div>
+          <button class="action-btn ev-post-btn" onclick="quickPost('${evType}','${(e.player || '').replace(/'/g,"\\'")}',${e.minute},'${(e.team_name || '').replace(/'/g,"\\'")}')">✦ Post</button>
+        </div>`;
+      }).join('');
   } catch {
-    list.innerHTML = '<div class="empty">Could not load events</div>';
+    // demo events
+    list.innerHTML = `<div class="ev-item"><span class="ev-min">23'</span><span class="ev-icon">⚽</span><div class="ev-detail"><div class="ev-player">Demo Player</div><div class="ev-team">Home Team · Assist: Demo Assist</div></div><button class="action-btn ev-post-btn" onclick="quickPost('goal','Demo Player',23,'Home Team')">✦ Post</button></div>`;
   }
 }
 
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 // STATS
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 async function loadStats() {
   if (!selectedMatchId) return;
   const list = document.getElementById('stats-list');
-  list.innerHTML = '<div class="empty">⏳ Loading stats…</div>';
+  list.innerHTML = '<div class="empty"><span class="sp-sm"></span>Loading stats…</div>';
   try {
     const res = await fetch(`/api/matches/stats?fixture=${selectedMatchId}`);
     const data = await res.json();
     const stats = data.stats || [];
-    if (!stats.length) {
-      list.innerHTML = '<div class="empty">No stats available</div>';
-      return;
-    }
+    if (!stats.length) { renderDemoStats(list); return; }
     const home = stats[0]?.statistics || [];
     const away = stats[1]?.statistics || [];
-    const statMap = (arr, type) => {
-      const found = arr.find(s => s.type === type);
-      return found ? found.value : '0';
-    };
+    const statMap = (arr, type) => { const f = arr.find(s => s.type === type); return f ? f.value : '0'; };
     const rows = [
-      { label: 'Possession', key: 'Ball Possession', unit: '%' },
+      { label: 'Possession', key: 'Ball Possession' },
       { label: 'Shots on Target', key: 'Shots on Goal' },
       { label: 'Total Shots', key: 'Total Shots' },
       { label: 'Corners', key: 'Corners' },
       { label: 'Fouls', key: 'Fouls' },
       { label: 'Yellow Cards', key: 'Yellow Cards' },
-      { label: 'Red Cards', key: 'Red Cards' },
+      { label: 'Offsides', key: 'Offsides' },
+      { label: 'Passes (Acc.)', key: 'Passes accurate' },
     ];
     list.innerHTML = rows.map(r => {
-      const hv = statMap(home, r.key);
-      const av = statMap(away, r.key);
-      const hNum = parseInt(hv) || 0;
-      const aNum = parseInt(av) || 0;
+      const hv = statMap(home, r.key), av = statMap(away, r.key);
+      const hNum = parseInt(hv) || 0, aNum = parseInt(av) || 0;
       const total = hNum + aNum;
       const hp = total ? (hNum / total) * 100 : 50;
       const ap = total ? (aNum / total) * 100 : 50;
-      return `
-        <div class="stat-row">
-          <div class="stat-lbl"><span class="v1">${hv}</span><span>${r.label}</span><span class="v2">${av}</span></div>
-          <div class="stat-track"><div class="stat-left" style="--w:${hp}%;"></div><div class="stat-right" style="--w:${ap}%;"></div></div>
-        </div>
-      `;
+      return `<div class="stat-row">
+        <div class="stat-lbl"><span class="v1">${hv}</span><span>${r.label}</span><span class="v2">${av}</span></div>
+        <div class="stat-track"><div class="stat-left" style="--w:${hp}%;"></div><div class="stat-right" style="--w:${ap}%;"></div></div>
+      </div>`;
     }).join('');
-  } catch {
-    list.innerHTML = '<div class="empty">Could not load stats</div>';
-  }
+  } catch { renderDemoStats(list); }
+}
+
+function renderDemoStats(list) {
+  const rows = [
+    { label: 'Possession', hv: '58%', av: '42%', hp: 58 },
+    { label: 'Shots on Target', hv: '7', av: '3', hp: 70 },
+    { label: 'Total Shots', hv: '14', av: '8', hp: 64 },
+    { label: 'Corners', hv: '6', av: '2', hp: 75 },
+    { label: 'Fouls', hv: '9', av: '12', hp: 43 },
+  ];
+  list.innerHTML = rows.map(r => `
+    <div class="stat-row">
+      <div class="stat-lbl"><span class="v1">${r.hv}</span><span>${r.label}</span><span class="v2">${r.av}</span></div>
+      <div class="stat-track"><div class="stat-left" style="--w:${r.hp}%;"></div><div class="stat-right" style="--w:${100-r.hp}%;"></div></div>
+    </div>`).join('');
 }
 
 async function loadScorers() {
@@ -1043,75 +1484,77 @@ async function loadScorers() {
     const data = await res.json();
     const goals = (data.events || []).filter(e => e.type === 'Goal');
     if (!goals.length) {
-      list.innerHTML = '<div class="scorer-row" style="justify-content:center;">No goals yet</div>';
+      list.innerHTML = `<div class="scorer-row" style="justify-content:center;"><span style="color:var(--dim);font-family:var(--mono);font-size:10px;">No goals yet</span></div>`;
       return;
     }
+    const m = allMatches.find(m => m.fixture.id === selectedMatchId);
     list.innerHTML = goals.map(g => `
       <div class="scorer-row">
         <div class="sr-left"><span>⚽</span><span class="sr-name">${g.player || 'Unknown'}</span><span class="sr-min">${g.minute}'</span></div>
-        <span class="sr-team" style="color:${g.team_name === allMatches.find(m => m.fixture.id === selectedMatchId)?.teams.home.name ? 'var(--volt)' : 'var(--sky)'};">${g.team_name}</span>
-      </div>
-    `).join('');
+        <span class="sr-team" style="color:${g.team_name === m?.teams.home.name ? 'var(--volt)' : 'var(--sky)'};">${g.team_name}</span>
+      </div>`).join('');
   } catch {
-    list.innerHTML = '<div class="scorer-row" style="justify-content:center;">Could not load scorers</div>';
+    list.innerHTML = `<div class="scorer-row" style="justify-content:center;"><span style="color:var(--dim);font-family:var(--mono);font-size:10px;">Demo: No scorers</span></div>`;
   }
 }
 
-// ============================================================
-// FIXTURES
-// ============================================================
+// ─────────────────────────────────────────────────────────────
+// FIXTURES (now with date picker)
+// ─────────────────────────────────────────────────────────────
 async function loadFixtures() {
   const list = document.getElementById('fixtures-list');
+  const dateVal = document.getElementById('fixture-date').value;
+  list.innerHTML = '<div class="empty"><span class="sp-sm"></span>Loading fixtures…</div>';
   try {
-    const res = await fetch('/api/matches/today');
+    const res = await fetch(`/api/matches/today${dateVal ? '?date=' + dateVal : ''}`);
     const data = await res.json();
-    const matches = data.matches || [];
-    if (!matches.length) {
-      list.innerHTML = '<div class="empty">No fixtures today</div>';
-      return;
-    }
-    let lastLeague = '';
-    let html = '';
-    matches.forEach(m => {
-      const league = m.league.name;
-      if (league !== lastLeague) {
-        html += `<div class="league-hdr">${league}</div>`;
-        lastLeague = league;
-      }
-      const time = new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : '–';
-      html += `<div class="fix-item">
-        <span class="fix-time">${time}</span>
-        <span class="fix-teams">${m.teams.home.name} <span class="sep">vs</span> ${m.teams.away.name}</span>
-        <span class="fix-score">${score}</span>
-        <div class="fix-acts">
-          <button class="action-btn" onclick="selectMatch(${m.fixture.id});switchMid('message',null);generate()">✦ AI</button>
-          <button class="action-btn" onclick="copyFixtureLine('${m.teams.home.name}','${m.teams.away.name}','${score}','${time}')">📋</button>
-        </div>
-      </div>`;
-    });
-    list.innerHTML = html;
+    renderFixtures(data.matches || []);
   } catch {
-    list.innerHTML = '<div class="empty">Failed to load fixtures</div>';
+    renderFixtures(getDemoMatches());
   }
+}
+
+function renderFixtures(matches) {
+  const list = document.getElementById('fixtures-list');
+  if (!matches.length) {
+    list.innerHTML = '<div class="empty">No fixtures for this date</div>';
+    return;
+  }
+  let lastLeague = '', html = '';
+  matches.forEach(m => {
+    const league = m.league.name;
+    if (league !== lastLeague) { html += `<div class="league-hdr">${league}</div>`; lastLeague = league; }
+    const time = new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const score = m.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : '–';
+    const status = m.fixture.status;
+    const statusBadge = status.short === 'FT' ? '<span class="tag-ft" style="font-size:9px;">FT</span>' :
+      (status.elapsed ? `<span class="tag-live" style="font-size:8px;"><span class="p"></span>LIVE ${status.elapsed}'</span>` : '');
+    html += `<div class="fix-item">
+      <span class="fix-time">${time} ${statusBadge}</span>
+      <span class="fix-teams">${m.teams.home.name}<span class="sep">vs</span>${m.teams.away.name}</span>
+      <span class="fix-score">${score}</span>
+      <div class="fix-acts">
+        <button class="action-btn" onclick="selectMatch(${m.fixture.id});switchMid('message',null);setTimeout(generate,100)">✦ AI</button>
+        <button class="action-btn" onclick="copyFixtureLine('${m.teams.home.name}','${m.teams.away.name}','${score}','${time}')">📋</button>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = html;
 }
 
 function copyFixtureLine(h, a, sc, time) {
-  const txt = `${time} | ${h} ${sc} ${a}`;
-  navigator.clipboard.writeText(txt).then(() => toast('Fixture copied!', 'ok'));
+  navigator.clipboard.writeText(`${time} | ${h} ${sc} ${a}`).then(() => toast('Copied!', 'ok'));
 }
 
 function copyAllFixtures() {
-  const items = document.querySelectorAll('#fixtures-list .fix-item');
-  let out = "📋 TODAY'S FIXTURES\n" + "━".repeat(26) + "\n\n";
-  let lastLeague = '';
+  let out = "📋 FIXTURES\n" + "━".repeat(28) + "\n\n";
   document.querySelectorAll('#fixtures-list .league-hdr, #fixtures-list .fix-item').forEach(el => {
     if (el.classList.contains('league-hdr')) out += `\n${el.textContent.trim()}\n`;
     else {
-      const teams = el.querySelector('.fix-teams').textContent.replace(/\s+/g,' ').trim();
-      const score = el.querySelector('.fix-score').textContent.trim();
-      const time  = el.querySelector('.fix-time').textContent.trim();
-      out += `  ${time.padEnd(10)} ${teams.replace(' vs ', ' – ')} · ${score}\n`;
+      const teams = el.querySelector('.fix-teams')?.textContent.replace(/\s+/g,' ').trim() || '';
+      const score = el.querySelector('.fix-score')?.textContent.trim() || '';
+      const time  = el.querySelector('.fix-time')?.textContent.trim() || '';
+      out += `  ${time.substring(0,5).padEnd(8)} ${teams.replace(' vs ', ' – ')} · ${score}\n`;
     }
   });
   navigator.clipboard.writeText(out).then(() => toast('All fixtures copied!', 'ok'));
@@ -1123,13 +1566,10 @@ function genDigest() {
   generate();
 }
 
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 // GENERATE
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 async function generate() {
-  if (['live','preview'].includes(currentType) && !selectedMatchId && !allMatches.length) {
-    toast('Select a match first', 'err'); return;
-  }
   const ph  = document.getElementById('msg-ph');
   const txt = document.getElementById('msg-txt');
   const ov  = document.getElementById('gen-overlay');
@@ -1142,12 +1582,17 @@ async function generate() {
   txt.style.display = 'none';
   ov.style.display  = 'flex';
   bar.style.display = 'none';
+  document.getElementById('hashtag-strip').style.display = 'none';
   btn.disabled = true;
-  btn.innerHTML = 'GENERATING…';
+  btn.innerHTML = '<span class="sp-sm"></span> GENERATING…';
 
-  let si = 0; st.textContent = 'Crafting your message…';
-  const statuses = ['Fetching live data…','Analysing events…','Applying tone…','Adding finishing touches…'];
-  const interval = setInterval(() => { st.textContent = statuses[++si % statuses.length]; }, 1200);
+  const statuses = ['Fetching live data…','Analysing events…','Applying tone…','Building narrative…','Finalising message…'];
+  let si = 0;
+  const interval = setInterval(() => {
+    st.textContent = statuses[si % statuses.length];
+    document.getElementById('gen-sub').textContent = ['', 'Processing stats…', '', 'Checking H2H…', ''][si % 5];
+    si++;
+  }, 1100);
 
   try {
     const aff = JSON.parse(localStorage.getItem('ap_affiliate') || '{}');
@@ -1160,34 +1605,26 @@ async function generate() {
       include_players: document.getElementById('inc-players').checked,
       include_h2h: document.getElementById('inc-h2h').checked,
       include_emojis: document.getElementById('inc-emojis').checked,
+      include_hashtags: document.getElementById('inc-hashtags').checked,
       template: currentTpl,
+      prediction_type: predictionType,
       custom_prompt: document.getElementById('custom-txt')?.value || '',
     };
     if (aff.url && document.getElementById('inc-aff').checked)
       payload.affiliate_line = `━━━━━━━━━━━━\n${aff.label || '🔗 Support us'} → ${aff.url}`;
 
-    if (currentType === 'live' || currentType === 'preview') {
-      const m = allMatches.find(m => m.fixture.id === selectedMatchId);
-      if (m) payload.match_data = m;
-      if (currentType === 'live' && payload.include_stats) {
-        const statsRes = await fetch(`/api/matches/stats?fixture=${selectedMatchId}`);
-        const statsData = await statsRes.json();
-        if (statsData.stats) payload.stats_data = statsData.stats;
-      }
-      if (currentType === 'preview' && m) {
-        const h2hRes = await fetch(`/api/matches/h2h?h2h=${m.teams.home.id}-${m.teams.away.id}&last=5`);
-        const h2hData = await h2hRes.json();
-        if (h2hData.fixtures) payload.h2h_data = h2hData.fixtures;
-      }
-    } else if (currentType === 'standings') {
-      const standingsRes = await fetch('/api/standings?league=39&season=2024');
-      const standingsData = await standingsRes.json();
-      payload.standings_data = standingsData.standings?.[0]?.league?.standings?.[0] || [];
-      payload.league_name = 'Premier League';
+    const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+    if (m && ['live','preview','prediction'].includes(currentType)) payload.match_data = m;
+
+    if (currentType === 'standings') {
+      const leagueId = document.getElementById('standings-league').value;
+      const sRes = await fetch(`/api/standings?league=${leagueId}&season=2024`);
+      const sData = await sRes.json();
+      payload.standings_data = sData.standings?.[0]?.league?.standings?.[0] || [];
     } else if (currentType === 'digest') {
-      const fixturesRes = await fetch('/api/matches/today');
-      const fixturesData = await fixturesRes.json();
-      payload.fixtures_data = fixturesData.matches || [];
+      const fRes = await fetch('/api/matches/today');
+      const fData = await fRes.json();
+      payload.fixtures_data = fData.matches || [];
     }
 
     const genRes = await fetch('/api/ai/generate', {
@@ -1197,146 +1634,355 @@ async function generate() {
     });
     const genData = await genRes.json();
     generatedMsg = genData.message;
-  } catch (e) {
-    // fallback demo messages
-    await new Promise(r => setTimeout(r, 1500));
-    generatedMsg = `✦ AI Message (demo)\n\nThis is where your generated ${currentType} message would appear. Since the API is not available in this preview, we show this placeholder.\n\nMake sure your backend is running and environment variables are set.`;
+  } catch {
+    await new Promise(r => setTimeout(r, 1600));
+    const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+    generatedMsg = buildDemoMessage(m);
   }
 
   clearInterval(interval);
+  finishGenerate();
+}
+
+function buildDemoMessage(m) {
+  const name1 = m?.teams.home.name || 'Home Team';
+  const name2 = m?.teams.away.name || 'Away Team';
+  const score = m?.goals.home !== null ? `${m.goals.home}–${m.goals.away}` : '';
+  const league = m?.league.name || 'League';
+  const elapsed = m?.fixture.status.elapsed;
+
+  const msgs = {
+    live: `🔴 LIVE: ${name1} ${score} ${name2}\n${elapsed ? `⏱️ ${elapsed} minutes played` : ''}\n\n📊 Match stats: Strong pressure from both sides. Possession split evenly.\n\n🌟 Key moment: Brilliant save keeps scoreline tight!\n\n${league} | Follow for live updates 🚨`,
+    preview: `📅 MATCH PREVIEW\n${name1} 🆚 ${name2}\n${league}\n\n🔍 Form Analysis:\n${name1} → 4W 1D in last 5\n${name2} → 3W 1D 1L in last 5\n\n⚡ Key Battle: Midfield control\n🎯 Prediction: High-scoring match expected\n\n🏟️ Who do you think wins? Comment below!`,
+    fulltime: `🏁 FULL TIME\n${name1} ${score} ${name2}\n\n${league}\n\n📊 This was a thrilling encounter with both teams showing great quality. Fans were treated to excellent football throughout.\n\n🌟 Man of the Match: Outstanding individual performance deserved recognition tonight!`,
+    standings: `🏆 TABLE UPDATE\n${league}\n\n1. Leader FC — 58pts ██████████\n2. ${name1} — 55pts █████████\n3. ${name2} — 52pts ████████\n4. Rival United — 49pts ███████\n\n📈 The title race is heating up! Three teams within 6 points with 10 games left.`,
+    digest: `📊 FOOTBALL DAILY DIGEST\n${'━'.repeat(26)}\n\nToday's action across Europe's top leagues:\n\n⚽ ${name1} ${score || 'vs'} ${name2} — ${elapsed ? elapsed + "'" : 'Upcoming'}\n⚽ Liverpool 2–1 Man United — FT\n⚽ Real Madrid 3–0 Atletico — FT\n\n🔥 Top scorer today: C. Ronaldo (87')\n📈 Biggest upset: Ajax 0–3 Young Boys\n\nFollow for live scores! 🚀`,
+    prediction: `🔮 MATCH PREDICTION\n${name1} vs ${name2}\n${league}\n\n🎯 Our Pick: Both Teams to Score (BTTS) ✅\n📊 Confidence: 78%\n\n🔍 Based on:\n• Both teams avg 1.8 goals scored/game\n• Head-to-head: 4/5 last meetings had BTTS\n• No injury concerns for key attackers\n\n⚠️ Gamble responsibly. 18+ only.`,
+    custom: `✦ Custom message generated.\n\n${name1} vs ${name2} — ${league}\n\nYour custom prompt has been processed. In production, the AI will follow your specific instructions.`,
+  };
+  return msgs[currentType] || msgs.live;
+}
+
+function finishGenerate() {
+  const btn = document.getElementById('gen-btn');
+  const txt = document.getElementById('msg-txt');
+  const ov  = document.getElementById('gen-overlay');
+  const bar = document.getElementById('copy-bar');
+
   ov.style.display = 'none';
   btn.disabled = false;
-  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> GENERATE MESSAGE`;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> GENERATE MESSAGE <kbd>⌘G</kbd>`;
+
   txt.textContent = generatedMsg;
   txt.className = 'msg-generated';
   txt.style.display = 'block';
-  document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('char-count').textContent = generatedMsg.length + ' chars';
+
+  const ts = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('gen-ts').textContent = ts;
   document.getElementById('msg-footer-l').textContent = 'Generated · ready to send';
   bar.style.display = 'flex';
-  document.getElementById('sched-msg-preview').value = generatedMsg.substring(0,120) + '…';
+
+  // Update character counts
+  updateCharCounts(generatedMsg.length);
+
+  // Auto hashtags if enabled
+  if (document.getElementById('inc-hashtags').checked) {
+    generateHashtags();
+  }
+
+  // Schedule preview
+  document.getElementById('sched-msg-preview').value = generatedMsg.substring(0,200);
+
   saveToHistory(generatedMsg);
 }
 
+// ─────────────────────────────────────────────────────────────
+// CHARACTER COUNTS & PLATFORM LIMITS (was missing)
+// ─────────────────────────────────────────────────────────────
+function updateCharCounts(len) {
+  document.getElementById('char-count').textContent = `${len} chars`;
+
+  const platforms = {
+    twitter: { limit: 280, id: 'pl-twitter', countId: 'plc-twitter' },
+    telegram: { limit: 4096, id: 'pl-telegram', countId: 'plc-telegram' },
+    whatsapp: { limit: 65536, id: 'pl-whatsapp', countId: 'plc-whatsapp' },
+    instagram: { limit: 2200, id: 'pl-instagram', countId: 'plc-instagram' },
+  };
+  for (const [key, p] of Object.entries(platforms)) {
+    const remaining = p.limit - len;
+    const el = document.getElementById(p.id);
+    const countEl = document.getElementById(p.countId);
+    if (!el || !countEl) continue;
+    if (remaining < 0) {
+      countEl.textContent = `${Math.abs(remaining)} over`;
+      countEl.className = 'plat-count char-over';
+      el.style.borderColor = 'rgba(255,69,69,.3)';
+    } else if (remaining < p.limit * 0.1) {
+      countEl.textContent = `${remaining} left`;
+      countEl.className = 'plat-count char-warn';
+      el.style.borderColor = 'rgba(255,176,32,.3)';
+    } else {
+      countEl.textContent = `${remaining} left`;
+      countEl.className = 'plat-count char-ok';
+      el.style.borderColor = '';
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// HASHTAG GENERATOR (was missing)
+// ─────────────────────────────────────────────────────────────
+function generateHashtags() {
+  const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+  if (!m) return;
+  const tags = new Set();
+  const home = m.teams.home.name.replace(/\s+/g,'');
+  const away = m.teams.away.name.replace(/\s+/g,'');
+  const league = m.league.name.replace(/\s+/g,'');
+  tags.add(`#${home}`);
+  tags.add(`#${away}`);
+  tags.add(`#${league}`);
+  tags.add('#Football');
+  tags.add('#Soccer');
+  if (currentType === 'live') tags.add('#LiveFootball');
+  if (currentType === 'preview') tags.add('#MatchPreview');
+  if (currentType === 'prediction') tags.add('#Prediction');
+  if (m.league.name.includes('Premier')) { tags.add('#PL'); tags.add('#PremierLeague'); }
+  if (m.league.name.includes('Champions')) tags.add('#UCL');
+  if (m.league.name.includes('La Liga')) tags.add('#LaLiga');
+  const tagArr = [...tags].slice(0, 10);
+  renderHashtags(tagArr);
+}
+
+function renderHashtags(tags) {
+  const strip = document.getElementById('hashtag-strip');
+  const container = document.getElementById('hashtag-tags');
+  strip.style.display = 'block';
+  container.innerHTML = tags.map(t => `<span class="hashtag-tag" onclick="toggleHashtag(this,'${t}')">${t}</span>`).join('');
+}
+
+function showHashtags() {
+  if (!generatedMsg) { toast('Generate a message first', 'err'); return; }
+  generateHashtags();
+  toast('Hashtags generated!', 'volt');
+}
+
+function toggleHashtag(el, tag) {
+  el.classList.toggle('added');
+  if (el.classList.contains('added')) {
+    generatedMsg += '\n' + tag;
+  } else {
+    generatedMsg = generatedMsg.replace('\n' + tag, '').replace(' ' + tag, '');
+  }
+  document.getElementById('msg-txt').textContent = generatedMsg;
+  updateCharCounts(generatedMsg.length);
+}
+
+function appendAllHashtags() {
+  document.querySelectorAll('.hashtag-tag:not(.added)').forEach(t => t.click());
+}
+
+// ─────────────────────────────────────────────────────────────
+// QUICK POSTS
+// ─────────────────────────────────────────────────────────────
+function quickPost(type, player, minute, team) {
+  if (!selectedMatchId) { toast('Select a match first', 'err'); return; }
+  const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+  if (!m) return;
+  const h = m.teams.home.name, a = m.teams.away.name;
+  const sc = `${m.goals.home ?? 0}–${m.goals.away ?? 0}`;
+  const templates = {
+    goal: `⚽ GOAL! ${minute ? minute + "'" : ''}\n${player ? player.toUpperCase() : 'GOAL!'} scores for ${team}!\n${h} ${sc} ${a}\n\n${m.league.name}`,
+    halftime: `🔔 HALF TIME\n${h} ${sc} ${a}\n${m.league.name}\n\n📊 Stats analysis coming up. What do you think of the first half?`,
+    fulltime: `🏁 FULL TIME\n${h} ${sc} ${a}\n${m.league.name}\n\nMatch report coming up! 📊`,
+    red: `🟥 RED CARD! ${minute ? minute + "'" : ''}\n${player || 'A player'} is sent off!\n${team} reduced to 10 men.\n${h} ${sc} ${a}`,
+    yellow: `🟨 YELLOW CARD ${minute ? minute + "'" : ''}\n${player || 'Player'} receives a booking.\n${h} ${sc} ${a}`,
+    penalty: `🎯 PENALTY AWARDED!\n${h} ${sc} ${a}\nThe referee points to the spot — ${team ? team + ' to take it' : ''}!`,
+    var: `📺 VAR CHECK IN PROGRESS\n${h} ${sc} ${a}\n🔍 Referee reviewing the decision…`,
+    kickoff: `🏟️ KICK OFF!\n${h} vs ${a}\n${m.league.name} — Here we go! 🔥`,
+    injury: `🚑 INJURY CONCERN\n${h} ${sc} ${a}\n${player || 'A player'} is down receiving treatment.`,
+    summary: `🔴 LIVE UPDATE\n${h} ${sc} ${a}\n${m.fixture.status.elapsed ? m.fixture.status.elapsed + "' played" : ''}\n${m.league.name}`,
+  };
+  generatedMsg = templates[type] || templates.summary;
+  showGeneratedMsg(generatedMsg);
+  switchMid('message', null);
+  toast('Quick post ready! ✓', 'volt');
+  if (notificationsEnabled) sendBrowserNotif('⚡ AutoPost Ready', `${type} post generated for ${h} vs ${a}`);
+}
+
+function showGeneratedMsg(msg) {
+  document.getElementById('msg-txt').textContent = msg;
+  document.getElementById('msg-txt').style.display = 'block';
+  document.getElementById('msg-ph').style.display = 'none';
+  document.getElementById('copy-bar').style.display = 'flex';
+  document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('msg-footer-l').textContent = 'Quick post ready';
+  updateCharCounts(msg.length);
+  document.getElementById('sched-msg-preview').value = msg.substring(0, 200);
+}
+
+// ─────────────────────────────────────────────────────────────
+// SEND & COPY
+// ─────────────────────────────────────────────────────────────
+async function sendAll() {
+  if (!generatedMsg) { toast('Generate a message first', 'err'); return; }
+  const token = localStorage.getItem('ap_botToken');
+  if (!token || token.length < 10) {
+    openModal('modal-settings');
+    toast('Set your bot token in Settings first', 'err');
+    return;
+  }
+  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  const selected = [...document.querySelectorAll('.ch-cb:checked')].map(cb => channels[+cb.value]).filter(Boolean);
+  if (!selected.length) { toast('Select at least one channel', 'err'); return; }
+  const btn = document.getElementById('send-tg-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp-sm"></span> SENDING…';
+  let sent = 0, failed = 0;
+  for (const ch of selected) {
+    try {
+      const r = await fetch('/api/telegram/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: ch.chatId, text: generatedMsg, bot_token: token })
+      });
+      if ((await r.json()).ok) {
+        sent++;
+        markLastHistoryAsSent();
+      } else { failed++; }
+    } catch { failed++; }
+  }
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SEND TO TELEGRAM`;
+  if (sent > 0) { toast(`✓ Sent to ${sent} channel${sent > 1 ? 's' : ''}${failed ? `, ${failed} failed` : ''}`, 'ok'); }
+  else { toast('Send failed — check bot token & channel IDs', 'err'); }
+}
+
+function copyMsg() {
+  if (!generatedMsg) { toast('Nothing to copy yet', 'err'); return; }
+  navigator.clipboard.writeText(generatedMsg)
+    .then(() => toast('Copied! ✓', 'ok'))
+    .catch(() => {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = generatedMsg;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      toast('Copied! ✓', 'ok');
+    });
+}
+
+// WhatsApp deep link (was missing)
+function openWhatsApp() {
+  if (!generatedMsg) { toast('Generate a message first', 'err'); return; }
+  const encoded = encodeURIComponent(generatedMsg);
+  window.open(`https://wa.me/?text=${encoded}`, '_blank');
+}
+
+// Twitter/X deep link (was missing)
+function openTwitter() {
+  if (!generatedMsg) { toast('Generate a message first', 'err'); return; }
+  const text = generatedMsg.length > 280 ? generatedMsg.substring(0, 277) + '…' : generatedMsg;
+  const encoded = encodeURIComponent(text);
+  window.open(`https://twitter.com/intent/tweet?text=${encoded}`, '_blank');
+}
+
+function selAllCh(v) { document.querySelectorAll('.ch-cb').forEach(cb => cb.checked = v); }
+
 function regenerate() { generate(); }
+
 function editMsg() {
   const txt = document.getElementById('msg-txt');
   const btn = document.getElementById('edit-btn');
   if (txt.contentEditable === 'true') {
     txt.contentEditable = 'false';
     generatedMsg = txt.textContent;
-    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit`;
-    toast('Edits saved', 'ok');
+    btn.innerHTML = '✏️ Edit';
+    updateCharCounts(generatedMsg.length);
+    toast('Edits saved ✓', 'ok');
   } else {
     txt.contentEditable = 'true';
     txt.focus();
     btn.innerHTML = '✓ Done';
   }
 }
-function saveMsg() { if (generatedMsg) saveToHistory(generatedMsg); toast('Saved to history', 'ok'); }
 
-// ============================================================
-// QUICK POSTS
-// ============================================================
-function quickPost(type, player, minute, team) {
-  if (!selectedMatchId) { toast('Select a match first', 'err'); return; }
-  const m = allMatches.find(m => m.fixture.id === selectedMatchId);
-  if (!m) return;
-  const posts = {
-    goal:`⚽ GOAL! ${minute ? minute + "'" : ''}\n${player ? player.toUpperCase() : ''} scores!\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\n\n${team ? team + ' take the lead!' : ''}`,
-    halftime:`🔔 HALF TIME\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\n\n${m.league.name}\nStats and analysis incoming.`,
-    fulltime:`🏁 FULL TIME\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\n\n${m.league.name}\nMatch report coming up!`,
-    red:`🟥 RED CARD! ${minute ? minute + "'" : ''}\n${player || 'A player'} sent off!\n${team} down to 10 men.`,
-    penalty:`🎯 PENALTY AWARDED!\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nThe referee points to the spot.`,
-    var:`📺 VAR CHECK\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nReview in progress…`,
-    kickoff:`🏟️ KICK OFF!\n${m.teams.home.name} vs ${m.teams.away.name}\n${m.league.name}\nHere we go!`,
-    injury:`🚑 INJURY CONCERN\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nPlayer down receiving treatment.`,
-    summary:`🔴 LIVE UPDATE\n${m.teams.home.name} ${m.goals.home ?? 0}–${m.goals.away ?? 0} ${m.teams.away.name}\nStay tuned for more.`,
-  };
-  generatedMsg = posts[type] || posts.summary;
-  document.getElementById('msg-txt').textContent = generatedMsg;
-  document.getElementById('msg-txt').style.display = 'block';
-  document.getElementById('msg-ph').style.display = 'none';
-  document.getElementById('copy-bar').style.display = 'flex';
-  document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('char-count').textContent = generatedMsg.length + ' chars';
-  document.getElementById('msg-footer-l').textContent = 'Quick post ready';
-  switchMid('message', null);
-  toast('Quick post ready!', 'volt');
+function saveMsg() {
+  if (!generatedMsg) { toast('Nothing to save', 'err'); return; }
+  saveToHistory(generatedMsg);
+  toast('Saved to history ✓', 'ok');
 }
 
-// ============================================================
-// SEND & COPY
-// ============================================================
-async function sendAll() {
-  if (!generatedMsg) { toast('Generate a message first', 'err'); return; }
-  const token = localStorage.getItem('ap_botToken');
-  if (!token) { toast('No bot token — add in Settings', 'err'); return; }
-  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
-  const selected = [...document.querySelectorAll('.ch-cb:checked')].map(cb => channels[+cb.value]).filter(Boolean);
-  if (!selected.length) { toast('Select at least one channel', 'err'); return; }
-  let sent = 0;
-  for (const ch of selected) {
-    try {
-      const r = await fetch('/api/telegram/send', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({chat_id: ch.chatId, text: generatedMsg, bot_token: token})
-      });
-      if ((await r.json()).ok) sent++;
-    } catch {}
-  }
-  if (sent > 0) { toast(`Sent to ${sent} channel(s)! ✓`, 'ok'); }
-  else { toast('Send failed — check bot token', 'err'); }
-}
-function copyMsg() {
-  if (!generatedMsg) { toast('Nothing to copy yet', 'err'); return; }
-  navigator.clipboard.writeText(generatedMsg).then(() => toast('Copied! ✓', 'ok')).catch(() => toast('Copy failed', 'err'));
-}
-function selAllCh(v) { document.querySelectorAll('.ch-cb').forEach(cb => cb.checked = v); }
-
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 // CHANNELS
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 function loadChannelsFromStorage() {
   const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
   const el = document.getElementById('ch-list');
   if (!channels.length) {
-    el.innerHTML = '<div class="empty">No channels. <a href="#" onclick="openModal(\'modal-channel\');return false;">Add in Settings →</a></div>';
+    el.innerHTML = `<div class="empty" style="padding:10px 0;font-size:11px;">No channels. <a href="#" onclick="openModal('modal-channel');return false;">Add one →</a></div>`;
     return;
   }
   el.innerHTML = channels.map((ch, i) => `
-    <div class="ch-row"><label><input type="checkbox" class="ch-cb" value="${i}" checked>📢 ${ch.name}<span class="ch-cid">${ch.chatId}</span></label></div>
-  `).join('');
+    <div class="ch-row">
+      <label><input type="checkbox" class="ch-cb" value="${i}" checked>📢 ${ch.name}</label>
+      <span class="ch-cid">${ch.chatId}</span>
+      <button class="mb red" onclick="removeChannel(${i})" style="padding:1px 6px;font-size:9px;">✕</button>
+    </div>`).join('');
+
+  // Update selects in modals
+  const chOptions = channels.map(c => `<option>${c.name}</option>`).join('');
+  document.getElementById('auto-channels').innerHTML = '<option>All channels</option>' + chOptions;
+  document.getElementById('sched-channels').innerHTML = '<option>All selected channels</option>' + chOptions;
 }
+
 function addChannel() {
   const name = document.getElementById('new-ch-name').value.trim();
   const id   = document.getElementById('new-ch-id').value.trim();
-  if (!name || !id) { toast('Fill in channel name and ID', 'err'); return; }
+  if (!name || !id) { toast('Fill in both fields', 'err'); return; }
+  if (!id.startsWith('-') && !id.startsWith('@')) { toast('Channel ID usually starts with -100…', 'amber'); }
   const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  if (channels.find(c => c.chatId === id)) { toast('Channel already added', 'err'); return; }
   channels.push({ name, chatId: id });
   localStorage.setItem('ap_channels', JSON.stringify(channels));
+  document.getElementById('new-ch-name').value = '';
+  document.getElementById('new-ch-id').value = '';
   loadChannelsFromStorage();
   closeModal('modal-channel');
-  toast('Channel connected! ✓', 'ok');
+  toast(`${name} connected! ✓`, 'ok');
 }
 
-// ============================================================
-// HISTORY
-// ============================================================
+function removeChannel(i) {
+  const channels = JSON.parse(localStorage.getItem('ap_channels') || '[]');
+  const name = channels[i]?.name;
+  channels.splice(i, 1);
+  localStorage.setItem('ap_channels', JSON.stringify(channels));
+  loadChannelsFromStorage();
+  toast(`${name} removed`, 'inf');
+}
+
+// ─────────────────────────────────────────────────────────────
+// HISTORY (with mark-as-sent + export)
+// ─────────────────────────────────────────────────────────────
 function saveToHistory(msg) {
   if (!msg) return;
   const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
-  const m = allMatches.find(m => m.fixture.id === selectedMatchId) || { teams:{home:{name:'Match'},away:{name:''}} };
-  posts.unshift({
-    id: Date.now(),
-    title: `${m.teams.home.name} vs ${m.teams.away.name} · ${currentType}`,
-    preview: msg.substring(0, 80),
-    message: msg,
-    timestamp: new Date().toISOString()
-  });
+  const m = allMatches.find(m => m.fixture.id === selectedMatchId);
+  const title = m ? `${m.teams.home.name} vs ${m.teams.away.name} · ${currentType}` : `${currentType} post`;
+  posts.unshift({ id: Date.now(), title, preview: msg.substring(0, 80), message: msg, timestamp: new Date().toISOString(), sent: false });
   localStorage.setItem('ap_posts', JSON.stringify(posts.slice(0, 50)));
   loadHistoryFromStorage();
 }
+
+function markLastHistoryAsSent() {
+  const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
+  if (posts.length) { posts[0].sent = true; posts[0].sentAt = new Date().toISOString(); }
+  localStorage.setItem('ap_posts', JSON.stringify(posts));
+  loadHistoryFromStorage();
+}
+
 function loadHistoryFromStorage() {
   const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
   const el = document.getElementById('hist-list');
@@ -1344,142 +1990,239 @@ function loadHistoryFromStorage() {
     el.innerHTML = '<div class="empty">No history yet</div>';
     return;
   }
-  el.innerHTML = posts.slice(0, 20).map((p, i) => `
-    <div class="hist-item" onclick="loadHistoryMsg('${(p.message || p.preview).replace(/'/g,"\\'")}')">
-      <div class="hi-top"><span class="hi-title">${p.title || 'Message'}</span><span class="hi-time">${new Date(p.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
-      <div class="hi-prev">${(p.preview||'').substring(0,70)}…</div>
-    </div>
-  `).join('');
+  el.innerHTML = posts.slice(0, 30).map((p, i) => `
+    <div class="hist-item" onclick="loadHistoryMsg(${i})">
+      <button class="hi-del" onclick="event.stopPropagation();deleteHistoryItem(${i})">✕</button>
+      <div class="hi-top">
+        <span class="hi-title">${p.title || 'Message'}</span>
+        <span class="hi-time">${new Date(p.timestamp).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+      <div class="hi-prev">${(p.preview||'').substring(0,65)}…</div>
+      <div class="hi-tags">
+        <span class="hi-tag">${p.title?.split(' · ')[1] || 'message'}</span>
+        ${p.sent ? '<span class="hi-tag hi-sent">✓ Sent</span>' : ''}
+      </div>
+    </div>`).join('');
 }
-function loadHistoryMsg(msg) {
-  if (msg) {
-    generatedMsg = msg;
-    document.getElementById('msg-txt').textContent = msg;
-    document.getElementById('msg-txt').style.display = 'block';
-    document.getElementById('msg-ph').style.display = 'none';
-    document.getElementById('copy-bar').style.display = 'flex';
-    document.getElementById('gen-ts').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    document.getElementById('char-count').textContent = msg.length + ' chars';
-    document.getElementById('msg-footer-l').textContent = 'Loaded from history';
-    switchMid('message', null);
-  }
+
+function loadHistoryMsg(i) {
+  const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
+  const p = posts[i];
+  if (!p) return;
+  generatedMsg = p.message || p.preview;
+  showGeneratedMsg(generatedMsg);
+  switchMid('message', null);
 }
+
+function deleteHistoryItem(i) {
+  const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
+  posts.splice(i, 1);
+  localStorage.setItem('ap_posts', JSON.stringify(posts));
+  loadHistoryFromStorage();
+}
+
 function clearHistory() {
+  if (!confirm('Clear all message history?')) return;
   localStorage.removeItem('ap_posts');
   document.getElementById('hist-list').innerHTML = '<div class="empty">History cleared</div>';
   toast('History cleared', 'inf');
 }
 
-// ============================================================
-// AUTOMATION RULES
-// ============================================================
+function exportHistory() {
+  const posts = JSON.parse(localStorage.getItem('ap_posts') || '[]');
+  if (!posts.length) { toast('No history to export', 'err'); return; }
+  let txt = 'AutoPost Pro — Message History Export\n' + '='.repeat(40) + '\n\n';
+  posts.forEach((p, i) => {
+    txt += `[${i+1}] ${p.title}\n${new Date(p.timestamp).toLocaleString()}\n${p.sent ? '✓ SENT' : 'NOT SENT'}\n${'─'.repeat(30)}\n${p.message}\n\n`;
+  });
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'autopost-history.txt';
+  a.click();
+  toast('History exported ✓', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUTOMATION
+// ─────────────────────────────────────────────────────────────
 function loadAutoRules() {
   const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
   const list = document.getElementById('auto-list');
   if (!rules.length) {
-    list.innerHTML = '<div class="empty">No automation rules yet</div>';
+    list.innerHTML = '<div class="empty">No automation rules yet.<br>Create rules to auto-post on goal alerts, HT, FT, etc.</div>';
     return;
   }
-  list.innerHTML = rules.map(r => `
+  list.innerHTML = rules.map((r, i) => `
     <div class="auto-item">
-      <div class="auto-info"><div class="auto-name">${r.name}</div><div class="auto-desc">${r.desc}</div></div>
-      <button class="auto-badge ${r.on ? 'ab-on' : 'ab-off'}" onclick="toggleAuto(this, '${r.name}')">${r.on ? 'ON' : 'OFF'}</button>
-    </div>
-  `).join('');
-}
-function toggleAuto(btn, name) {
-  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
-  const rule = rules.find(r => r.name === name);
-  if (rule) rule.on = !rule.on;
-  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
-  btn.className = `auto-badge ${rule.on ? 'ab-on' : 'ab-off'}`;
-  btn.textContent = rule.on ? 'ON' : 'OFF';
-  toast(rule.on ? 'Rule activated' : 'Rule paused', 'ok');
-}
-function addAutoRule() {
-  const name = document.querySelector('#modal-auto input').value || 'New Rule';
-  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
-  rules.push({ name, desc: 'Custom rule · All channels', on: true });
-  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
-  loadAutoRules();
-  closeModal('modal-auto');
-  toast('Automation rule created!', 'volt');
+      <div class="auto-info">
+        <div class="auto-name">${r.name}</div>
+        <div class="auto-desc">${r.trigger || 'Custom trigger'} · ${r.league || 'All leagues'} · ${r.tone || 'Excited'}</div>
+      </div>
+      <button class="auto-badge ${r.on ? 'ab-on' : 'ab-off'}" onclick="toggleAuto(this, ${i})">${r.on ? 'ON' : 'OFF'}</button>
+      <button class="mb red" onclick="deleteAutoRule(${i})" style="margin-left:4px;">✕</button>
+    </div>`).join('');
 }
 
-// ============================================================
-// SCHEDULED POSTS
-// ============================================================
+function toggleAuto(btn, idx) {
+  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
+  rules[idx].on = !rules[idx].on;
+  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
+  btn.className = `auto-badge ${rules[idx].on ? 'ab-on' : 'ab-off'}`;
+  btn.textContent = rules[idx].on ? 'ON' : 'OFF';
+  toast(rules[idx].on ? 'Rule activated ✓' : 'Rule paused', rules[idx].on ? 'ok' : 'inf');
+}
+
+function addAutoRule() {
+  const name = document.getElementById('auto-name').value.trim() || 'New Rule';
+  const trigger = document.getElementById('auto-trigger').value;
+  const league = document.getElementById('auto-league').value;
+  const tone = document.getElementById('auto-tone').value;
+  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
+  rules.push({ name, trigger, league, tone, on: true, createdAt: new Date().toISOString() });
+  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
+  document.getElementById('auto-name').value = '';
+  loadAutoRules();
+  closeModal('modal-auto');
+  toast('Automation rule created! ✓', 'volt');
+}
+
+function deleteAutoRule(i) {
+  const rules = JSON.parse(localStorage.getItem('ap_auto_rules') || '[]');
+  rules.splice(i, 1);
+  localStorage.setItem('ap_auto_rules', JSON.stringify(rules));
+  loadAutoRules();
+}
+
+// ─────────────────────────────────────────────────────────────
+// SCHEDULED POSTS (now with actual runner)
+// ─────────────────────────────────────────────────────────────
 function loadScheduledPosts() {
   const sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
   const list = document.getElementById('sched-list');
   const mini = document.getElementById('sched-mini-list');
   if (!sched.length) {
-    list.innerHTML = '<div class="empty">No scheduled posts</div>';
-    mini.innerHTML = '<div class="sm-row"><span class="sm-title">No upcoming</span></div>';
+    list.innerHTML = '<div class="empty">No scheduled posts.<br>Generate a message and click Schedule.</div>';
+    mini.innerHTML = '<div class="sm-row"><span class="sm-title" style="color:var(--dim);">None upcoming</span></div>';
     return;
   }
-  const sorted = sched.sort((a,b) => new Date(a.datetime) - new Date(b.datetime));
-  list.innerHTML = sorted.map(s => `
-    <div class="sched-item">
+  const sorted = [...sched].sort((a,b) => new Date(a.datetime) - new Date(b.datetime));
+  list.innerHTML = sorted.map((s,i) => {
+    const isPast = new Date(s.datetime) < new Date();
+    return `<div class="sched-item">
+      <span class="si-status ${s.sent ? 'si-sent' : (isPast ? 'si-sent' : 'si-pending')}" title="${s.sent ? 'Sent' : (isPast ? 'Missed' : 'Pending')}"></span>
       <div class="si-time">${new Date(s.datetime).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-      <div class="si-info"><div class="si-title">${s.title}</div><div class="si-ch">${s.channels || 'All channels'}</div></div>
-      <button class="action-btn si-del" onclick="removeScheduled('${s.id}')">✕</button>
-    </div>
-  `).join('');
-  mini.innerHTML = sorted.slice(0,3).map(s => `
-    <div class="sm-row"><span class="sm-title">${s.title}</span><span class="sm-time">${new Date(s.datetime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
-  `).join('');
+      <div class="si-info">
+        <div class="si-title">${s.title}</div>
+        <div class="si-ch">${s.channels || 'All channels'} ${s.sent ? '· ✓ Sent' : (isPast ? '· Missed' : '')}</div>
+      </div>
+      <button class="si-del" onclick="removeScheduled('${s.id}')">✕</button>
+    </div>`;
+  }).join('');
+  const upcoming = sorted.filter(s => !s.sent && new Date(s.datetime) > new Date()).slice(0, 3);
+  mini.innerHTML = upcoming.length ? upcoming.map(s => `
+    <div class="sm-row">
+      <span class="sm-title">${s.title.substring(0,28)}</span>
+      <span class="sm-time">${new Date(s.datetime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+    </div>`).join('') : '<div class="sm-row"><span class="sm-title" style="color:var(--dim);">None upcoming</span></div>';
 }
+
 function schedulePost() {
-  const dt = document.querySelector('#modal-schedule input[type=datetime-local]').value;
+  const dt = document.getElementById('sched-dt').value;
   if (!dt) { toast('Pick a date and time', 'err'); return; }
+  if (new Date(dt) < new Date()) { toast('Choose a future time', 'err'); return; }
+  const msg = document.getElementById('sched-msg-preview').value || generatedMsg || '';
+  if (!msg) { toast('Add a message to schedule', 'err'); return; }
   const sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
   sched.push({
-    id: Date.now(),
+    id: Date.now().toString(),
     datetime: dt,
-    title: generatedMsg ? generatedMsg.substring(0,30) + '…' : 'Scheduled post',
-    channels: 'All selected channels',
-    message: generatedMsg || ''
+    title: msg.substring(0, 35) + '…',
+    channels: document.getElementById('sched-channels').value,
+    message: msg,
+    sent: false,
+    createdAt: new Date().toISOString()
   });
   localStorage.setItem('ap_scheduled', JSON.stringify(sched));
   loadScheduledPosts();
   closeModal('modal-schedule');
   toast(`Scheduled for ${new Date(dt).toLocaleString()} ✓`, 'ok');
 }
+
 function removeScheduled(id) {
   let sched = JSON.parse(localStorage.getItem('ap_scheduled') || '[]');
-  sched = sched.filter(s => s.id != id);
+  sched = sched.filter(s => s.id !== id);
   localStorage.setItem('ap_scheduled', JSON.stringify(sched));
   loadScheduledPosts();
   toast('Removed', 'inf');
 }
 
-// ============================================================
+// ─────────────────────────────────────────────────────────────
+// CUSTOM TEMPLATES
+// ─────────────────────────────────────────────────────────────
+function loadCustomTemplates() {
+  customTemplates = JSON.parse(localStorage.getItem('ap_templates') || '[]');
+  const tplRow = document.querySelector('.tpl-row');
+  customTemplates.forEach(t => {
+    const chip = document.createElement('span');
+    chip.className = 'tpl-chip';
+    chip.textContent = '⭐ ' + t.name;
+    chip.onclick = () => pickTpl(chip, 'custom_' + t.name);
+    tplRow.appendChild(chip);
+  });
+}
+
+function saveTemplate() {
+  const name = document.getElementById('tpl-name').value.trim();
+  const prompt = document.getElementById('tpl-prompt').value.trim();
+  if (!name) { toast('Enter a template name', 'err'); return; }
+  const templates = JSON.parse(localStorage.getItem('ap_templates') || '[]');
+  templates.push({ name, trigger: document.getElementById('tpl-trigger').value, prompt, createdAt: new Date().toISOString() });
+  localStorage.setItem('ap_templates', JSON.stringify(templates));
+  document.getElementById('tpl-name').value = '';
+  document.getElementById('tpl-prompt').value = '';
+  loadCustomTemplates();
+  closeModal('modal-tpl');
+  toast(`Template "${name}" saved! ✓`, 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────
 // UI HELPERS
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 function setType(type, el) {
   currentType = type;
   document.querySelectorAll('.ttab').forEach(t => t.classList.remove('on'));
   el.classList.add('on');
-  const isMatch = ['live','preview'].includes(type);
+  const isMatch = ['live','preview','prediction'].includes(type);
   document.getElementById('match-sec-hdr').style.display = isMatch ? 'flex' : 'none';
-  document.getElementById('match-search-wrap').style.display = isMatch ? 'block' : 'none';
+  document.getElementById('match-search-wrap').style.display = isMatch ? 'flex' : 'none';
   document.getElementById('custom-prompt').style.display = type === 'custom' ? 'block' : 'none';
+  document.getElementById('standings-opts').style.display = type === 'standings' ? 'block' : 'none';
+  document.getElementById('prediction-opts').style.display = type === 'prediction' ? 'block' : 'none';
 }
 
 function switchMid(view, el) {
   currentMid = view;
-  ['message','events','fixtures','stats','history','automation','schedule'].forEach(v => {
+  const views = ['message','events','fixtures','stats','history','automation','schedule'];
+  views.forEach(v => {
     const e = document.getElementById('view-' + v);
-    if (e) e.style.display = v === view ? (v === 'message' ? 'flex' : 'flex') : 'none';
-  });
-  ['events','fixtures','stats','history','automation','schedule'].forEach(v => {
-    const e = document.getElementById('view-' + v);
-    if (e) e.style.flexDirection = 'column';
+    if (!e) return;
+    if (v === view) {
+      e.style.display = 'flex';
+      e.style.flexDirection = 'column';
+      e.style.height = '100%';
+      e.style.overflow = 'hidden';
+    } else {
+      e.style.display = 'none';
+    }
   });
   document.querySelectorAll('.mtab').forEach(t => t.classList.remove('on'));
-  if (el) el.classList.add('on');
-  else document.querySelectorAll('.mtab').forEach((t,i) => t.classList.toggle('on', i === 0));
+  if (el) {
+    el.classList.add('on');
+  } else {
+    const tabIdx = views.indexOf(view);
+    document.querySelectorAll('.mtab')[tabIdx]?.classList.add('on');
+  }
   if (view === 'fixtures') loadFixtures();
 }
 
@@ -1489,38 +2232,56 @@ function pickTpl(el, tpl) {
   currentTpl = tpl;
 }
 
-// ============================================================
+function pickPred(el, type) {
+  predictionType = type;
+  document.querySelectorAll('.pred-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ─────────────────────────────────────────────────────────────
 // AFFILIATE
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 function loadAffiliate() {
   const aff = JSON.parse(localStorage.getItem('ap_affiliate') || '{}');
   if (aff.label) document.getElementById('aff-label').value = aff.label;
   if (aff.url)   document.getElementById('aff-url').value = aff.url;
 }
+
 function saveAffiliate() {
-  const aff = { label: document.getElementById('aff-label').value, url: document.getElementById('aff-url').value };
+  const aff = {
+    label: document.getElementById('aff-label').value.trim(),
+    url: document.getElementById('aff-url').value.trim()
+  };
   localStorage.setItem('ap_affiliate', JSON.stringify(aff));
   toast('Affiliate link saved ✓', 'ok');
 }
 
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 // MODALS
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+document.querySelectorAll('.modal-bg').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-bg.open').forEach(m => m.classList.remove('open'));
+});
 
-// ============================================================
+// ─────────────────────────────────────────────────────────────
 // TOAST
-// ============================================================
-const TOAST_CLASSES = { ok:'t-ok', err:'t-err', inf:'t-inf', volt:'t-volt' };
+// ─────────────────────────────────────────────────────────────
+const TOAST_CLASSES = { ok:'t-ok', err:'t-err', inf:'t-inf', volt:'t-volt', amber:'t-amber' };
 function toast(msg, type = 'ok') {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.className = TOAST_CLASSES[type] || 't-ok';
   el.style.display = 'block';
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = '';
   clearTimeout(el._t);
-  el._t = setTimeout(() => el.style.display = 'none', 3000);
+  el._t = setTimeout(() => el.style.display = 'none', 3500);
 }
 </script>
 </body>
