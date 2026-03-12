@@ -415,7 +415,3 @@ async def send_tg(p: TGMsg):
             raise HTTPException(400, d.get("description", "Telegram error"))
         return {"ok": True}
     
-from mangum import Mangum
-
-# Create handler for Vercel
-handler = Mangum(app)
