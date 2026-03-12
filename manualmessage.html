@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Message — AutoPost Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090f;--surface:#0d1117;--s2:#141a24;--s3:#1c2432;
+  --border:#1a2535;--b2:#22334a;
+  --cyan:#06b6d4;--cd:rgba(6,182,212,.09);
+  --amber:#f59e0b;--ad:rgba(245,158,11,.09);
+  --green:#10b981;--red:#ef4444;
+  --muted:#3d4f63;--m2:#637080;
+  --text:#dde5f0;--t2:#8fa0b3;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.018) 2px,rgba(0,0,0,.018) 4px);pointer-events:none;z-index:9000}
+
+header{background:var(--surface);border-bottom:1px solid var(--border);height:52px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:14px;letter-spacing:-.02em;text-decoration:none;color:var(--text)}
+.logo-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan)}
+.nav{display:flex;gap:3px}
+.nav a{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--m2);text-decoration:none;border:1px solid transparent;transition:all .15s}
+.nav a:hover{color:var(--text);background:var(--s2)}
+.nav a.active{color:var(--cyan);background:var(--cd);border-color:var(--b2)}
+
+main{flex:1;padding:20px 24px;display:grid;grid-template-columns:1fr 360px;gap:14px;max-width:1200px;width:100%;margin:0 auto;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr;padding:14px}}
+
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.phdr{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ptitle{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--m2);display:flex;align-items:center;gap:7px}
+.ptitle::before{content:'';width:3px;height:11px;border-radius:2px;background:var(--cyan);display:inline-block}
+.ptitle.amber::before{background:var(--amber)}
+
+/* Tab bar */
+.tabbar{display:flex;flex-wrap:wrap;gap:4px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--s2)}
+.tab{padding:5px 10px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--b2);background:var(--surface);color:var(--m2);font-family:var(--sans);transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--cd);color:var(--cyan);border-color:rgba(6,182,212,.3)}
+
+.cbody{padding:16px}
+
+/* Forms */
+.fg{margin-bottom:12px}
+.fl{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--m2);margin-bottom:5px}
+.fi,.fs,.ft{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:6px;color:var(--text);font-size:13px;padding:7px 10px;outline:none;font-family:var(--sans);transition:border-color .15s}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--cyan)}
+.fs{cursor:pointer}
+.ft{resize:vertical;min-height:76px;font-family:var(--mono);font-size:12px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.shared{background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:12px 13px;margin-bottom:14px}
+.shared-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cyan);margin-bottom:10px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s;white-space:nowrap;text-decoration:none}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-cyan{background:var(--cyan);color:#000}.btn-cyan:hover:not(:disabled){background:#22d3ee}
+.btn-amber{background:var(--amber);color:#000}.btn-amber:hover:not(:disabled){background:#fbbf24}
+.btn-ghost{background:var(--s2);color:var(--t2);border:1px solid var(--b2)}.btn-ghost:hover:not(:disabled){color:var(--text);border-color:var(--cyan)}
+.btn-sm{padding:5px 9px;font-size:11px}
+.btn-full{width:100%;justify-content:center}
+
+/* Preview */
+.preview-wrap{background:#0d1520;border-radius:10px;padding:13px;margin-bottom:12px}
+.preview-bubble{background:#1a2838;border-radius:12px 12px 12px 4px;padding:13px 15px;font-size:13px;line-height:1.7;color:#dde5f0;font-family:var(--mono);white-space:pre-wrap;word-break:break-word;min-height:160px;border:1px solid #1e3040}
+.preview-ph{color:var(--m2);font-family:var(--sans);font-style:italic;font-size:13px}
+.preview-time{font-size:10px;color:#445;margin-top:6px;text-align:right;font-family:var(--mono)}
+
+/* Send row */
+.send-row{display:flex;gap:7px;flex-wrap:wrap}
+
+/* Channels */
+.ch-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.ch-row:last-child{border-bottom:none}
+
+/* History table */
+.htable{width:100%;border-collapse:collapse;font-size:12px}
+.htable th{text-align:left;font-size:9px;font-weight:700;color:var(--m2);text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid var(--border)}
+.htable td{padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+.htable tr:last-child td{border-bottom:none}
+.htable tr:hover td{background:var(--s2)}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;background:var(--cd);color:var(--cyan)}
+
+.empty{padding:36px 16px;text-align:center;color:var(--m2);font-size:13px}
+
+footer{padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:10px;color:var(--m2);font-family:var(--mono)}
+#toast{display:none;position:fixed;bottom:20px;right:20px;z-index:9999;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+@media(max-width:600px){
+  header{padding:0 12px}.nav a{padding:4px 8px;font-size:11px}
+  main{padding:12px}.r2{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:3px;padding:9px 12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo"><div class="logo-dot"></div>AutoPost Pro</a>
+  <nav class="nav">
+    <a href="index.html">Dashboard</a>
+    <a href="manualmessage.html" class="active">Manual</a>
+  </nav>
+  <span style="font-family:var(--mono);font-size:11px;color:var(--m2);" id="hdr-time"></span>
+</header>
+
+<main>
+  <!-- COMPOSER -->
+  <div>
+    <div class="panel">
+      <div class="phdr"><div class="ptitle">Compose Message</div></div>
+      <div class="tabbar">
+        <button class="tab active" onclick="useTemplate('goal',this)">⚽ Goal</button>
+        <button class="tab" onclick="useTemplate('yellow',this)">🟨 Yellow</button>
+        <button class="tab" onclick="useTemplate('red',this)">🟥 Red Card</button>
+        <button class="tab" onclick="useTemplate('ht',this)">🔔 Half Time</button>
+        <button class="tab" onclick="useTemplate('ft',this)">🏁 Full Time</button>
+        <button class="tab" onclick="useTemplate('lineup',this)">📋 Lineup</button>
+        <button class="tab" onclick="useTemplate('sub',this)">🔄 Sub</button>
+        <button class="tab" onclick="useTemplate('et',this)">⏱ Extra Time</button>
+        <button class="tab" onclick="useTemplate('preview',this)">🏆 Preview</button>
+        <button class="tab" onclick="useTemplate('stats',this)">📊 Stats</button>
+        <button class="tab" onclick="useTemplate('free',this)">✏ Free Text</button>
+      </div>
+      <div class="cbody">
+
+        <!-- Shared: audience + affiliate -->
+        <div class="shared">
+          <div class="shared-title">Audience &amp; Affiliate (optional, appended to every message)</div>
+          <div class="r2">
+            <div class="fg" style="margin-bottom:0;">
+              <label class="fl">👥 Tag / Label</label>
+              <input class="fi" id="g-tag" placeholder="e.g. @everyone, 🔔 Subs…" oninput="build()">
+            </div>
+            <div class="fg" style="margin-bottom:0;">
+              <label class="fl">🔗 Affiliate</label>
+              <input class="fi" id="g-aff" placeholder="https://... or label" oninput="build()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Template forms -->
+        <div id="tpl-form"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: preview + channels + history -->
+  <div>
+    <!-- Preview -->
+    <div class="panel" style="margin-bottom:12px;">
+      <div class="phdr">
+        <div class="ptitle amber">Message Preview</div>
+        <div style="font-size:10px;color:var(--m2);font-family:var(--mono);" id="char-count">0 chars</div>
+      </div>
+      <div class="cbody">
+        <div class="preview-wrap">
+          <div class="preview-bubble" id="preview"><span class="preview-ph">Fill the form to preview your message</span></div>
+          <div class="preview-time" id="preview-time">—</div>
+        </div>
+        <div class="send-row">
+          <button class="btn btn-ghost btn-sm" onclick="copyMsg()">📋 Copy</button>
+          <button class="btn btn-ghost btn-sm" onclick="shareWA()">WhatsApp</button>
+          <button class="btn btn-ghost btn-sm" onclick="shareTG()">Telegram</button>
+          <button class="btn btn-amber btn-sm" onclick="sendNow()" style="margin-left:auto;">📤 Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Channels -->
+    <div class="panel" style="margin-bottom:12px;">
+      <div class="phdr">
+        <div class="ptitle">Telegram Channels</div>
+        <button class="btn btn-ghost btn-sm" onclick="toggleAddCh()">+ Add</button>
+      </div>
+      <div class="cbody">
+        <div id="add-ch-form" style="display:none;margin-bottom:12px;">
+          <div class="r2" style="margin-bottom:8px;">
+            <input class="fi" id="new-ch-name" placeholder="Channel name">
+            <input class="fi" id="new-ch-id" placeholder="Chat ID (-100…)" style="font-family:var(--mono);">
+          </div>
+          <div class="fg" style="margin-bottom:8px;">
+            <label class="fl">Bot Token (optional — overrides global)</label>
+            <input class="fi" id="new-ch-token" placeholder="Leave blank to use global token">
+          </div>
+          <button class="btn btn-cyan btn-sm" onclick="addChannel()">Add Channel</button>
+        </div>
+        <div id="ch-list"></div>
+        <div class="fg" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <label class="fl">Global Bot Token</label>
+          <input class="fi" id="global-token" placeholder="123456:ABCdef…" style="font-family:var(--mono);">
+          <div style="margin-top:6px;"><button class="btn btn-ghost btn-sm" onclick="saveToken()">Save Token</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="panel">
+      <div class="phdr">
+        <div class="ptitle">Sent History</div>
+        <button class="btn btn-ghost btn-sm" onclick="clearHistory()">Clear</button>
+      </div>
+      <div id="history"><div class="empty">No messages sent yet</div></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>AutoPost Pro · Manual Composer</span>
+  <span id="ft-time">—</span>
+</footer>
+<div id="toast"></div>
+
+<script>
+const DB = {
+  get: k => { try { return JSON.parse(localStorage.getItem('ap_'+k)) } catch { return null } },
+  set: (k,v) => localStorage.setItem('ap_'+k, JSON.stringify(v)),
+  push: (k,v) => { const a = DB.get(k)||[]; a.push({...v, id:Date.now()}); DB.set(k, a.slice(-50)); },
+};
+
+let currentTpl = 'goal', previewText = '';
+
+const STAT_ROWS = [
+  {id:'poss',label:'Possession'},{id:'shots',label:'Shots'},{id:'sot',label:'Shots on target'},
+  {id:'corners',label:'Corners'},{id:'fouls',label:'Fouls'},{id:'yellows',label:'Yellow cards'},
+  {id:'reds',label:'Red cards'},{id:'offsides',label:'Offsides'},{id:'saves',label:'Saves'},
+];
+
+const FORMS = {
+  goal:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="g-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="g-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Score</label><input class="fi" id="g-score" placeholder="2 - 1" oninput="build()"></div>
+      <div class="fg"><label class="fl">Minute</label><input class="fi" id="g-min" placeholder="45" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Scorer</label><input class="fi" id="g-scorer" placeholder="Player name" oninput="build()"></div>
+    <div class="fg"><label class="fl">Assist (optional)</label><input class="fi" id="g-assist" placeholder="Assist name" oninput="build()"></div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="g-comp" placeholder="Premier League" oninput="build()"></div>`,
+  yellow:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="y-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="y-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Player</label><input class="fi" id="y-player" placeholder="Player name" oninput="build()"></div>
+      <div class="fg"><label class="fl">Minute</label><input class="fi" id="y-min" placeholder="67" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="y-comp" placeholder="Premier League" oninput="build()"></div>`,
+  red:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="r-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="r-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Player</label><input class="fi" id="r-player" placeholder="Player name" oninput="build()"></div>
+      <div class="fg"><label class="fl">Minute</label><input class="fi" id="r-min" placeholder="72" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Score at time</label><input class="fi" id="r-score" placeholder="1 - 0" oninput="build()"></div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="r-comp" placeholder="Premier League" oninput="build()"></div>`,
+  ht:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="ht-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="ht-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Score</label><input class="fi" id="ht-score" placeholder="1 - 0" oninput="build()"></div>
+    <div class="fg"><label class="fl">Scorers (optional)</label><textarea class="ft" id="ht-scorers" placeholder="Saka 23', Martinelli 41'" oninput="build()"></textarea></div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="ht-comp" placeholder="Premier League" oninput="build()"></div>`,
+  ft:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="ft-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="ft-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Final Score</label><input class="fi" id="ft-score" placeholder="2 - 1" oninput="build()"></div>
+    <div class="fg"><label class="fl">Scorers (optional)</label><textarea class="ft" id="ft-scorers" placeholder="Saka 23' 67', Martinelli 41'" oninput="build()"></textarea></div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="ft-comp" placeholder="Premier League" oninput="build()"></div>`,
+  lineup:`
+    <div class="fg"><label class="fl">Match (Home vs Away)</label><input class="fi" id="ln-match" placeholder="Arsenal vs Chelsea" oninput="build()"></div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="ln-comp" placeholder="Premier League" oninput="build()"></div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Home XI</label><textarea class="ft" id="ln-home" placeholder="1. Raya&#10;2. White&#10;..." oninput="build()"></textarea></div>
+      <div class="fg"><label class="fl">Away XI</label><textarea class="ft" id="ln-away" placeholder="1. Sanchez&#10;2. James&#10;..." oninput="build()"></textarea></div>
+    </div>`,
+  sub:`
+    <div class="fg"><label class="fl">Match</label><input class="fi" id="sb-match" placeholder="Arsenal vs Chelsea" oninput="build()"></div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Team</label><input class="fi" id="sb-team" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Minute</label><input class="fi" id="sb-min" placeholder="62" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">🟢 Player On</label><input class="fi" id="sb-on" placeholder="Trossard" oninput="build()"></div>
+      <div class="fg"><label class="fl">🔴 Player Off</label><input class="fi" id="sb-off" placeholder="Saka" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="sb-comp" placeholder="Premier League" oninput="build()"></div>`,
+  et:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="et-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="et-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Score</label><input class="fi" id="et-score" placeholder="1 - 1" oninput="build()"></div>
+      <div class="fg"><label class="fl">Added Minutes</label><input class="fi" id="et-added" placeholder="4" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Half</label><select class="fs" id="et-half" onchange="build()"><option>1st Half</option><option>2nd Half</option></select></div>
+      <div class="fg"><label class="fl">Competition</label><input class="fi" id="et-comp" placeholder="Premier League" oninput="build()"></div>
+    </div>`,
+  preview:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Team</label><input class="fi" id="pv-home" placeholder="Arsenal" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Team</label><input class="fi" id="pv-away" placeholder="Chelsea" oninput="build()"></div>
+    </div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="pv-date" type="date" oninput="build()"></div>
+      <div class="fg"><label class="fl">Time</label><input class="fi" id="pv-time" placeholder="20:00" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="pv-comp" placeholder="Premier League" oninput="build()"></div>
+    <div class="fg"><label class="fl">Venue (optional)</label><input class="fi" id="pv-venue" placeholder="Emirates Stadium" oninput="build()"></div>
+    <div class="r2">
+      <div class="fg"><label class="fl">Home Form (last 5)</label><input class="fi" id="pv-hform" placeholder="W W D L W" oninput="build()"></div>
+      <div class="fg"><label class="fl">Away Form (last 5)</label><input class="fi" id="pv-aform" placeholder="D W W L W" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Story / Context (optional)</label><textarea class="ft" id="pv-story" placeholder="Derby day. Both teams fighting for top 4." oninput="build()"></textarea></div>`,
+  stats:`
+    <div class="r2">
+      <div class="fg"><label class="fl">Match</label><input class="fi" id="st-match" placeholder="Arsenal vs Chelsea" oninput="build()"></div>
+      <div class="fg"><label class="fl">Score</label><input class="fi" id="st-score" placeholder="2 - 1" oninput="build()"></div>
+    </div>
+    <div class="fg"><label class="fl">Competition</label><input class="fi" id="st-comp" placeholder="Premier League" oninput="build()"></div>
+    <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;margin-bottom:4px;">
+      <div style="font-size:9px;font-weight:700;color:var(--m2);text-transform:uppercase;letter-spacing:.08em;">Stat</div>
+      <div style="font-size:9px;font-weight:700;color:var(--m2);text-transform:uppercase;letter-spacing:.08em;text-align:center;">Home</div>
+      <div style="font-size:9px;font-weight:700;color:var(--m2);text-transform:uppercase;letter-spacing:.08em;text-align:center;">Away</div>
+    </div>
+    ${STAT_ROWS.map(r=>`<div style="display:grid;grid-template-columns:1fr 72px 72px;gap:8px;align-items:center;margin-bottom:7px;">
+      <div style="font-size:12px;color:var(--t2);">${r.label}</div>
+      <input class="fi" id="st-h-${r.id}" placeholder="–" oninput="build()" style="text-align:center;padding:5px 7px;">
+      <input class="fi" id="st-a-${r.id}" placeholder="–" oninput="build()" style="text-align:center;padding:5px 7px;">
+    </div>`).join('')}`,
+  free:`<div class="fg"><label class="fl">Your Message</label><textarea class="ft" id="free-txt" rows="8" placeholder="Type anything…" oninput="build()"></textarea></div>`,
+};
+
+function v(id) { const el=document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function useTemplate(tpl, btn) {
+  currentTpl = tpl;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('tpl-form').innerHTML = FORMS[tpl] || '';
+  build();
+}
+
+function build() {
+  const tag = v('g-tag') ? `\n\n${v('g-tag')}` : '';
+  const aff = v('g-aff') ? `\n🔗 ${v('g-aff')}` : '';
+  let msg = '';
+  const t = currentTpl;
+
+  if (t === 'goal') {
+    const home=v('g-home'),away=v('g-away'),score=v('g-score'),min=v('g-min'),scorer=v('g-scorer'),assist=v('g-assist'),comp=v('g-comp');
+    if (!home&&!away) { setPreview(''); return; }
+    msg = `⚽ GOAL! ${min ? min+"' " : ''}${home||'?'} ${score||'?'} ${away||'?'}`;
+    if (scorer) msg += `\n\n🎯 Scorer: ${scorer}${assist?' (assist: '+assist+')':''}`;
+    if (comp)   msg += `\n🏆 ${comp}`;
+  } else if (t === 'yellow') {
+    const home=v('y-home'),away=v('y-away'),player=v('y-player'),min=v('y-min'),comp=v('y-comp');
+    msg = `🟨 YELLOW CARD${min?' '+min+"'":''}`;
+    if (player) msg += `\n${player}`;
+    if (home&&away) msg += `\n${home} vs ${away}`;
+    if (comp) msg += `\n🏆 ${comp}`;
+  } else if (t === 'red') {
+    const home=v('r-home'),away=v('r-away'),player=v('r-player'),min=v('r-min'),score=v('r-score'),comp=v('r-comp');
+    msg = `🟥 RED CARD${min?' '+min+"'":''}`;
+    if (player) msg += `\n${player} is sent OFF!`;
+    if (home&&away) msg += `\n${home} ${score||'vs'} ${away}`;
+    if (comp) msg += `\n🏆 ${comp}`;
+  } else if (t === 'ht' || t === 'ft') {
+    const pre=t==='ht'?'ht':'ft', icon=t==='ht'?'🔔 HALF TIME':'🏁 FULL TIME';
+    const home=v(`${pre}-home`),away=v(`${pre}-away`),score=v(`${pre}-score`),scorers=v(`${pre}-scorers`),comp=v(`${pre}-comp`);
+    msg = `${icon}\n${home||'?'} ${score||'?'} ${away||'?'}`;
+    if (scorers) msg += `\n\n⚽ Scorers:\n${scorers}`;
+    if (comp) msg += `\n\n🏆 ${comp}`;
+  } else if (t === 'lineup') {
+    const match=v('ln-match'),comp=v('ln-comp'),hxi=v('ln-home'),axi=v('ln-away');
+    const parts = match.split(' vs ');
+    msg = `📋 LINEUPS\n${match||'? vs ?'}`;
+    if (comp) msg += `\n🏆 ${comp}`;
+    if (hxi) msg += `\n\n🟢 ${parts[0]||'Home'} XI:\n${hxi}`;
+    if (axi) msg += `\n\n🔵 ${parts[1]||'Away'} XI:\n${axi}`;
+  } else if (t === 'sub') {
+    const match=v('sb-match'),team=v('sb-team'),min=v('sb-min'),on=v('sb-on'),off=v('sb-off'),comp=v('sb-comp');
+    msg = `🔄 SUBSTITUTION\n${match||'? vs ?'}`;
+    if (team) msg += `\nTeam: ${team}`;
+    if (min)  msg += `\n⏱ ${min}'`;
+    if (on)   msg += `\n🟢 On:  ${on}`;
+    if (off)  msg += `\n🔴 Off: ${off}`;
+    if (comp) msg += `\n🏆 ${comp}`;
+  } else if (t === 'et') {
+    const home=v('et-home'),away=v('et-away'),score=v('et-score'),added=v('et-added'),half=v('et-half'),comp=v('et-comp');
+    msg = `⏱ INJURY TIME${added?' +'+added+' mins':''}`;
+    if (home&&away) msg += `\n${home} ${score||'vs'} ${away}`;
+    if (half) msg += `\n📍 ${half}`;
+    if (comp) msg += `\n🏆 ${comp}`;
+  } else if (t === 'preview') {
+    const home=v('pv-home'),away=v('pv-away'),date=v('pv-date'),time=v('pv-time'),comp=v('pv-comp'),venue=v('pv-venue'),hf=v('pv-hform'),af=v('pv-aform'),story=v('pv-story');
+    if (!home&&!away) { setPreview(''); return; }
+    msg = `🏆 MATCH PREVIEW\n${home||'?'} vs ${away||'?'}`;
+    if (comp) msg += `\n${comp}`;
+    if (date||time) msg += `\n📅 ${[date,time].filter(Boolean).join(' · ')}`;
+    if (venue) msg += `\n📍 ${venue}`;
+    if (hf||af) {
+      msg += `\n\n📈 Form (last 5):`;
+      if (hf) msg += `\n${home||'Home'}: ${hf}`;
+      if (af) msg += `\n${away||'Away'}: ${af}`;
+    }
+    if (story) msg += `\n\n💬 ${story}`;
+  } else if (t === 'stats') {
+    const match=v('st-match'),score=v('st-score'),comp=v('st-comp');
+    msg = `📊 MATCH STATS\n${match||'? vs ?'}${score?' — '+score:''}`;
+    if (comp) msg += `\n🏆 ${comp}`;
+    msg += '\n';
+    STAT_ROWS.forEach(r => {
+      const h=v(`st-h-${r.id}`), a=v(`st-a-${r.id}`);
+      if (h||a) msg += `\n${r.label.padEnd(14)} ${(h||'–').toString().padStart(4)}  |  ${a||'–'}`;
+    });
+  } else {
+    msg = v('free-txt');
+  }
+
+  if (msg) msg += tag + aff;
+  setPreview(msg);
+}
+
+function setPreview(msg) {
+  previewText = msg;
+  const el = document.getElementById('preview');
+  if (msg) { el.textContent = msg; el.style.color = ''; }
+  else el.innerHTML = '<span class="preview-ph">Fill the form to preview your message</span>';
+  document.getElementById('preview-time').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) + ' · WhatsApp';
+  document.getElementById('char-count').textContent = msg ? msg.length + ' chars' : '0 chars';
+}
+
+function copyMsg() {
+  if (!previewText) { toast('Nothing to copy','err'); return; }
+  navigator.clipboard.writeText(previewText).then(()=>toast('Copied!')).catch(()=>toast('Copy failed','err'));
+}
+function shareWA()  { if (previewText) window.open(`https://wa.me/?text=${encodeURIComponent(previewText)}`,'_blank'); }
+function shareTG()  { if (previewText) window.open(`https://t.me/share/url?text=${encodeURIComponent(previewText)}`,'_blank'); }
+
+async function sendNow() {
+  if (!previewText) { toast('Nothing to send','err'); return; }
+  const token = DB.get('botToken');
+  if (!token)  { toast('No bot token — add one below','err'); return; }
+  const channels = DB.get('channels') || [];
+  const sel = [...document.querySelectorAll('.ch-cb:checked')].map(cb=>channels[parseInt(cb.value)]).filter(Boolean);
+  if (!sel.length) { toast('Select at least one channel','err'); return; }
+  let sent = 0;
+  for (const ch of sel) {
+    try {
+      const r = await fetch('/api/telegram/send',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({chat_id:ch.chatId,text:previewText,bot_token:ch.token||token})});
+      if ((await r.json()).ok) sent++;
+    } catch {}
+  }
+  if (sent) { DB.push('posts',{preview:previewText.slice(0,80),ts:new Date().toISOString()}); loadHistory(); toast(`Sent to ${sent} channel(s)`); }
+  else toast('Send failed — check bot token & chat IDs','err');
+}
+
+// ── Channels ───────────────────────────────────────────────
+function toggleAddCh() {
+  const f = document.getElementById('add-ch-form');
+  f.style.display = f.style.display==='none' ? 'block' : 'none';
+}
+
+function addChannel() {
+  const name=document.getElementById('new-ch-name').value.trim();
+  const chatId=document.getElementById('new-ch-id').value.trim();
+  const token=document.getElementById('new-ch-token').value.trim();
+  if (!name||!chatId) { toast('Enter name and chat ID','err'); return; }
+  const chs = DB.get('channels') || [];
+  chs.push({name,chatId,token});
+  DB.set('channels',chs);
+  document.getElementById('new-ch-name').value='';
+  document.getElementById('new-ch-id').value='';
+  document.getElementById('new-ch-token').value='';
+  document.getElementById('add-ch-form').style.display='none';
+  loadChannels(); toast('Channel added');
+}
+
+function removeChannel(i) {
+  const chs = DB.get('channels') || [];
+  chs.splice(i,1); DB.set('channels',chs); loadChannels();
+}
+
+function loadChannels() {
+  const chs = DB.get('channels') || [];
+  const el  = document.getElementById('ch-list');
+  if (!chs.length) { el.innerHTML='<div style="font-size:12px;color:var(--m2);">No channels yet.</div>'; return; }
+  el.innerHTML = chs.map((ch,i)=>`
+    <div class="ch-row">
+      <label style="display:flex;align-items:center;gap:8px;flex:1;cursor:pointer;font-size:13px;">
+        <input type="checkbox" class="ch-cb" value="${i}" checked style="accent-color:var(--cyan);">
+        📢 ${ch.name}
+      </label>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--m2);">${ch.chatId}</span>
+      <button style="background:none;border:none;color:var(--m2);cursor:pointer;font-size:15px;padding:0 4px;" onclick="removeChannel(${i})">×</button>
+    </div>`).join('');
+}
+
+function saveToken() {
+  const t = document.getElementById('global-token').value.trim();
+  if (!t) return;
+  DB.set('botToken', t); toast('Token saved');
+}
+
+function loadHistory() {
+  const posts = (DB.get('posts') || []).slice(-30).reverse();
+  const el = document.getElementById('history');
+  if (!posts.length) { el.innerHTML='<div class="empty">No messages sent yet</div>'; return; }
+  el.innerHTML = `<table class="htable"><thead><tr><th>Time</th><th>Message</th></tr></thead><tbody>
+    ${posts.map(p=>`<tr>
+      <td style="white-space:nowrap;">${new Date(p.id||p.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
+      <td style="font-family:var(--sans);color:var(--t2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${(p.preview||'').replace(/\n/g,' ')}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function clearHistory() { if(confirm('Clear history?')) { DB.set('posts',[]); loadHistory(); } }
+
+function toast(msg, type='ok') {
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.cssText=`display:block;background:${type==='ok'?'#10b981':'#ef4444'};color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;position:fixed;bottom:20px;right:20px;z-index:9999;`;
+  setTimeout(()=>el.style.display='none',3000);
+}
+
+setInterval(()=>{ document.getElementById('hdr-time').textContent = new Date().toLocaleTimeString(); document.getElementById('ft-time').textContent=new Date().toLocaleTimeString(); },1000);
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('global-token').value = DB.get('botToken') || '';
+  useTemplate('goal', document.querySelector('.tab.active'));
+  loadChannels(); loadHistory();
+});
+</script>
+</body>
+</html>

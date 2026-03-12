@@ -1,0 +1,28 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+.env
+*.log
+
+# Cache
+cache/
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific (if you want to exclude any large folders)
+# logos/     # Don't uncomment - you want logos included!
+# flags/     # Don't uncomment - you want flags included!

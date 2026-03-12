@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoPost Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c10;
+  --sf:rgba(12, 17, 24, 0.85);
+  --s2:rgba(17, 24, 32, 0.9);
+  --s3:#182030;
+  --s4:#1e2a38;
+  --br:#1d2d3f;
+  --b2:#253547;
+  --cy:#00d4ff;
+  --cg:rgba(0,212,255,.08);
+  --cb:rgba(0,212,255,.18);
+  --gn:#00e676;
+  --gg:rgba(0,230,118,.07);
+  --am:#ffab00;
+  --ag:rgba(255,171,0,.09);
+  --re:#ff3d57;
+  --rg:rgba(255,61,87,.09);
+  --pu:#c084fc;
+  --m0:#3d5060;
+  --m1:#4e6575;
+  --m2:#7a90a0;
+  --m3:#9fb0bd;
+  --tx:#d8e8f0;
+  --t2:#a8c0ce;
+  --mo:'JetBrains Mono',monospace;
+  --fn:'Inter',sans-serif;
+  --fc:'Inter',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{
+  font-family:var(--fn);
+  background:radial-gradient(circle at 20% 30%, #1a2535, #080c10);
+  color:var(--tx);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  font-size:14px
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.022) 2px,rgba(0,0,0,.022) 4px);
+  pointer-events:none;
+  z-index:9990
+}
+
+/* HEADER */
+header{
+  height:50px;
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:300;
+  gap:14px
+}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-badge{width:28px;height:28px;background:linear-gradient(135deg,#00d4ff,#0077aa);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--fc);font-size:12px;font-weight:800;color:#000;letter-spacing:-.01em}
+.logo-text{font-family:var(--fc);font-weight:700;font-size:15px;letter-spacing:.04em;color:var(--tx)}
+.logo-ver{font-family:var(--mo);font-size:8px;color:var(--m1);margin-top:3px}
+nav{display:flex;gap:2px;position:relative}
+.tab-indicator{
+  position:absolute;
+  bottom:0;
+  height:2px;
+  background:var(--cy);
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius:2px 2px 0 0
+}
+nav a{
+  padding:5px 13px;
+  border-radius:5px 5px 0 0;
+  font-size:12px;
+  font-weight:600;
+  color:var(--m2);
+  text-decoration:none;
+  border:1px solid transparent;
+  transition:all .13s;
+  letter-spacing:.02em;
+  font-family:var(--fc);
+  position:relative;
+  z-index:1
+}
+nav a:hover{color:var(--tx);background:var(--s2)}
+nav a.on{color:var(--cy);background:var(--cg)}
+.hdr-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.hpill{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-family:var(--mo);
+  font-size:9px;
+  color:var(--m2);
+  padding:4px 9px;
+  border:1px solid rgba(29,45,63,0.5);
+  border-radius:20px;
+  background:rgba(17,24,32,0.5);
+  backdrop-filter:blur(12px);
+  white-space:nowrap
+}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--m0);flex-shrink:0}
+.dot.ok{background:var(--gn);box-shadow:0 0 6px var(--gn)}
+.dot.err{background:var(--re)}
+.budget.warn{border-color:rgba(255,171,0,.4);color:var(--am)}
+.budget.crit{border-color:rgba(255,61,87,.4);color:var(--re)}
+
+/* STATUS BAR - replaces stats cards */
+.status-bar{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:8px 20px;
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(29,45,63,0.5);
+  border-radius:40px;
+  margin-bottom:12px;
+  font-size:12px;
+  width:fit-content
+}
+.status-item{
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%
+}
+.status-dot.live{background:var(--re);animation:pulse 1.5s infinite}
+.status-dot.today{background:var(--am)}
+.status-dot.leagues{background:var(--gn)}
+.status-dot.time{background:var(--cy)}
+.status-label{
+  color:var(--m1);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:0.5px
+}
+.status-value{
+  color:var(--tx);
+  font-family:var(--mo);
+  font-size:12px;
+  font-weight:600
+}
+@keyframes pulse{
+  0%{opacity:1}
+  50%{opacity:0.4}
+  100%{opacity:1}
+}
+
+/* LAYOUT */
+main{flex:1;padding:14px 20px;max-width:1360px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+
+/* WORKSPACE */
+.workspace{display:grid;grid-template-columns:1fr 365px;gap:12px;align-items:start}
+
+/* PANEL */
+.panel{
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(29,45,63,0.5);
+  border-radius:12px;
+  overflow:hidden
+}
+.phdr{padding:10px 14px;border-bottom:1px solid rgba(29,45,63,0.5);display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--s2)}
+.ptag{
+  font-family:var(--fc);
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--m2);
+  display:flex;
+  align-items:center;
+  gap:6px
+}
+.ptag::before{
+  content:'';
+  width:3px;
+  height:12px;
+  border-radius:2px;
+  background:var(--cy);
+  display:inline-block;
+  flex-shrink:0
+}
+.ptag.gn::before{background:var(--gn)}
+.ptag.am::before{background:var(--am)}
+.ptag.re::before{background:var(--re)}
+
+/* MATCH TABS */
+.tabbar{
+  display:flex;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  background:var(--bg);
+  position:relative
+}
+.tab{
+  flex:1;
+  padding:9px 8px;
+  font-size:11px;
+  font-weight:700;
+  font-family:var(--fc);
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:var(--m1);
+  transition:all .13s;
+  text-align:center;
+  letter-spacing:.04em;
+  position:relative;
+  z-index:1
+}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--cy)}
+.tc{
+  font-family:var(--mo);
+  font-size:8px;
+  padding:1px 5px;
+  border-radius:9px;
+  margin-left:4px;
+  background:var(--s3)
+}
+.tab.on .tc{background:var(--cg);color:var(--cy)}
+.hist-bar{
+  padding:10px 14px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  display:none;
+  align-items:center;
+  gap:8px;
+  background:var(--s2)
+}
+.hist-bar.on{display:flex}
+.hist-bar input{
+  flex:1;
+  background:var(--sf);
+  border:1px solid var(--b2);
+  color:var(--tx);
+  font-family:var(--mo);
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:5px;
+  outline:none;
+  color-scheme:dark
+}
+.hist-bar input:focus{border-color:var(--cy)}
+
+/* LEAGUE GROUP */
+.lg{border-bottom:1px solid rgba(29,45,63,0.5)}
+.lg:last-child{border-bottom:none}
+.lg-hdr{
+  display:flex;
+  align-items:center;
+  padding:8px 14px;
+  background:var(--s2);
+  cursor:pointer;
+  gap:8px;
+  transition:background .1s;
+  user-select:none
+}
+.lg-hdr:hover{background:var(--s3)}
+.lg-flag{
+  width:20px;
+  height:14px;
+  border-radius:2px;
+  object-fit:cover;
+  flex-shrink:0
+}
+.lg-flag-fb{
+  width:20px;
+  height:14px;
+  border-radius:2px;
+  background:var(--s4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  flex-shrink:0
+}
+.lg-name{
+  font-family:var(--fc);
+  font-size:12px;
+  font-weight:700;
+  color:var(--t2);
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  letter-spacing:.02em
+}
+.lg-acts{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.lg-rnd{
+  font-family:var(--mo);
+  font-size:8px;
+  color:var(--am);
+  padding:2px 6px;
+  border-radius:3px;
+  background:var(--ag);
+  border:1px solid rgba(255,171,0,.2);
+  white-space:nowrap
+}
+.live-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  font-family:var(--mo);
+  font-size:8px;
+  font-weight:700;
+  color:var(--re);
+  background:var(--rg);
+  border:1px solid rgba(255,61,87,.3);
+  padding:2px 6px;
+  border-radius:3px;
+  white-space:nowrap
+}
+.live-badge::before{
+  content:'';
+  width:4px;
+  height:4px;
+  background:var(--re);
+  border-radius:50%;
+  animation:bl 1.1s infinite;
+  flex-shrink:0
+}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.1}}
+.lg-tag{
+  font-family:var(--fc);
+  font-size:9px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:9px;
+  cursor:pointer;
+  border:none;
+  letter-spacing:.04em;
+  transition:all .13s;
+  background:var(--cg);
+  color:var(--cy);
+  border:1px solid rgba(0,212,255,.2)
+}
+.lg-tag:hover{background:var(--cb)}
+.lg-cnt{
+  font-family:var(--mo);
+  font-size:8px;
+  color:var(--m1);
+  background:var(--sf);
+  border:1px solid var(--br);
+  padding:1px 6px;
+  border-radius:9px
+}
+.lg-chev{font-size:9px;color:var(--m0);transition:transform .2s;flex-shrink:0}
+.lg-chev.open{transform:rotate(180deg)}
+.lg-body{display:none}
+.lg-body.open{display:block}
+
+/* MATCH ROW */
+.mrow{
+  display:grid;
+  grid-template-columns:1fr auto 1fr 36px;
+  align-items:center;
+  padding:9px 14px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  gap:8px;
+  cursor:pointer;
+  transition:background .1s;
+  position:relative
+}
+.mrow:last-child{border-bottom:none}
+.mrow:hover{background:var(--s2)}
+.mrow.sel{
+  background:var(--cg);
+  border-left:2px solid var(--cy);
+  padding-left:12px
+}
+.mrow.live-match{animation:breathe 2s infinite}
+.mrow.live-match::after{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  height:100%;
+  width:3px;
+  background:linear-gradient(to bottom, var(--re), transparent)
+}
+@keyframes breathe{
+  0%{box-shadow:0 0 0 0 rgba(255, 61, 87, 0.3)}
+  70%{box-shadow:0 0 0 6px rgba(255, 61, 87, 0)}
+  100%{box-shadow:0 0 0 0 rgba(255, 61, 87, 0)}
+}
+.mteam{display:flex;align-items:center;gap:6px;min-width:0}
+.mteam.h{flex-direction:row-reverse;text-align:right}
+.mteam.a{text-align:left}
+.tlogo{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  object-fit:contain;
+  background:var(--s3);
+  flex-shrink:0;
+  padding:1px
+}
+.tlogo-fb{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--s4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:8px;
+  font-weight:700;
+  color:var(--m2);
+  flex-shrink:0;
+  font-family:var(--mo);
+  letter-spacing:0
+}
+.tname{
+  font-size:12px;
+  font-weight:600;
+  color:var(--tx);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.msc-c{text-align:center;flex-shrink:0}
+.msc{
+  font-family:var(--mo);
+  font-size:13px;
+  font-weight:700;
+  background:var(--s3);
+  border:1px solid var(--b2);
+  padding:4px 11px;
+  border-radius:5px;
+  display:inline-block;
+  min-width:58px;
+  text-align:center;
+  white-space:nowrap;
+  line-height:1.2
+}
+.msc.live{
+  color:var(--am);
+  border-color:rgba(255,171,0,.4);
+  background:var(--ag)
+}
+.msc.ft{color:var(--m1)}
+.mmin{font-family:var(--mo);font-size:8px;margin-top:2px;text-align:center}
+.mmin.lv{color:var(--am)}
+.mmin.sc{color:var(--m1)}
+.score-updated{animation:scoreFlip 0.4s ease}
+@keyframes scoreFlip{
+  0%{transform:translateY(0);opacity:1}
+  30%{transform:translateY(-10px);opacity:0}
+  70%{transform:translateY(10px);opacity:0}
+  100%{transform:translateY(0);opacity:1}
+}
+.gchip{
+  background:none;
+  border:1px solid var(--b2);
+  color:var(--m1);
+  font-size:9px;
+  font-family:var(--fc);
+  font-weight:700;
+  letter-spacing:.06em;
+  padding:4px 5px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .13s;
+  white-space:nowrap
+}
+.gchip:hover,.mrow.sel .gchip{background:var(--cg);border-color:var(--cy);color:var(--cy)}
+.evs{
+  background:var(--s2);
+  border-top:1px solid rgba(29,45,63,0.5);
+  padding:7px 14px;
+  display:none
+}
+.evs.on{display:block}
+.ev-list{display:flex;flex-wrap:wrap;gap:4px}
+.ev{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  font-size:10px;
+  font-family:var(--mo);
+  background:var(--sf);
+  border:1px solid var(--br);
+  padding:2px 7px;
+  border-radius:4px;
+  color:var(--m2)
+}
+.ev.goal{border-color:rgba(0,230,118,.3);color:var(--gn)}
+.ev.red{border-color:rgba(255,61,87,.3);color:var(--re)}
+.ev.yellow{border-color:rgba(255,171,0,.3);color:var(--am)}
+.empty{padding:36px 14px;text-align:center;color:var(--m1)}
+.empty .ico{font-size:24px;margin-bottom:8px}
+.spin{display:inline-block;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* RIGHT COL */
+.right-col{display:flex;flex-direction:column;gap:12px;position:sticky;top:58px}
+
+/* GOAL QUEUE */
+.gqueue{
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(0,230,118,.28);
+  border-radius:12px;
+  overflow:hidden
+}
+.gq-hdr{
+  padding:10px 14px;
+  border-bottom:1px solid rgba(0,230,118,.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  background:rgba(0,230,118,.04)
+}
+.gq-title{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--fc);
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--gn)
+}
+.gq-title::before{
+  content:'';
+  width:3px;
+  height:12px;
+  border-radius:2px;
+  background:var(--gn);
+  display:inline-block
+}
+.gq-badge{
+  font-family:var(--mo);
+  font-size:8px;
+  background:var(--gn);
+  color:#000;
+  padding:1px 6px;
+  border-radius:9px;
+  font-weight:700;
+  display:none
+}
+.gq-badge.on{display:inline-block}
+.gq-clr{
+  font-family:var(--fc);
+  font-size:9px;
+  font-weight:700;
+  padding:3px 9px;
+  border-radius:4px;
+  border:1px solid rgba(0,230,118,.2);
+  background:none;
+  color:var(--gn);
+  cursor:pointer;
+  letter-spacing:.04em;
+  transition:all .13s
+}
+.gq-clr:hover{background:rgba(0,230,118,.1)}
+.gq-empty{padding:20px 14px;text-align:center;color:var(--m1);font-size:11px}
+.gq-empty .sub{font-size:10px;color:var(--m0);margin-top:3px}
+.gq-items{max-height:400px;overflow-y:auto}
+.gq-item{border-bottom:1px solid var(--br)}
+.gq-item:last-child{border-bottom:none}
+.gq-ihdr{
+  display:flex;
+  align-items:center;
+  padding:8px 12px;
+  gap:8px;
+  background:rgba(0,0,0,.2)
+}
+.gq-logos{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.gq-score-chip{
+  font-family:var(--mo);
+  font-size:11px;
+  font-weight:700;
+  color:var(--gn);
+  flex-shrink:0;
+  background:var(--gg);
+  padding:2px 8px;
+  border-radius:4px;
+  border:1px solid rgba(0,230,118,.25)
+}
+.gq-match{
+  font-size:11px;
+  font-weight:600;
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.gq-ts{
+  font-family:var(--mo);
+  font-size:8px;
+  color:var(--m1);
+  flex-shrink:0
+}
+.gq-msg{
+  padding:9px 12px;
+  font-size:11px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  color:var(--t2);
+  background:var(--s2)
+}
+.gq-acts{display:flex;gap:5px;padding:7px 12px}
+.gqbtn{
+  flex:1;
+  padding:5px;
+  border-radius:5px;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  font-family:var(--fc);
+  letter-spacing:.04em;
+  transition:all .13s
+}
+.gq-copy{background:var(--gn);color:#000}
+.gq-copy:hover{filter:brightness(1.15)}
+.gq-wa{background:#1a9e4e;color:#fff}
+.gq-wa:hover{background:#16c45e}
+.gq-dis{background:var(--s3);color:var(--m1);border:1px solid var(--br)}
+.gq-dis:hover{color:var(--re);border-color:rgba(255,61,87,.4)}
+
+/* GENERATOR */
+.gen{
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(29,45,63,0.5);
+  border-radius:12px;
+  overflow:hidden
+}
+.gen-body{padding:13px}
+.gen-empty{padding:30px 13px;text-align:center;color:var(--m1)}
+.gen-empty .ico{font-size:20px;margin-bottom:7px}
+.gen-empty p{font-size:11px;line-height:1.55;color:var(--m0)}
+
+/* match pill */
+.mpill{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:6px;
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:12px;
+  padding:12px 11px;
+  margin-bottom:12px
+}
+.mpt{display:flex;align-items:center;gap:5px;min-width:0}
+.mpt.h{flex-direction:row-reverse}
+.mp-name{font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-sc{
+  font-family:var(--mo);
+  font-size:16px;
+  font-weight:700;
+  color:var(--cy);
+  text-align:center
+}
+.mp-meta{
+  font-family:var(--mo);
+  font-size:8px;
+  color:var(--m1);
+  text-align:center;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+/* type grid */
+.sec-lbl{
+  font-family:var(--fc);
+  font-size:9px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--m1);
+  margin-bottom:6px
+}
+.type-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:5px;
+  margin-bottom:12px
+}
+.tbtn{
+  background:var(--s2);
+  border:1px solid var(--b2);
+  color:var(--m2);
+  font-size:11px;
+  font-weight:600;
+  padding:7px 4px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all .13s;
+  text-align:center;
+  font-family:var(--fn);
+  line-height:1.35
+}
+.tbtn:hover{border-color:var(--cy);color:var(--tx)}
+.tbtn.on{
+  background:var(--cg);
+  border-color:rgba(0,212,255,.35);
+  color:var(--cy)
+}
+
+/* variant row */
+.var-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:11px
+}
+.var-lbl{
+  font-family:var(--mo);
+  font-size:9px;
+  color:var(--m1)
+}
+.var-btns{display:flex;gap:3px}
+.vbtn{
+  width:24px;
+  height:24px;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+  border:1px solid var(--b2);
+  background:var(--s2);
+  color:var(--m1);
+  transition:all .13s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--mo)
+}
+.vbtn:hover{border-color:var(--cy);color:var(--tx)}
+.vbtn.on{
+  background:var(--cg);
+  border-color:var(--cy);
+  color:var(--cy)
+}
+
+.gen-btn{
+  width:100%;
+  background:var(--cy);
+  color:#000;
+  border:none;
+  padding:10px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .13s;
+  font-family:var(--fc);
+  margin-bottom:10px;
+  letter-spacing:.06em
+}
+.gen-btn:hover:not(:disabled){background:#22dfff}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.outbox{
+  background:var(--s2);
+  border:1px solid var(--br);
+  border-radius:8px;
+  padding:12px;
+  font-size:12px;
+  line-height:1.8;
+  color:var(--tx);
+  min-height:60px;
+  white-space:pre-wrap;
+  word-break:break-word;
+  display:none;
+  margin-bottom:8px;
+  font-family:var(--fn)
+}
+.outbox.on{display:block}
+
+.share-row{display:none;gap:5px}
+.share-row.on{display:flex}
+.sbtn{
+  flex:1;
+  padding:6px 4px;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  transition:all .13s;
+  font-family:var(--fc);
+  letter-spacing:.04em
+}
+.s-cp{
+  background:var(--s3);
+  color:var(--m2);
+  border:1px solid var(--b2)
+}
+.s-cp:hover{color:var(--tx);border-color:var(--cy)}
+.s-wa{background:#1a9e4e;color:#fff}
+.s-wa:hover{filter:brightness(1.1)}
+.s-tg{background:#0077b5;color:#fff}
+.s-tg:hover{filter:brightness(1.1)}
+
+/* EXPLORE */
+.explore{
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(29,45,63,0.5);
+  border-radius:12px;
+  overflow:hidden;
+  margin-top:12px
+}
+.exp-hdr{
+  padding:10px 14px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  background:var(--s2);
+  user-select:none;
+  transition:background .1s
+}
+.exp-hdr:hover{background:var(--s3)}
+.exp-chev{font-size:9px;color:var(--m0);transition:transform .2s}
+.exp-chev.open{transform:rotate(180deg)}
+.exp-body{display:none}
+.exp-body.open{display:block}
+.etabs{
+  display:flex;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  background:var(--bg)
+}
+.etab{
+  flex:1;
+  padding:8px 5px;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:var(--m1);
+  font-family:var(--fc);
+  border-bottom:2px solid transparent;
+  transition:all .13s;
+  text-align:center;
+  letter-spacing:.06em
+}
+.etab:hover{color:var(--tx)}
+.etab.on{color:var(--cy);border-bottom-color:var(--cy)}
+.epanel{display:none;padding:12px}
+.epanel.on{display:block}
+.esel{
+  width:100%;
+  background:var(--sf);
+  border:1px solid var(--b2);
+  color:var(--tx);
+  font-family:var(--fn);
+  font-size:12px;
+  padding:8px 10px;
+  border-radius:8px;
+  outline:none;
+  cursor:pointer;
+  margin-bottom:10px;
+  color-scheme:dark
+}
+.esel:focus{border-color:var(--cy)}
+.ebtn{
+  padding:8px 14px;
+  background:var(--cy);
+  color:#000;
+  border:none;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  font-family:var(--fc);
+  letter-spacing:.06em
+}
+.ebtn:hover{background:#22dfff}
+.ebtn.ghost{
+  background:var(--s2);
+  color:var(--m2);
+  border:1px solid var(--b2)
+}
+.ebtn.ghost:hover{color:var(--tx);border-color:var(--cy)}
+.erow{
+  display:flex;
+  align-items:center;
+  padding:8px 8px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  font-size:12px;
+  gap:8px;
+  cursor:pointer;
+  transition:background .1s;
+  border-radius:6px
+}
+.erow:hover{background:var(--s2)}
+.erow:last-child{border-bottom:none}
+.ename{flex:1;font-weight:500}
+.emeta{font-size:10px;color:var(--m1)}
+.etag{
+  font-size:9px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:9px;
+  background:var(--cg);
+  color:var(--cy);
+  cursor:pointer;
+  white-space:nowrap;
+  border:none;
+  font-family:var(--fc);
+  letter-spacing:.04em
+}
+.etag:hover{background:var(--cb)}
+
+/* standings */
+.stable-wrap{overflow-x:auto}
+.stable{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+  min-width:480px
+}
+.stable thead th{
+  font-family:var(--fc);
+  font-size:8px;
+  font-weight:700;
+  color:var(--m1);
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  padding:6px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  text-align:center;
+  white-space:nowrap
+}
+.stable thead th:nth-child(2){text-align:left}
+.stable td{
+  padding:7px 6px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  text-align:center;
+  font-family:var(--mo);
+  font-size:10px
+}
+.stable td:nth-child(2){
+  text-align:left;
+  font-family:var(--fn);
+  font-weight:600;
+  font-size:11px
+}
+.stable tr:last-child td{border-bottom:none}
+.stable tr:hover td{background:var(--s2)}
+.pts{font-weight:700;color:var(--cy)}
+.gf{color:var(--gn)}
+.ga{color:var(--re)}
+.stable-team{display:flex;align-items:center;gap:7px}
+.sl{
+  width:16px;
+  height:16px;
+  object-fit:contain;
+  flex-shrink:0;
+  vertical-align:middle
+}
+.sl-fb{
+  width:16px;
+  height:16px;
+  background:var(--s4);
+  border-radius:3px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:7px;
+  color:var(--m1)
+}
+.form-dots{display:flex;gap:2px;justify-content:center}
+.fd{width:6px;height:6px;border-radius:50%}
+.fd.W{background:var(--gn)}
+.fd.D{background:var(--am)}
+.fd.L{background:var(--re)}
+.stable-title{
+  font-family:var(--fc);
+  font-size:12px;
+  font-weight:700;
+  color:var(--t2);
+  margin-bottom:10px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(29,45,63,0.5);
+  letter-spacing:.04em
+}
+
+/* footer */
+footer{
+  padding:8px 20px;
+  border-top:1px solid rgba(29,45,63,0.5);
+  display:flex;
+  justify-content:space-between;
+  font-size:9px;
+  color:var(--m0);
+  font-family:var(--mo)
+}
+
+/* toast */
+#toast{
+  display:none;
+  position:fixed;
+  bottom:16px;
+  right:16px;
+  z-index:9999;
+  padding:10px 16px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  box-shadow:0 6px 28px rgba(0,0,0,.6)
+}
+
+/* bottom navigation for mobile */
+.bottom-nav{
+  display:none;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:60px;
+  background:var(--sf);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-top:1px solid rgba(29,45,63,0.5);
+  z-index:100;
+  padding:0 16px
+}
+.nav-items{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  height:100%;
+  max-width:400px;
+  margin:0 auto
+}
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  color:var(--m1);
+  font-size:10px;
+  cursor:pointer;
+  transition:color .13s
+}
+.nav-item:hover{color:var(--tx)}
+.nav-item.active{color:var(--cy)}
+.nav-item i{font-size:18px;font-style:normal}
+
+/* media queries */
+@media(max-width:1000px){
+  .workspace{grid-template-columns:1fr}
+  .right-col{position:static}
+}
+@media(max-width:600px){
+  main{padding:10px}
+  .status-bar{
+    width:100%;
+    overflow-x:auto;
+    padding:8px 12px;
+    gap:16px
+  }
+  .status-item{flex-shrink:0}
+  header{padding:0 12px}
+  nav a{padding:4px 8px}
+  .bottom-nav{display:block}
+  main{padding-bottom:70px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">
+    <div class="logo-badge">AP</div>
+    <div><div class="logo-text">AutoPost Pro</div></div>
+  </a>
+  <nav>
+    <div class="tab-indicator" id="tab-indicator" style="width:0; left:0;"></div>
+    <a href="/" class="on" id="tab-dashboard">Dashboard</a>
+    <a href="#" id="tab-manual" onclick="showManualMessage()">Manual</a>
+  </nav>
+  <div class="hdr-r">
+    <div class="hpill"><div class="dot" id="ls-dot"></div><span id="ls-txt">LiveScore</span></div>
+    <div class="hpill budget" id="budget-pill">📡 <span id="budget-txt">—/1500</span></div>
+  </div>
+</header>
+
+<main>
+  <!-- Compact status bar instead of stat cards -->
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-dot live"></span>
+      <span class="status-label">LIVE</span>
+      <span class="status-value" id="cnt-live">—</span>
+    </div>
+    <div class="status-item">
+      <span class="status-dot today"></span>
+      <span class="status-label">TODAY</span>
+      <span class="status-value" id="cnt-today">—</span>
+    </div>
+    <div class="status-item">
+      <span class="status-dot leagues"></span>
+      <span class="status-label">LEAGUES</span>
+      <span class="status-value" id="cnt-leagues">—</span>
+    </div>
+    <div class="status-item">
+      <span class="status-dot time"></span>
+      <span class="status-label">TIME</span>
+      <span class="status-value" id="clock">—</span>
+    </div>
+  </div>
+
+  <div class="workspace">
+    <!-- LEFT -->
+    <div>
+      <div class="panel">
+        <div class="phdr">
+          <div class="ptag">Fixtures &amp; Scores</div>
+          <button class="ebtn ghost" style="padding:4px 10px;font-size:10px;" onclick="loadActiveTab()">↻ Refresh</button>
+        </div>
+        <div class="tabbar" id="tabbar">
+          <button class="tab on" id="tab-live"  onclick="switchTab('live',this)">🔴 Live <span class="tc" id="tc-live">0</span></button>
+          <button class="tab"    id="tab-today" onclick="switchTab('today',this)">📅 Today <span class="tc" id="tc-today">0</span></button>
+          <button class="tab"    id="tab-hist"  onclick="switchTab('hist',this)">📆 Historical</button>
+        </div>
+        <div class="hist-bar" id="hist-bar">
+          <input type="date" id="hist-date">
+          <button class="ebtn" onclick="loadHistorical()">Load</button>
+        </div>
+        <div id="matches-panel"><div class="empty"><div class="ico spin">⚽</div><div>Loading…</div></div></div>
+      </div>
+
+      <div class="explore">
+        <div class="exp-hdr" onclick="toggleExplore()">
+          <div class="ptag gn" style="margin:0">Explore — Competitions · Standings · Teams</div>
+          <span class="exp-chev" id="exp-chev">▼</span>
+        </div>
+        <div class="exp-body" id="exp-body">
+          <div class="etabs">
+            <button class="etab on" onclick="showEtab('countries',this)">🌍 Countries</button>
+            <button class="etab"    onclick="showEtab('comps',this)">🏆 Leagues</button>
+            <button class="etab"    onclick="showEtab('standings',this)">📊 Standings</button>
+            <button class="etab"    onclick="showEtab('teams',this)">👕 Teams</button>
+          </div>
+          <div class="epanel on" id="ep-countries">
+            <button class="ebtn ghost" onclick="loadCountries()" style="width:100%;margin-bottom:10px;">Load All Countries</button>
+            <div id="country-list"></div>
+          </div>
+          <div class="epanel" id="ep-comps">
+            <select class="esel" id="country-sel" onchange="loadComps()"><option value="">All countries</option></select>
+            <div id="comp-list"><div style="font-size:11px;color:var(--m1);">Select a country or click one above.</div></div>
+          </div>
+          <div class="epanel" id="ep-standings">
+            <select class="esel" id="standings-sel" onchange="loadStandings()"><option value="">— Pick a league —</option></select>
+            <div id="standings-hint" style="font-size:11px;color:var(--m1);margin-bottom:8px;">Load the Leagues tab first.</div>
+            <div id="standings-table"></div>
+          </div>
+          <div class="epanel" id="ep-teams">
+            <select class="esel" id="teams-sel" onchange="loadTeams()"><option value="">— Pick a league —</option></select>
+            <div id="teams-hint" style="font-size:11px;color:var(--m1);margin-bottom:8px;">Load the Leagues tab first.</div>
+            <div id="teams-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col">
+
+      <!-- GOAL QUEUE -->
+      <div class="gqueue">
+        <div class="gq-hdr">
+          <div style="display:flex;align-items:center;gap:7px">
+            <div class="gq-title">⚽ Goal Alerts</div>
+            <span class="gq-badge" id="gq-badge">0</span>
+          </div>
+          <button class="gq-clr" onclick="clearQueue()">Clear all</button>
+        </div>
+        <div id="gq-list">
+          <div class="gq-empty">
+            <div>Watching for goals…</div>
+            <div class="sub">Auto-generates &amp; queues when a goal is detected on refresh</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATOR -->
+      <div class="gen">
+        <div class="phdr">
+          <div class="ptag am">Message Generator</div>
+        </div>
+        <div class="gen-body">
+          <div class="gen-empty" id="gen-empty">
+            <div class="ico">👈</div>
+            <p>Click any match on the left<br>to generate a formatted message</p>
+          </div>
+          <div id="gen-form" style="display:none;">
+            <div class="mpill">
+              <div class="mpt h" id="mp-home"></div>
+              <div>
+                <div class="mp-sc" id="mp-sc">vs</div>
+                <div class="mp-meta" id="mp-meta"></div>
+              </div>
+              <div class="mpt a" id="mp-away"></div>
+            </div>
+
+            <div class="sec-lbl">Message Type</div>
+            <div class="type-grid">
+              <button class="tbtn on" data-type="live"     onclick="setType(this)">📍<br>Live</button>
+              <button class="tbtn"    data-type="goal"     onclick="setType(this)">⚽<br>Goal</button>
+              <button class="tbtn"    data-type="halftime" onclick="setType(this)">🔔<br>Half Time</button>
+              <button class="tbtn"    data-type="fulltime" onclick="setType(this)">🏁<br>Full Time</button>
+              <button class="tbtn"    data-type="preview"  onclick="setType(this)">📋<br>Preview</button>
+              <button class="tbtn"    data-type="red"      onclick="setType(this)">🟥<br>Red Card</button>
+            </div>
+
+            <div class="var-row">
+              <span class="var-lbl">Format</span>
+              <div class="var-btns">
+                <button class="vbtn on" data-v="0" onclick="setVar(this)">1</button>
+                <button class="vbtn"    data-v="1" onclick="setVar(this)">2</button>
+                <button class="vbtn"    data-v="2" onclick="setVar(this)">3</button>
+                <button class="vbtn"    data-v="3" onclick="setVar(this)">4</button>
+              </div>
+            </div>
+
+            <button class="gen-btn" id="gen-btn" onclick="generate()">Generate Message</button>
+            <div class="outbox" id="outbox"></div>
+            <div class="share-row" id="share-row">
+              <button class="sbtn s-cp" onclick="copyMsg()">📋 Copy</button>
+              <button class="sbtn s-wa" onclick="shareWA()">WhatsApp</button>
+              <button class="sbtn s-tg" onclick="shareTG()">Telegram</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- right-col -->
+  </div><!-- workspace -->
+</main>
+
+<footer>
+  <span>AutoPost Pro v3 · LiveScore API · Fan Templates</span>
+  <span id="ft-clock">—</span>
+</footer>
+
+<!-- Bottom Navigation for Mobile -->
+<div class="bottom-nav">
+  <div class="nav-items">
+    <div class="nav-item active" onclick="switchMobileTab('dashboard')">
+      <i>🏠</i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" onclick="switchMobileTab('explore')">
+      <i>🔍</i>
+      <span>Explore</span>
+    </div>
+    <div class="nav-item" onclick="switchMobileTab('queue')">
+      <i>⚽</i>
+      <span>Goals</span>
+    </div>
+    <div class="nav-item" onclick="switchMobileTab('generator')">
+      <i>✍️</i>
+      <span>Generate</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── LOGO MAP ────────────────────────────────────────────
+const LOGOS = {
+    // Austria - Bundesliga
+    'Austria Vienna': '/static/logos/Austria - Bundesliga/Austria Vienna.png',
+    'FC Blau-Weiss Linz': '/static/logos/Austria - Bundesliga/FC Blau-Weiss Linz.png',
+    'Grazer AK 1902': '/static/logos/Austria - Bundesliga/Grazer AK 1902.png',
+    'LASK': '/static/logos/Austria - Bundesliga/LASK.png',
+    'Rapid Vienna': '/static/logos/Austria - Bundesliga/Rapid Vienna.png',
+    'Red Bull Salzburg': '/static/logos/Austria - Bundesliga/Red Bull Salzburg.png',
+    'SCR Altach': '/static/logos/Austria - Bundesliga/SCR Altach.png',
+    'SK Sturm Graz': '/static/logos/Austria - Bundesliga/SK Sturm Graz.png',
+    'SV Ried': '/static/logos/Austria - Bundesliga/SV Ried.png',
+    'TSV Hartberg': '/static/logos/Austria - Bundesliga/TSV Hartberg.png',
+    'Wolfsberger AC': '/static/logos/Austria - Bundesliga/Wolfsberger AC.png',
+    'WSG Tirol': '/static/logos/Austria - Bundesliga/WSG Tirol.png',
+
+    // Belgium - Jupiler Pro League
+    'Cercle Brugge': '/static/logos/Belgium - Jupiler Pro League/Cercle Brugge.png',
+    'Club Brugge KV': '/static/logos/Belgium - Jupiler Pro League/Club Brugge KV.png',
+    'FCV Dender EH': '/static/logos/Belgium - Jupiler Pro League/FCV Dender EH.png',
+    'KAA Gent': '/static/logos/Belgium - Jupiler Pro League/KAA Gent.png',
+    'KRC Genk': '/static/logos/Belgium - Jupiler Pro League/KRC Genk.png',
+    'KV Mechelen': '/static/logos/Belgium - Jupiler Pro League/KV Mechelen.png',
+    'KVC Westerlo': '/static/logos/Belgium - Jupiler Pro League/KVC Westerlo.png',
+    'Oud-Heverlee Leuven': '/static/logos/Belgium - Jupiler Pro League/Oud-Heverlee Leuven.png',
+    'RAAL La Louvière': '/static/logos/Belgium - Jupiler Pro League/RAAL La Louvière.png',
+    'Royal Antwerp FC': '/static/logos/Belgium - Jupiler Pro League/Royal Antwerp FC.png',
+    'Royal Charleroi SC': '/static/logos/Belgium - Jupiler Pro League/Royal Charleroi SC.png',
+    'RSC Anderlecht': '/static/logos/Belgium - Jupiler Pro League/RSC Anderlecht.png',
+    'Sint-Truidense VV': '/static/logos/Belgium - Jupiler Pro League/Sint-Truidense VV.png',
+    'Standard Liège': '/static/logos/Belgium - Jupiler Pro League/Standard Liège.png',
+    'Union Saint-Gilloise': '/static/logos/Belgium - Jupiler Pro League/Union Saint-Gilloise.png',
+    'Zulte Waregem': '/static/logos/Belgium - Jupiler Pro League/Zulte Waregem.png',
+
+    // Bulgaria - efbet Liga
+    'Arda Kardzhali': '/static/logos/Bulgaria - efbet Liga/Arda Kardzhali.png',
+    'Beroe Stara Zagora': '/static/logos/Bulgaria - efbet Liga/Beroe Stara Zagora.png',
+    'Botev Plovdiv': '/static/logos/Bulgaria - efbet Liga/Botev Plovdiv.png',
+    'Botev Vratsa': '/static/logos/Bulgaria - efbet Liga/Botev Vratsa.png',
+    'Cherno More Varna': '/static/logos/Bulgaria - efbet Liga/Cherno More Varna.png',
+    'CSKA 1948': '/static/logos/Bulgaria - efbet Liga/CSKA 1948.png',
+    'CSKA-Sofia': '/static/logos/Bulgaria - efbet Liga/CSKA-Sofia.png',
+    'Dobrudzha Dobrich': '/static/logos/Bulgaria - efbet Liga/Dobrudzha Dobrich.png',
+    'Levski Sofia': '/static/logos/Bulgaria - efbet Liga/Levski Sofia.png',
+    'Lokomotiv Plovdiv': '/static/logos/Bulgaria - efbet Liga/Lokomotiv Plovdiv.png',
+    'Lokomotiv Sofia': '/static/logos/Bulgaria - efbet Liga/Lokomotiv Sofia.png',
+    'Ludogorets Razgrad': '/static/logos/Bulgaria - efbet Liga/Ludogorets Razgrad.png',
+    'Montana': '/static/logos/Bulgaria - efbet Liga/Montana.png',
+    'Septemvri Sofia': '/static/logos/Bulgaria - efbet Liga/Septemvri Sofia.png',
+    'Slavia Sofia': '/static/logos/Bulgaria - efbet Liga/Slavia Sofia.png',
+    'Spartak Varna': '/static/logos/Bulgaria - efbet Liga/Spartak Varna.png',
+
+    // Croatia - SuperSport HNL
+    'GNK Dinamo Zagreb': '/static/logos/Croatia - SuperSport HNL/GNK Dinamo Zagreb.png',
+    'HNK Gorica': '/static/logos/Croatia - SuperSport HNL/HNK Gorica.png',
+    'HNK Hajduk Split': '/static/logos/Croatia - SuperSport HNL/HNK Hajduk Split.png',
+    'HNK Rijeka': '/static/logos/Croatia - SuperSport HNL/HNK Rijeka.png',
+    'HNK Vukovar 1991': '/static/logos/Croatia - SuperSport HNL/HNK Vukovar 1991.png',
+    'NK Istra 1961': '/static/logos/Croatia - SuperSport HNL/NK Istra 1961.png',
+    'NK Lokomotiva Zagreb': '/static/logos/Croatia - SuperSport HNL/NK Lokomotiva Zagreb.png',
+    'NK Osijek': '/static/logos/Croatia - SuperSport HNL/NK Osijek.png',
+    'NK Varazdin': '/static/logos/Croatia - SuperSport HNL/NK Varazdin.png',
+    'Slaven Belupo Koprivnica': '/static/logos/Croatia - SuperSport HNL/Slaven Belupo Koprivnica.png',
+
+    // Czech Republic - Chance Liga
+    '1.FC Slovacko': '/static/logos/Czech Republic - Chance Liga/1.FC Slovacko.png',
+    'AC Sparta Prague': '/static/logos/Czech Republic - Chance Liga/AC Sparta Prague.png',
+    'Bohemians Prague 1905': '/static/logos/Czech Republic - Chance Liga/Bohemians Prague 1905.png',
+    'FC Banik Ostrava': '/static/logos/Czech Republic - Chance Liga/FC Banik Ostrava.png',
+    'FC Hradec Kralove': '/static/logos/Czech Republic - Chance Liga/FC Hradec Kralove.png',
+    'FC Slovan Liberec': '/static/logos/Czech Republic - Chance Liga/FC Slovan Liberec.png',
+    'FC Viktoria Plzen': '/static/logos/Czech Republic - Chance Liga/FC Viktoria Plzen.png',
+    'FC Zlin': '/static/logos/Czech Republic - Chance Liga/FC Zlin.png',
+    'FK Dukla Prague': '/static/logos/Czech Republic - Chance Liga/FK Dukla Prague.png',
+    'FK Jablonec': '/static/logos/Czech Republic - Chance Liga/FK Jablonec.png',
+    'FK Mlada Boleslav': '/static/logos/Czech Republic - Chance Liga/FK Mlada Boleslav.png',
+    'FK Pardubice': '/static/logos/Czech Republic - Chance Liga/FK Pardubice.png',
+    'FK Teplice': '/static/logos/Czech Republic - Chance Liga/FK Teplice.png',
+    'MFK Karvina': '/static/logos/Czech Republic - Chance Liga/MFK Karvina.png',
+    'SK Sigma Olomouc': '/static/logos/Czech Republic - Chance Liga/SK Sigma Olomouc.png',
+    'SK Slavia Prague': '/static/logos/Czech Republic - Chance Liga/SK Slavia Prague.png',
+
+    // Denmark - Superliga
+    'Aarhus GF': '/static/logos/Denmark - Superliga/Aarhus GF.png',
+    'Bröndby IF': '/static/logos/Denmark - Superliga/Bröndby IF.png',
+    'FC Copenhagen': '/static/logos/Denmark - Superliga/FC Copenhagen.png',
+    'FC Fredericia': '/static/logos/Denmark - Superliga/FC Fredericia.png',
+    'FC Midtjylland': '/static/logos/Denmark - Superliga/FC Midtjylland.png',
+    'FC Nordsjaelland': '/static/logos/Denmark - Superliga/FC Nordsjaelland.png',
+    'Odense Boldklub': '/static/logos/Denmark - Superliga/Odense Boldklub.png',
+    'Randers FC': '/static/logos/Denmark - Superliga/Randers FC.png',
+    'Silkeborg IF': '/static/logos/Denmark - Superliga/Silkeborg IF.png',
+    'Sönderjyske': '/static/logos/Denmark - Superliga/Sönderjyske.png',
+    'Vejle Boldklub': '/static/logos/Denmark - Superliga/Vejle Boldklub.png',
+    'Viborg FF': '/static/logos/Denmark - Superliga/Viborg FF.png',
+
+    // England - Premier League
+    'AFC Bournemouth': '/static/logos/England - Premier League/AFC Bournemouth.png',
+    'Arsenal FC': '/static/logos/England - Premier League/Arsenal FC.png',
+    'Aston Villa': '/static/logos/England - Premier League/Aston Villa.png',
+    'Brentford FC': '/static/logos/England - Premier League/Brentford FC.png',
+    'Brighton & Hove Albion': '/static/logos/England - Premier League/Brighton & Hove Albion.png',
+    'Burnley FC': '/static/logos/England - Premier League/Burnley FC.png',
+    'Chelsea FC': '/static/logos/England - Premier League/Chelsea FC.png',
+    'Crystal Palace': '/static/logos/England - Premier League/Crystal Palace.png',
+    'Everton FC': '/static/logos/England - Premier League/Everton FC.png',
+    'Fulham FC': '/static/logos/England - Premier League/Fulham FC.png',
+    'Leeds United': '/static/logos/England - Premier League/Leeds United.png',
+    'Liverpool FC': '/static/logos/England - Premier League/Liverpool FC.png',
+    'Manchester City': '/static/logos/England - Premier League/Manchester City.png',
+    'Manchester United': '/static/logos/England - Premier League/Manchester United.png',
+    'Newcastle United': '/static/logos/England - Premier League/Newcastle United.png',
+    'Nottingham Forest': '/static/logos/England - Premier League/Nottingham Forest.png',
+    'Sunderland AFC': '/static/logos/England - Premier League/Sunderland AFC.png',
+    'Tottenham Hotspur': '/static/logos/England - Premier League/Tottenham Hotspur.png',
+    'West Ham United': '/static/logos/England - Premier League/West Ham United.png',
+    'Wolverhampton Wanderers': '/static/logos/England - Premier League/Wolverhampton Wanderers.png',
+
+    // France - Ligue 1
+    'AJ Auxerre': '/static/logos/France - Ligue 1/AJ Auxerre.png',
+    'Angers SCO': '/static/logos/France - Ligue 1/Angers SCO.png',
+    'AS Monaco': '/static/logos/France - Ligue 1/AS Monaco.png',
+    'FC Lorient': '/static/logos/France - Ligue 1/FC Lorient.png',
+    'FC Metz': '/static/logos/France - Ligue 1/FC Metz.png',
+    'FC Nantes': '/static/logos/France - Ligue 1/FC Nantes.png',
+    'FC Toulouse': '/static/logos/France - Ligue 1/FC Toulouse.png',
+    'Le Havre AC': '/static/logos/France - Ligue 1/Le Havre AC.png',
+    'LOSC Lille': '/static/logos/France - Ligue 1/LOSC Lille.png',
+    'OGC Nice': '/static/logos/France - Ligue 1/OGC Nice.png',
+    'Olympique Lyon': '/static/logos/France - Ligue 1/Olympique Lyon.png',
+    'Olympique Marseille': '/static/logos/France - Ligue 1/Olympique Marseille.png',
+    'Paris FC': '/static/logos/France - Ligue 1/Paris FC.png',
+    'Paris Saint-Germain': '/static/logos/France - Ligue 1/Paris Saint-Germain.png',
+    'RC Lens': '/static/logos/France - Ligue 1/RC Lens.png',
+    'RC Strasbourg Alsace': '/static/logos/France - Ligue 1/RC Strasbourg Alsace.png',
+    'Stade Brestois 29': '/static/logos/France - Ligue 1/Stade Brestois 29.png',
+    'Stade Rennais FC': '/static/logos/France - Ligue 1/Stade Rennais FC.png',
+
+    // Germany - Bundesliga
+    '1.FC Heidenheim 1846': '/static/logos/Germany - Bundesliga/1.FC Heidenheim 1846.png',
+    '1.FC Köln': '/static/logos/Germany - Bundesliga/1.FC Köln.png',
+    '1.FC Union Berlin': '/static/logos/Germany - Bundesliga/1.FC Union Berlin.png',
+    '1.FSV Mainz 05': '/static/logos/Germany - Bundesliga/1.FSV Mainz 05.png',
+    'Bayer 04 Leverkusen': '/static/logos/Germany - Bundesliga/Bayer 04 Leverkusen.png',
+    'Bayern Munich': '/static/logos/Germany - Bundesliga/Bayern Munich.png',
+    'Borussia Dortmund': '/static/logos/Germany - Bundesliga/Borussia Dortmund.png',
+    'Borussia Mönchengladbach': '/static/logos/Germany - Bundesliga/Borussia Mönchengladbach.png',
+    'Eintracht Frankfurt': '/static/logos/Germany - Bundesliga/Eintracht Frankfurt.png',
+    'FC Augsburg': '/static/logos/Germany - Bundesliga/FC Augsburg.png',
+    'FC St. Pauli': '/static/logos/Germany - Bundesliga/FC St. Pauli.png',
+    'Hamburger SV': '/static/logos/Germany - Bundesliga/Hamburger SV.png',
+    'RB Leipzig': '/static/logos/Germany - Bundesliga/RB Leipzig.png',
+    'SC Freiburg': '/static/logos/Germany - Bundesliga/SC Freiburg.png',
+    'SV Werder Bremen': '/static/logos/Germany - Bundesliga/SV Werder Bremen.png',
+    'TSG 1899 Hoffenheim': '/static/logos/Germany - Bundesliga/TSG 1899 Hoffenheim.png',
+    'VfB Stuttgart': '/static/logos/Germany - Bundesliga/VfB Stuttgart.png',
+    'VfL Wolfsburg': '/static/logos/Germany - Bundesliga/VfL Wolfsburg.png',
+
+    // Greece - Super League 1
+    'AE Kifisias': '/static/logos/Greece - Super League 1/AE Kifisias.png',
+    'AE Larisa': '/static/logos/Greece - Super League 1/AE Larisa.png',
+    'AEK Athens': '/static/logos/Greece - Super League 1/AEK Athens.png',
+    'APO Levadiakos': '/static/logos/Greece - Super League 1/APO Levadiakos.png',
+    'Aris Thessaloniki': '/static/logos/Greece - Super League 1/Aris Thessaloniki.png',
+    'Asteras Aktor': '/static/logos/Greece - Super League 1/Asteras Aktor.png',
+    'Atromitos Athens': '/static/logos/Greece - Super League 1/Atromitos Athens.png',
+    'OFI Crete FC': '/static/logos/Greece - Super League 1/OFI Crete FC.png',
+    'Olympiacos Piraeus': '/static/logos/Greece - Super League 1/Olympiacos Piraeus.png',
+    'Panathinaikos FC': '/static/logos/Greece - Super League 1/Panathinaikos FC.png',
+    'Panetolikos GFS': '/static/logos/Greece - Super League 1/Panetolikos GFS.png',
+    'Panserraikos': '/static/logos/Greece - Super League 1/Panserraikos.png',
+    'PAOK Thessaloniki': '/static/logos/Greece - Super League 1/PAOK Thessaloniki.png',
+    'Volos NPS': '/static/logos/Greece - Super League 1/Volos NPS.png',
+
+    // Israel - Ligat ha'Al
+    'Beitar Jerusalem': '/static/logos/Israel - Ligat ha\'Al/Beitar Jerusalem.png',
+    'FC Ashdod': '/static/logos/Israel - Ligat ha\'Al/FC Ashdod.png',
+    'Hapoel Beer Sheva': '/static/logos/Israel - Ligat ha\'Al/Hapoel Beer Sheva.png',
+    'Hapoel Haifa': '/static/logos/Israel - Ligat ha\'Al/Hapoel Haifa.png',
+    'Hapoel Jerusalem': '/static/logos/Israel - Ligat ha\'Al/Hapoel Jerusalem.png',
+    'Hapoel Petah Tikva': '/static/logos/Israel - Ligat ha\'Al/Hapoel Petah Tikva.png',
+    'Hapoel Tel Aviv': '/static/logos/Israel - Ligat ha\'Al/Hapoel Tel Aviv.png',
+    'Ihud Bnei Sakhnin': '/static/logos/Israel - Ligat ha\'Al/Ihud Bnei Sakhnin.png',
+    'Ironi Kiryat Shmona': '/static/logos/Israel - Ligat ha\'Al/Ironi Kiryat Shmona.png',
+    'Ironi Tiberias': '/static/logos/Israel - Ligat ha\'Al/Ironi Tiberias.png',
+    'Maccabi Bnei Reineh': '/static/logos/Israel - Ligat ha\'Al/Maccabi Bnei Reineh.png',
+    'Maccabi Haifa': '/static/logos/Israel - Ligat ha\'Al/Maccabi Haifa.png',
+    'Maccabi Netanya': '/static/logos/Israel - Ligat ha\'Al/Maccabi Netanya.png',
+    'Maccabi Tel Aviv': '/static/logos/Israel - Ligat ha\'Al/Maccabi Tel Aviv.png',
+
+    // Italy - Serie A
+    'AC Milan': '/static/logos/Italy - Serie A/AC Milan.png',
+    'ACF Fiorentina': '/static/logos/Italy - Serie A/ACF Fiorentina.png',
+    'AS Roma': '/static/logos/Italy - Serie A/AS Roma.png',
+    'Atalanta BC': '/static/logos/Italy - Serie A/Atalanta BC.png',
+    'Bologna FC 1909': '/static/logos/Italy - Serie A/Bologna FC 1909.png',
+    'Cagliari Calcio': '/static/logos/Italy - Serie A/Cagliari Calcio.png',
+    'Como 1907': '/static/logos/Italy - Serie A/Como 1907.png',
+    'Genoa CFC': '/static/logos/Italy - Serie A/Genoa CFC.png',
+    'Hellas Verona': '/static/logos/Italy - Serie A/Hellas Verona.png',
+    'Inter Milan': '/static/logos/Italy - Serie A/Inter Milan.png',
+    'Juventus FC': '/static/logos/Italy - Serie A/Juventus FC.png',
+    'Parma Calcio 1913': '/static/logos/Italy - Serie A/Parma Calcio 1913.png',
+    'Pisa Sporting Club': '/static/logos/Italy - Serie A/Pisa Sporting Club.png',
+    'SS Lazio': '/static/logos/Italy - Serie A/SS Lazio.png',
+    'SSC Napoli': '/static/logos/Italy - Serie A/SSC Napoli.png',
+    'Torino FC': '/static/logos/Italy - Serie A/Torino FC.png',
+    'Udinese Calcio': '/static/logos/Italy - Serie A/Udinese Calcio.png',
+    'US Cremonese': '/static/logos/Italy - Serie A/US Cremonese.png',
+    'US Lecce': '/static/logos/Italy - Serie A/US Lecce.png',
+    'US Sassuolo': '/static/logos/Italy - Serie A/US Sassuolo.png',
+
+    // Netherlands - Eredivisie
+    'Ajax Amsterdam': '/static/logos/Netherlands - Eredivisie/Ajax Amsterdam.png',
+    'AZ Alkmaar': '/static/logos/Netherlands - Eredivisie/AZ Alkmaar.png',
+    'Excelsior Rotterdam': '/static/logos/Netherlands - Eredivisie/Excelsior Rotterdam.png',
+    'FC Groningen': '/static/logos/Netherlands - Eredivisie/FC Groningen.png',
+    'FC Utrecht': '/static/logos/Netherlands - Eredivisie/FC Utrecht.png',
+    'FC Volendam': '/static/logos/Netherlands - Eredivisie/FC Volendam.png',
+    'Feyenoord Rotterdam': '/static/logos/Netherlands - Eredivisie/Feyenoord Rotterdam.png',
+    'Fortuna Sittard': '/static/logos/Netherlands - Eredivisie/Fortuna Sittard.png',
+    'Go Ahead Eagles': '/static/logos/Netherlands - Eredivisie/Go Ahead Eagles.png',
+    'Heracles Almelo': '/static/logos/Netherlands - Eredivisie/Heracles Almelo.png',
+    'NAC Breda': '/static/logos/Netherlands - Eredivisie/NAC Breda.png',
+    'NEC Nijmegen': '/static/logos/Netherlands - Eredivisie/NEC Nijmegen.png',
+    'PEC Zwolle': '/static/logos/Netherlands - Eredivisie/PEC Zwolle.png',
+    'PSV Eindhoven': '/static/logos/Netherlands - Eredivisie/PSV Eindhoven.png',
+    'SC Heerenveen': '/static/logos/Netherlands - Eredivisie/SC Heerenveen.png',
+    'SC Telstar': '/static/logos/Netherlands - Eredivisie/SC Telstar.png',
+    'Sparta Rotterdam': '/static/logos/Netherlands - Eredivisie/Sparta Rotterdam.png',
+    'Twente Enschede FC': '/static/logos/Netherlands - Eredivisie/Twente Enschede FC.png',
+
+    // Norway - Eliteserien
+    'Bryne FK': '/static/logos/Norway - Eliteserien/Bryne FK.png',
+    'FK BodøGlimt': '/static/logos/Norway - Eliteserien/FK BodøGlimt.png',
+    'FK Haugesund': '/static/logos/Norway - Eliteserien/FK Haugesund.png',
+    'Fredrikstad FK': '/static/logos/Norway - Eliteserien/Fredrikstad FK.png',
+    'Hamarkameratene': '/static/logos/Norway - Eliteserien/Hamarkameratene.png',
+    'KFUM-Kameratene Oslo': '/static/logos/Norway - Eliteserien/KFUM-Kameratene Oslo.png',
+    'Kristiansund BK': '/static/logos/Norway - Eliteserien/Kristiansund BK.png',
+    'Molde FK': '/static/logos/Norway - Eliteserien/Molde FK.png',
+    'Rosenborg BK': '/static/logos/Norway - Eliteserien/Rosenborg BK.png',
+    'Sandefjord Fotball': '/static/logos/Norway - Eliteserien/Sandefjord Fotball.png',
+    'Sarpsborg 08 FF': '/static/logos/Norway - Eliteserien/Sarpsborg 08 FF.png',
+    'SK Brann': '/static/logos/Norway - Eliteserien/SK Brann.png',
+    'Strømsgodset IF': '/static/logos/Norway - Eliteserien/Strømsgodset IF.png',
+    'Tromsø IL': '/static/logos/Norway - Eliteserien/Tromsø IL.png',
+    'Viking FK': '/static/logos/Norway - Eliteserien/Viking FK.png',
+    'Vålerenga Fotball Elite': '/static/logos/Norway - Eliteserien/Vålerenga Fotball Elite.png',
+
+    // Poland - PKO BP Ekstraklasa
+    'Arka Gdynia': '/static/logos/Poland - PKO BP Ekstraklasa/Arka Gdynia.png',
+    'Bruk-Bet Termalica Nieciecza': '/static/logos/Poland - PKO BP Ekstraklasa/Bruk-Bet Termalica Nieciecza.png',
+    'Cracovia': '/static/logos/Poland - PKO BP Ekstraklasa/Cracovia.png',
+    'GKS Katowice': '/static/logos/Poland - PKO BP Ekstraklasa/GKS Katowice.png',
+    'Górnik Zabrze': '/static/logos/Poland - PKO BP Ekstraklasa/Górnik Zabrze.png',
+    'Jagiellonia Bialystok': '/static/logos/Poland - PKO BP Ekstraklasa/Jagiellonia Bialystok.png',
+    'Korona Kielce': '/static/logos/Poland - PKO BP Ekstraklasa/Korona Kielce.png',
+    'Lech Poznan': '/static/logos/Poland - PKO BP Ekstraklasa/Lech Poznan.png',
+    'Lechia Gdansk': '/static/logos/Poland - PKO BP Ekstraklasa/Lechia Gdansk.png',
+    'Legia Warszawa': '/static/logos/Poland - PKO BP Ekstraklasa/Legia Warszawa.png',
+    'Motor Lublin': '/static/logos/Poland - PKO BP Ekstraklasa/Motor Lublin.png',
+    'Piast Gliwice': '/static/logos/Poland - PKO BP Ekstraklasa/Piast Gliwice.png',
+    'Pogon Szczecin': '/static/logos/Poland - PKO BP Ekstraklasa/Pogon Szczecin.png',
+    'Radomiak Radom': '/static/logos/Poland - PKO BP Ekstraklasa/Radomiak Radom.png',
+    'Raków Częstochowa': '/static/logos/Poland - PKO BP Ekstraklasa/Raków Częstochowa.png',
+    'Widzew Lodz': '/static/logos/Poland - PKO BP Ekstraklasa/Widzew Lodz.png',
+    'Wisla Plock': '/static/logos/Poland - PKO BP Ekstraklasa/Wisla Plock.png',
+    'Zaglebie Lubin': '/static/logos/Poland - PKO BP Ekstraklasa/Zaglebie Lubin.png',
+
+    // Portugal - Liga Portugal
+    'Avs Futebol': '/static/logos/Portugal - Liga Portugal/Avs Futebol.png',
+    'Casa Pia AC': '/static/logos/Portugal - Liga Portugal/Casa Pia AC.png',
+    'CD Nacional': '/static/logos/Portugal - Liga Portugal/CD Nacional.png',
+    'CD Santa Clara': '/static/logos/Portugal - Liga Portugal/CD Santa Clara.png',
+    'CD Tondela': '/static/logos/Portugal - Liga Portugal/CD Tondela.png',
+    'CF Estrela Amadora': '/static/logos/Portugal - Liga Portugal/CF Estrela Amadora.png',
+    'FC Alverca': '/static/logos/Portugal - Liga Portugal/FC Alverca.png',
+    'FC Arouca': '/static/logos/Portugal - Liga Portugal/FC Arouca.png',
+    'FC Famalicão': '/static/logos/Portugal - Liga Portugal/FC Famalicão.png',
+    'FC Porto': '/static/logos/Portugal - Liga Portugal/FC Porto.png',
+    'GD Estoril Praia': '/static/logos/Portugal - Liga Portugal/GD Estoril Praia.png',
+    'Gil Vicente FC': '/static/logos/Portugal - Liga Portugal/Gil Vicente FC.png',
+    'Moreirense FC': '/static/logos/Portugal - Liga Portugal/Moreirense FC.png',
+    'Rio Ave FC': '/static/logos/Portugal - Liga Portugal/Rio Ave FC.png',
+    'SC Braga': '/static/logos/Portugal - Liga Portugal/SC Braga.png',
+    'SL Benfica': '/static/logos/Portugal - Liga Portugal/SL Benfica.png',
+    'Sporting CP': '/static/logos/Portugal - Liga Portugal/Sporting CP.png',
+    'Vitória Guimarães SC': '/static/logos/Portugal - Liga Portugal/Vitória Guimarães SC.png',
+
+    // Romania - SuperLiga
+    'ACSC FC Arges': '/static/logos/Romania - SuperLiga/ACSC FC Arges.png',
+    'AFC Unirea 04 Slobozia': '/static/logos/Romania - SuperLiga/AFC Unirea 04 Slobozia.png',
+    'AFK Csikszereda Miercurea Ciuc': '/static/logos/Romania - SuperLiga/AFK Csikszereda Miercurea Ciuc.png',
+    'CFR Cluj': '/static/logos/Romania - SuperLiga/CFR Cluj.png',
+    'CS Universitatea Craiova': '/static/logos/Romania - SuperLiga/CS Universitatea Craiova.png',
+    'FC Botosani': '/static/logos/Romania - SuperLiga/FC Botosani.png',
+    'FC Dinamo 1948': '/static/logos/Romania - SuperLiga/FC Dinamo 1948.png',
+    'FC Hermannstadt': '/static/logos/Romania - SuperLiga/FC Hermannstadt.png',
+    'FC Metaloglobus Bucharest': '/static/logos/Romania - SuperLiga/FC Metaloglobus Bucharest.png',
+    'FC Rapid 1923': '/static/logos/Romania - SuperLiga/FC Rapid 1923.png',
+    'FC Universitatea Cluj': '/static/logos/Romania - SuperLiga/FC Universitatea Cluj.png',
+    'FCSB': '/static/logos/Romania - SuperLiga/FCSB.png',
+    'FCV Farul Constanta': '/static/logos/Romania - SuperLiga/FCV Farul Constanta.png',
+    'Petrolul Ploiesti': '/static/logos/Romania - SuperLiga/Petrolul Ploiesti.png',
+    'SC Otelul Galati': '/static/logos/Romania - SuperLiga/SC Otelul Galati.png',
+    'UTA Arad': '/static/logos/Romania - SuperLiga/UTA Arad.png',
+
+    // Russia - Premier Liga
+    'Akhmat Grozny': '/static/logos/Russia - Premier Liga/Akhmat Grozny.png',
+    'Akron Togliatti': '/static/logos/Russia - Premier Liga/Akron Togliatti.png',
+    'Baltika Kaliningrad': '/static/logos/Russia - Premier Liga/Baltika Kaliningrad.png',
+    'CSKA Moscow': '/static/logos/Russia - Premier Liga/CSKA Moscow.png',
+    'Dinamo Makhachkala': '/static/logos/Russia - Premier Liga/Dinamo Makhachkala.png',
+    'Dynamo Moscow': '/static/logos/Russia - Premier Liga/Dynamo Moscow.png',
+    'FC Krasnodar': '/static/logos/Russia - Premier Liga/FC Krasnodar.png',
+    'FC Pari Nizhniy Novgorod': '/static/logos/Russia - Premier Liga/FC Pari Nizhniy Novgorod.png',
+    'FC Rostov': '/static/logos/Russia - Premier Liga/FC Rostov.png',
+    'FC Sochi': '/static/logos/Russia - Premier Liga/FC Sochi.png',
+    'Krylya Sovetov Samara': '/static/logos/Russia - Premier Liga/Krylya Sovetov Samara.png',
+    'Lokomotiv Moscow': '/static/logos/Russia - Premier Liga/Lokomotiv Moscow.png',
+    'Rubin Kazan': '/static/logos/Russia - Premier Liga/Rubin Kazan.png',
+    'Spartak Moscow': '/static/logos/Russia - Premier Liga/Spartak Moscow.png',
+    'Torpedo Moscow': '/static/logos/Russia - Premier Liga/Torpedo Moscow.png',
+    'Zenit St. Petersburg': '/static/logos/Russia - Premier Liga/Zenit St. Petersburg.png',
+
+    // Scotland - Scottish Premiership
+    'Aberdeen FC': '/static/logos/Scotland - Scottish Premiership/Aberdeen FC.png',
+    'Celtic FC': '/static/logos/Scotland - Scottish Premiership/Celtic FC.png',
+    'Dundee FC': '/static/logos/Scotland - Scottish Premiership/Dundee FC.png',
+    'Dundee United FC': '/static/logos/Scotland - Scottish Premiership/Dundee United FC.png',
+    'Falkirk FC': '/static/logos/Scotland - Scottish Premiership/Falkirk FC.png',
+    'Heart of Midlothian FC': '/static/logos/Scotland - Scottish Premiership/Heart of Midlothian FC.png',
+    'Hibernian FC': '/static/logos/Scotland - Scottish Premiership/Hibernian FC.png',
+    'Kilmarnock FC': '/static/logos/Scotland - Scottish Premiership/Kilmarnock FC.png',
+    'Livingston FC': '/static/logos/Scotland - Scottish Premiership/Livingston FC.png',
+    'Motherwell FC': '/static/logos/Scotland - Scottish Premiership/Motherwell FC.png',
+    'Rangers FC': '/static/logos/Scotland - Scottish Premiership/Rangers FC.png',
+    'St. Mirren FC': '/static/logos/Scotland - Scottish Premiership/St. Mirren FC.png',
+
+    // Serbia - Super liga Srbije
+    'FK Cukaricki': '/static/logos/Serbia - Super liga Srbije/FK Cukaricki.png',
+    'FK IMT Belgrad': '/static/logos/Serbia - Super liga Srbije/FK IMT Belgrad.png',
+    'FK Javor-Matis Ivanjica': '/static/logos/Serbia - Super liga Srbije/FK Javor-Matis Ivanjica.png',
+    'FK Mladost Lucani': '/static/logos/Serbia - Super liga Srbije/FK Mladost Lucani.png',
+    'FK Napredak Krusevac': '/static/logos/Serbia - Super liga Srbije/FK Napredak Krusevac.png',
+    'FK Novi Pazar': '/static/logos/Serbia - Super liga Srbije/FK Novi Pazar.png',
+    'FK Partizan Belgrade': '/static/logos/Serbia - Super liga Srbije/FK Partizan Belgrade.png',
+    'FK Radnicki 1923 Kragujevac': '/static/logos/Serbia - Super liga Srbije/FK Radnicki 1923 Kragujevac.png',
+    'FK Radnicki Nis': '/static/logos/Serbia - Super liga Srbije/FK Radnicki Nis.png',
+    'FK Radnik Surdulica': '/static/logos/Serbia - Super liga Srbije/FK Radnik Surdulica.png',
+    'FK Spartak Subotica': '/static/logos/Serbia - Super liga Srbije/FK Spartak Subotica.png',
+    'FK TSC Backa Topola': '/static/logos/Serbia - Super liga Srbije/FK TSC Backa Topola.png',
+    'FK Vojvodina Novi Sad': '/static/logos/Serbia - Super liga Srbije/FK Vojvodina Novi Sad.png',
+    'OFK Beograd': '/static/logos/Serbia - Super liga Srbije/OFK Beograd.png',
+    'Red Star Belgrade': '/static/logos/Serbia - Super liga Srbije/Red Star Belgrade.png',
+    'Zeleznicar Pancevo': '/static/logos/Serbia - Super liga Srbije/Zeleznicar Pancevo.png',
+
+    // Spain - LaLiga (FIXED)
+    'Athletic Bilbao': '/static/logos/Spain - LaLiga/Athletic Bilbao.png',
+    'Atlético de Madrid': '/static/logos/Spain - LaLiga/Atlético de Madrid.png',
+    'CA Osasuna': '/static/logos/Spain - LaLiga/CA Osasuna.png',
+    'Celta de Vigo': '/static/logos/Spain - LaLiga/Celta de Vigo.png',
+    'Deportivo Alavés': '/static/logos/Spain - LaLiga/Deportivo Alavés.png',
+    'Elche CF': '/static/logos/Spain - LaLiga/Elche CF.png',
+    'FC Barcelona': '/static/logos/Spain - LaLiga/FC Barcelona.png',
+    'Getafe CF': '/static/logos/Spain - LaLiga/Getafe CF.png',
+    'Girona FC': '/static/logos/Spain - LaLiga/Girona FC.png',
+    'Levante UD': '/static/logos/Spain - LaLiga/Levante UD.png',
+    'Rayo Vallecano': '/static/logos/Spain - LaLiga/Rayo Vallecano.png',
+    'RCD Espanyol Barcelona': '/static/logos/Spain - LaLiga/RCD Espanyol Barcelona.png',
+    'RCD Mallorca': '/static/logos/Spain - LaLiga/RCD Mallorca.png',
+    'Real Betis Balompié': '/static/logos/Spain - LaLiga/Real Betis Balompié.png',
+    'Real Madrid': '/static/logos/Spain - LaLiga/Real Madrid.png',
+    'Real Oviedo': '/static/logos/Spain - LaLiga/Real Oviedo.png',
+    'Real Sociedad': '/static/logos/Spain - LaLiga/Real Sociedad.png',
+    'Sevilla FC': '/static/logos/Spain - LaLiga/Sevilla FC.png',
+    'Valencia CF': '/static/logos/Spain - LaLiga/Valencia CF.png',
+    'Villarreal CF': '/static/logos/Spain - LaLiga/Villarreal CF.png',
+
+    // Sweden - Allsvenskan
+    'AIK': '/static/logos/Sweden - Allsvenskan/AIK.png',
+    'BK Häcken': '/static/logos/Sweden - Allsvenskan/BK Häcken.png',
+    'Degerfors IF': '/static/logos/Sweden - Allsvenskan/Degerfors IF.png',
+    'Djurgårdens IF': '/static/logos/Sweden - Allsvenskan/Djurgårdens IF.png',
+    'GAIS': '/static/logos/Sweden - Allsvenskan/GAIS.png',
+    'Halmstads BK': '/static/logos/Sweden - Allsvenskan/Halmstads BK.png',
+    'Hammarby IF': '/static/logos/Sweden - Allsvenskan/Hammarby IF.png',
+    'IF Brommapojkarna': '/static/logos/Sweden - Allsvenskan/IF Brommapojkarna.png',
+    'IF Elfsborg': '/static/logos/Sweden - Allsvenskan/IF Elfsborg.png',
+    'IFK Göteborg': '/static/logos/Sweden - Allsvenskan/IFK Göteborg.png',
+    'IFK Norrköping': '/static/logos/Sweden - Allsvenskan/IFK Norrköping.png',
+    'IFK Värnamo': '/static/logos/Sweden - Allsvenskan/IFK Värnamo.png',
+    'IK Sirius': '/static/logos/Sweden - Allsvenskan/IK Sirius.png',
+    'Malmö FF': '/static/logos/Sweden - Allsvenskan/Malmö FF.png',
+    'Mjällby AIF': '/static/logos/Sweden - Allsvenskan/Mjällby AIF.png',
+    'Östers IF': '/static/logos/Sweden - Allsvenskan/Östers IF.png',
+
+    // Bahrain - Premiere League
+    'A\'Ali': '/static/logos/Bahrain - Premiere League/A\'Ali.png',
+    'Al Ahli Club (Manama)': '/static/logos/Bahrain - Premiere League/Al Ahli Club (Manama).png',
+    'Al Khalidiyah': '/static/logos/Bahrain - Premiere League/Al Khalidiyah.png',
+    'Al Riffa': '/static/logos/Bahrain - Premiere League/Al Riffa.png',
+    'Bahrain SC': '/static/logos/Bahrain - Premiere League/Bahrain SC.png',
+    'Malkiya Club': '/static/logos/Bahrain - Premiere League/Malkiya Club.png',
+    
+    // Saudi Arabia - Premier League
+    'AL Ahli Jordan': '/static/logos/Saudi Arabia - Premier League/AL Ahli Jordan.png',
+    'AL Salt': '/static/logos/Jordan - Premier League/AL Salt.png',
+    'Al Hazm': '/static/logos/Saudi Arabia - Premier League/Al Hazm.png',
+    'Al Kahrabaa': '/static/logos/Iraq - Premier League/Al Kahrabaa.png',
+    'Al Kholood': '/static/logos/Saudi Arabia - Premier League/Al Kholood.png',
+    'Al Najma': '/static/logos/Bahrain - Premier League/Al Najma.png',
+    'Al Talaba': '/static/logos/Iraq - Premier League/Al Talaba.png',
+    'Al-Taawon': '/static/logos/Saudi Arabia - Premier League/Al-Taawon.png',
+    'Baghdad FC': '/static/logos/Iraq - Premier League/Baghdad FC.png',
+    'Dhamk': '/static/logos/Saudi Arabia - Premier League/Dhamk.png',
+    'NEOM': '/static/logos/Saudi Arabia - Premier League/NEOM.png',
+    'Newroz': '/static/logos/Iraq - Premier League/Newroz.png',
+    'Tanzania Prisons': '/static/logos/Tanzania - Premier League/Tanzania Prisons.png',
+    'Young Africans': '/static/logos/Tanzania - Premier League/Young Africans.png',
+
+    // Oman - Professional League
+    'AL Nassr FC': '/static/logos/Oman - Professional League/AL Nassr FC.png',
+    'Al Khaboora': '/static/logos/Oman - Professional League/Al Khaboora.png',
+    'Al Nahda': '/static/logos/Oman - Professional League/Al Nahda.png',
+    'Al-seeb': '/static/logos/Oman - Professional League/Al-seeb.png',
+
+    // UAE Pro League
+    'AL Wahda': '/static/logos/UAE - Pro League/AL Wahda.png',
+    'Al-Ain': '/static/logos/UAE - Pro League/Al-Ain.png',
+    'Al-Wasl': '/static/logos/UAE - Pro League/Al-Wasl.png',
+    'Bani Yas': '/static/logos/UAE - Pro League/Bani Yas.png',
+
+    // Saudi Arabia - Division 1
+    'Al Batin': '/static/logos/Saudi Arabia - Division 1/Al Batin.png',
+    'Al Draih': '/static/logos/Saudi Arabia - Division 1/Al Draih.png',
+
+    // Qatar Stars League
+    'Al Gharafa SC': '/static/logos/Qatar - Stars League/Al Gharafa SC.png',
+    'Al Shamal': '/static/logos/Qatar - Stars League/Al Shamal.png',
+    'Al Wakrah': '/static/logos/Qatar - Stars League/Al Wakrah.png',
+    'Al-Duhail SC': '/static/logos/Qatar - Stars League/Al-Duhail SC.png',
+    'Al-Sailiya SC': '/static/logos/Qatar - Stars League/Al-Sailiya SC.png',
+    'Qatar SC': '/static/logos/Qatar - Stars League/Qatar SC.png',
+
+    // Indonesia - Liga 1
+    'Bali United Pusam': '/static/logos/Indonesia - Liga 1/Bali United Pusam.png',
+    'Persis Solo': '/static/logos/Indonesia - Liga 1/Persis Solo.png',
+
+    // Turkey - 1st Lig
+    'Bandirmaspor': '/static/logos/Turkey - 1st Lig/Bandirmaspor.png',
+    'Esenler Erokspor': '/static/logos/Turkey - 1st Lig/Esenler Erokspor.png',
+
+    // Georgia - Erovnuli Liga
+    'Dila Gori': '/static/logos/Georgia - Erovnuli Liga/Dila Gori.png',
+    'Torpedo Kutaisi': '/static/logos/Georgia - Erovnuli Liga/Torpedo Kutaisi.png',
+    'Dinamo Batumi': '/static/logos/Georgia - Erovnuli Liga/Dinamo Batumi.png',
+    'Samgurali': '/static/logos/Georgia - Erovnuli Liga/Samgurali.png',
+
+    // Belgium - Challenger Pro League
+    'Francs Borains': '/static/logos/Belgium - Challenger Pro League/Francs Borains.png',
+    'KSC Lokeren Temse': '/static/logos/Belgium - Challenger Pro League/KSC Lokeren Temse.png',
+
+    // Slovenia - PrvaLiga
+    'NK Bravo': '/static/logos/Slovenia - PrvaLiga/NK Bravo.png',
+    'Nk Nafta Lendava': '/static/logos/Slovenia - PrvaLiga/Nk Nafta Lendava.png',
+
+    // Nigeria - NPFL
+    'Rivers United FC': '/static/logos/Nigeria - NPFL/Rivers United FC.png',
+    'Shooting Stars': '/static/logos/Nigeria - NPFL/Shooting Stars FC.png',
+
+    // Switzerland - Super League
+    'BSC Young Boys': '/static/logos/Switzerland - Super League/BSC Young Boys.png',
+    'FC Basel 1893': '/static/logos/Switzerland - Super League/FC Basel 1893.png',
+    'FC Lausanne-Sport': '/static/logos/Switzerland - Super League/FC Lausanne-Sport.png',
+    'FC Lugano': '/static/logos/Switzerland - Super League/FC Lugano.png',
+    'FC Luzern': '/static/logos/Switzerland - Super League/FC Luzern.png',
+    'FC Sion': '/static/logos/Switzerland - Super League/FC Sion.png',
+    'FC St. Gallen 1879': '/static/logos/Switzerland - Super League/FC St. Gallen 1879.png',
+    'FC Thun': '/static/logos/Switzerland - Super League/FC Thun.png',
+    'FC Winterthur': '/static/logos/Switzerland - Super League/FC Winterthur.png',
+    'FC Zürich': '/static/logos/Switzerland - Super League/FC Zürich.png',
+    'Grasshopper Club Zurich': '/static/logos/Switzerland - Super League/Grasshopper Club Zurich.png',
+    'Servette FC': '/static/logos/Switzerland - Super League/Servette FC.png',
+
+    // Türkiye - Süper Lig (FIXED)
+    'Alanyaspor': '/static/logos/Türkiye - Süper Lig/Alanyaspor.png',
+    'Antalyaspor': '/static/logos/Türkiye - Süper Lig/Antalyaspor.png',
+    'Basaksehir FK': '/static/logos/Türkiye - Süper Lig/Basaksehir FK.png',
+    'Besiktas JK': '/static/logos/Türkiye - Süper Lig/Besiktas JK.png',
+    'Caykur Rizespor': '/static/logos/Türkiye - Süper Lig/Caykur Rizespor.png',
+    'Eyüpspor': '/static/logos/Türkiye - Süper Lig/Eyüpspor.png',
+    'Fatih Karagümrük': '/static/logos/Türkiye - Süper Lig/Fatih Karagümrük.png',
+    'Fenerbahce': '/static/logos/Türkiye - Süper Lig/Fenerbahce.png',
+    'Galatasaray': '/static/logos/Türkiye - Süper Lig/Galatasaray.png',
+    'Gaziantep FK': '/static/logos/Türkiye - Süper Lig/Gaziantep FK.png',
+    'Genclerbirligi Ankara': '/static/logos/Türkiye - Süper Lig/Genclerbirligi Ankara.png',
+    'Göztepe': '/static/logos/Türkiye - Süper Lig/Göztepe.png',
+    'Kasimpasa': '/static/logos/Türkiye - Süper Lig/Kasimpasa.png',
+    'Kayserispor': '/static/logos/Türkiye - Süper Lig/Kayserispor.png',
+    'Kocaelispor': '/static/logos/Türkiye - Süper Lig/Kocaelispor.png',
+    'Konyaspor': '/static/logos/Türkiye - Süper Lig/Konyaspor.png',
+    'Samsunspor': '/static/logos/Türkiye - Süper Lig/Samsunspor.png',
+    'Trabzonspor': '/static/logos/Türkiye - Süper Lig/Trabzonspor.png',
+
+    // Ukraine - Premier Liga
+    'Dynamo Kyiv': '/static/logos/Ukraine - Premier Liga/Dynamo Kyiv.png',
+    'Epicentr Kamyanets-Podilskyi': '/static/logos/Ukraine - Premier Liga/Epicentr Kamyanets-Podilskyi.png',
+    'FC Kudrivka': '/static/logos/Ukraine - Premier Liga/FC Kudrivka.png',
+    'FC Oleksandriya': '/static/logos/Ukraine - Premier Liga/FC Oleksandriya.png',
+    'Karpaty Lviv': '/static/logos/Ukraine - Premier Liga/Karpaty Lviv.png',
+    'Kolos Kovalivka': '/static/logos/Ukraine - Premier Liga/Kolos Kovalivka.png',
+    'Kryvbas Kryvyi Rig': '/static/logos/Ukraine - Premier Liga/Kryvbas Kryvyi Rig.png',
+    'LNZ Cherkasy': '/static/logos/Ukraine - Premier Liga/LNZ Cherkasy.png',
+    'Metalist 1925 Kharkiv': '/static/logos/Ukraine - Premier Liga/Metalist 1925 Kharkiv.png',
+    'NK Veres Rivne': '/static/logos/Ukraine - Premier Liga/NK Veres Rivne.png',
+    'Obolon Kyiv': '/static/logos/Ukraine - Premier Liga/Obolon Kyiv.png',
+    'Polissya Zhytomyr': '/static/logos/Ukraine - Premier Liga/Polissya Zhytomyr.png',
+    'Rukh Lviv': '/static/logos/Ukraine - Premier Liga/Rukh Lviv.png',
+    'SC Poltava': '/static/logos/Ukraine - Premier Liga/SC Poltava.png',
+    'Shakhtar Donetsk': '/static/logos/Ukraine - Premier Liga/Shakhtar Donetsk.png',
+    'Zorya Lugansk': '/static/logos/Ukraine - Premier Liga/Zorya Lugansk.png'
+};
+
+// ─── FLAG MAP ────────────────────────────────────────────
+const FLAG = {
+    // Country codes
+    'ad': '/static/flags/ad.png', 'ae': '/static/flags/ae.png', 'af': '/static/flags/af.png',
+    'ag': '/static/flags/ag.png', 'ai': '/static/flags/ai.png', 'al': '/static/flags/al.png',
+    'am': '/static/flags/am.png', 'ao': '/static/flags/ao.png', 'aq': '/static/flags/aq.png',
+    'ar': '/static/flags/ar.png', 'as': '/static/flags/as.png', 'at': '/static/flags/at.png',
+    'au': '/static/flags/au.png', 'aw': '/static/flags/aw.png', 'ax': '/static/flags/ax.png',
+    'az': '/static/flags/az.png', 'ba': '/static/flags/ba.png', 'bb': '/static/flags/bb.png',
+    'bd': '/static/flags/bd.png', 'be': '/static/flags/be.png', 'bf': '/static/flags/bf.png',
+    'bg': '/static/flags/bg.png', 'bh': '/static/flags/bh.png', 'bi': '/static/flags/bi.png',
+    'bj': '/static/flags/bj.png', 'bl': '/static/flags/bl.png', 'bm': '/static/flags/bm.png',
+    'bn': '/static/flags/bn.png', 'bo': '/static/flags/bo.png', 'bq': '/static/flags/bq.png',
+    'br': '/static/flags/br.png', 'bs': '/static/flags/bs.png', 'bt': '/static/flags/bt.png',
+    'bv': '/static/flags/bv.png', 'bw': '/static/flags/bw.png', 'by': '/static/flags/by.png',
+    'bz': '/static/flags/bz.png', 'ca': '/static/flags/ca.png', 'cc': '/static/flags/cc.png',
+    'cd': '/static/flags/cd.png', 'cf': '/static/flags/cf.png', 'cg': '/static/flags/cg.png',
+    'ch': '/static/flags/ch.png', 'ci': '/static/flags/ci.png', 'ck': '/static/flags/ck.png',
+    'cl': '/static/flags/cl.png', 'cm': '/static/flags/cm.png', 'cn': '/static/flags/cn.png',
+    'co': '/static/flags/co.png', 'cr': '/static/flags/cr.png', 'cu': '/static/flags/cu.png',
+    'cv': '/static/flags/cv.png', 'cw': '/static/flags/cw.png', 'cx': '/static/flags/cx.png',
+    'cy': '/static/flags/cy.png', 'cz': '/static/flags/cz.png', 'de': '/static/flags/de.png',
+    'dj': '/static/flags/dj.png', 'dk': '/static/flags/dk.png', 'dm': '/static/flags/dm.png',
+    'do': '/static/flags/do.png', 'dz': '/static/flags/dz.png', 'ec': '/static/flags/ec.png',
+    'ee': '/static/flags/ee.png', 'eg': '/static/flags/eg.png', 'eh': '/static/flags/eh.png',
+    'er': '/static/flags/er.png', 'es': '/static/flags/es.png', 'et': '/static/flags/et.png',
+    'fi': '/static/flags/fi.png', 'fj': '/static/flags/fj.png', 'fk': '/static/flags/fk.png',
+    'fm': '/static/flags/fm.png', 'fo': '/static/flags/fo.png', 'fr': '/static/flags/fr.png',
+    'ga': '/static/flags/ga.png', 'gb': '/static/flags/gb.png', 'gb-eng': '/static/flags/gb-eng.png',
+    'gb-nir': '/static/flags/gb-nir.png', 'gb-sct': '/static/flags/gb-sct.png', 'gb-wls': '/static/flags/gb-wls.png',
+    'gd': '/static/flags/gd.png', 'ge': '/static/flags/ge.png', 'gf': '/static/flags/gf.png',
+    'gg': '/static/flags/gg.png', 'gh': '/static/flags/gh.png', 'gi': '/static/flags/gi.png',
+    'gl': '/static/flags/gl.png', 'gm': '/static/flags/gm.png', 'gn': '/static/flags/gn.png',
+    'gp': '/static/flags/gp.png', 'gq': '/static/flags/gq.png', 'gr': '/static/flags/gr.png',
+    'gs': '/static/flags/gs.png', 'gt': '/static/flags/gt.png', 'gu': '/static/flags/gu.png',
+    'gw': '/static/flags/gw.png', 'gy': '/static/flags/gy.png', 'hk': '/static/flags/hk.png',
+    'hm': '/static/flags/hm.png', 'hn': '/static/flags/hn.png', 'hr': '/static/flags/hr.png',
+    'ht': '/static/flags/ht.png', 'hu': '/static/flags/hu.png', 'id': '/static/flags/id.png',
+    'ie': '/static/flags/ie.png', 'il': '/static/flags/il.png', 'im': '/static/flags/im.png',
+    'in': '/static/flags/in.png', 'io': '/static/flags/io.png', 'iq': '/static/flags/iq.png',
+    'ir': '/static/flags/ir.png', 'is': '/static/flags/is.png', 'it': '/static/flags/it.png',
+    'je': '/static/flags/je.png', 'jm': '/static/flags/jm.png', 'jo': '/static/flags/jo.png',
+    'jp': '/static/flags/jp.png', 'ke': '/static/flags/ke.png', 'kg': '/static/flags/kg.png',
+    'kh': '/static/flags/kh.png', 'ki': '/static/flags/ki.png', 'km': '/static/flags/km.png',
+    'kn': '/static/flags/kn.png', 'kp': '/static/flags/kp.png', 'kr': '/static/flags/kr.png',
+    'kw': '/static/flags/kw.png', 'ky': '/static/flags/ky.png', 'kz': '/static/flags/kz.png',
+    'la': '/static/flags/la.png', 'lb': '/static/flags/lb.png', 'lc': '/static/flags/lc.png',
+    'li': '/static/flags/li.png', 'lk': '/static/flags/lk.png', 'lr': '/static/flags/lr.png',
+    'ls': '/static/flags/ls.png', 'lt': '/static/flags/lt.png', 'lu': '/static/flags/lu.png',
+    'lv': '/static/flags/lv.png', 'ly': '/static/flags/ly.png', 'ma': '/static/flags/ma.png',
+    'mc': '/static/flags/mc.png', 'md': '/static/flags/md.png', 'me': '/static/flags/me.png',
+    'mf': '/static/flags/mf.png', 'mg': '/static/flags/mg.png', 'mh': '/static/flags/mh.png',
+    'mk': '/static/flags/mk.png', 'ml': '/static/flags/ml.png', 'mm': '/static/flags/mm.png',
+    'mn': '/static/flags/mn.png', 'mo': '/static/flags/mo.png', 'mp': '/static/flags/mp.png',
+    'mq': '/static/flags/mq.png', 'mr': '/static/flags/mr.png', 'ms': '/static/flags/ms.png',
+    'mt': '/static/flags/mt.png', 'mu': '/static/flags/mu.png', 'mv': '/static/flags/mv.png',
+    'mw': '/static/flags/mw.png', 'mx': '/static/flags/mx.png', 'my': '/static/flags/my.png',
+    'mz': '/static/flags/mz.png', 'na': '/static/flags/na.png', 'nc': '/static/flags/nc.png',
+    'ne': '/static/flags/ne.png', 'nf': '/static/flags/nf.png', 'ng': '/static/flags/ng.png',
+    'ni': '/static/flags/ni.png', 'nl': '/static/flags/nl.png', 'no': '/static/flags/no.png',
+    'np': '/static/flags/np.png', 'nr': '/static/flags/nr.png', 'nu': '/static/flags/nu.png',
+    'nz': '/static/flags/nz.png', 'om': '/static/flags/om.png', 'pa': '/static/flags/pa.png',
+    'pe': '/static/flags/pe.png', 'pf': '/static/flags/pf.png', 'pg': '/static/flags/pg.png',
+    'ph': '/static/flags/ph.png', 'pk': '/static/flags/pk.png', 'pl': '/static/flags/pl.png',
+    'pm': '/static/flags/pm.png', 'pn': '/static/flags/pn.png', 'pr': '/static/flags/pr.png',
+    'ps': '/static/flags/ps.png', 'pt': '/static/flags/pt.png', 'pw': '/static/flags/pw.png',
+    'py': '/static/flags/py.png', 'qa': '/static/flags/qa.png', 're': '/static/flags/re.png',
+    'ro': '/static/flags/ro.png', 'rs': '/static/flags/rs.png', 'ru': '/static/flags/ru.png',
+    'rw': '/static/flags/rw.png', 'sa': '/static/flags/sa.png', 'sb': '/static/flags/sb.png',
+    'sc': '/static/flags/sc.png', 'sd': '/static/flags/sd.png', 'se': '/static/flags/se.png',
+    'sg': '/static/flags/sg.png', 'sh': '/static/flags/sh.png', 'si': '/static/flags/si.png',
+    'sj': '/static/flags/sj.png', 'sk': '/static/flags/sk.png', 'sl': '/static/flags/sl.png',
+    'sm': '/static/flags/sm.png', 'sn': '/static/flags/sn.png', 'so': '/static/flags/so.png',
+    'sr': '/static/flags/sr.png', 'ss': '/static/flags/ss.png', 'st': '/static/flags/st.png',
+    'sv': '/static/flags/sv.png', 'sx': '/static/flags/sx.png', 'sy': '/static/flags/sy.png',
+    'sz': '/static/flags/sz.png', 'tc': '/static/flags/tc.png', 'td': '/static/flags/td.png',
+    'tf': '/static/flags/tf.png', 'tg': '/static/flags/tg.png', 'th': '/static/flags/th.png',
+    'tj': '/static/flags/tj.png', 'tk': '/static/flags/tk.png', 'tl': '/static/flags/tl.png',
+    'tm': '/static/flags/tm.png', 'tn': '/static/flags/tn.png', 'to': '/static/flags/to.png',
+    'tr': '/static/flags/tr.png', 'tt': '/static/flags/tt.png', 'tv': '/static/flags/tv.png',
+    'tw': '/static/flags/tw.png', 'tz': '/static/flags/tz.png', 'ua': '/static/flags/ua.png',
+    'ug': '/static/flags/ug.png', 'um': '/static/flags/um.png', 'us': '/static/flags/us.png',
+    'uy': '/static/flags/uy.png', 'uz': '/static/flags/uz.png', 'va': '/static/flags/va.png',
+    'vc': '/static/flags/vc.png', 've': '/static/flags/ve.png', 'vg': '/static/flags/vg.png',
+    'vi': '/static/flags/vi.png', 'vn': '/static/flags/vn.png', 'vu': '/static/flags/vu.png',
+    'wf': '/static/flags/wf.png', 'ws': '/static/flags/ws.png', 'xk': '/static/flags/xk.png',
+    'ye': '/static/flags/ye.png', 'yt': '/static/flags/yt.png', 'za': '/static/flags/za.png',
+    'zm': '/static/flags/zm.png', 'zw': '/static/flags/zw.png',
+    'sudan': '/static/flags/sd.png',
+    'uefa': '/static/flags/uefa.png',
+    
+    // Common country name mappings
+    'england': '/static/flags/gb-eng.png',
+    'scotland': '/static/flags/gb-sct.png',
+    'wales': '/static/flags/gb-wls.png',
+    'northern ireland': '/static/flags/gb-nir.png',
+    'united kingdom': '/static/flags/gb.png',
+    'great britain': '/static/flags/gb.png',
+    'usa': '/static/flags/us.png',
+    'united states': '/static/flags/us.png',
+    'germany': '/static/flags/de.png',
+    'france': '/static/flags/fr.png',
+    'spain': '/static/flags/es.png',
+    'italy': '/static/flags/it.png',
+    'netherlands': '/static/flags/nl.png',
+    'portugal': '/static/flags/pt.png',
+    'belgium': '/static/flags/be.png',
+    'austria': '/static/flags/at.png',
+    'switzerland': '/static/flags/ch.png',
+    'denmark': '/static/flags/dk.png',
+    'sweden': '/static/flags/se.png',
+    'norway': '/static/flags/no.png',
+    'poland': '/static/flags/pl.png',
+    'czech republic': '/static/flags/cz.png',
+    'czechia': '/static/flags/cz.png',
+    'greece': '/static/flags/gr.png',
+    'turkey': '/static/flags/tr.png',
+    'türkiye': '/static/flags/tr.png',
+    'russia': '/static/flags/ru.png',
+    'ukraine': '/static/flags/ua.png',
+    'romania': '/static/flags/ro.png',
+    'bulgaria': '/static/flags/bg.png',
+    'serbia': '/static/flags/rs.png',
+    'croatia': '/static/flags/hr.png',
+    'israel': '/static/flags/il.png',
+    'hungary': '/static/flags/hu.png',
+    'slovakia': '/static/flags/sk.png',
+    'slovenia': '/static/flags/si.png',
+    'finland': '/static/flags/fi.png',
+    'iceland': '/static/flags/is.png',
+    'ireland': '/static/flags/ie.png',
+    'japan': '/static/flags/jp.png',
+    'south korea': '/static/flags/kr.png',
+    'china': '/static/flags/cn.png',
+    'brazil': '/static/flags/br.png',
+    'argentina': '/static/flags/ar.png',
+    'mexico': '/static/flags/mx.png',
+    'canada': '/static/flags/ca.png',
+    'australia': '/static/flags/au.png',
+    'new zealand': '/static/flags/nz.png',
+    'south africa': '/static/flags/za.png',
+    'egypt': '/static/flags/eg.png',
+    'morocco': '/static/flags/ma.png',
+    'nigeria': '/static/flags/ng.png',
+    'ghana': '/static/flags/gh.png',
+    'cameroon': '/static/flags/cm.png',
+    'ivory coast': '/static/flags/ci.png',
+    'senegal': '/static/flags/sn.png',
+    'tunisia': '/static/flags/tn.png',
+    'algeria': '/static/flags/dz.png',
+    'zimbabwe': '/static/flags/zw.png'
+};
+
+// ─── HELPER FUNCTIONS ────────────────────────────────────
+function flagUrl(country) {
+    if (!country) return null;
+    const flagPath = FLAG[country.toLowerCase().trim()];
+    if (!flagPath) return null;
+    if (flagPath.startsWith('/static/flags/')) return flagPath;
+    return `/static/flags/${flagPath}.png`;
+}
+
+function logoUrl(name) {
+    if (!name) return null;
+    if (LOGOS[name]) return LOGOS[name];
+    const norm = s => s.toLowerCase().replace(/\s+(fc|afc|cf|sc|ac|bk|if|fk|sk|jk|bv|sv|nk|hk|gd|cd|sd|ud|id|rcd|ac|ss|us|ssv|vfb|vfl|tsv|tsg|rb|fsv|msv)$/i, '').replace(/[^a-z0-9 ]/g, '').trim();
+    const n = norm(name);
+    for (const [k, v] of Object.entries(LOGOS)) { if (norm(k) === n) return v; }
+    const sorted = Object.entries(LOGOS).sort((a, b) => b[0].length - a[0].length);
+    for (const [k, v] of sorted) { const kn = norm(k); if (kn.length > 3 && (kn.includes(n) || n.includes(kn))) return v; }
+    return null;
+}
+
+function logoImg(name, sz = 22) {
+    if (!name) return `<div class="tlogo-fb" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px">?</div>`;
+    const url = logoUrl(name);
+    const initials = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+    if (url) {
+        return `<img src="${url}" class="tlogo" style="width:${sz}px;height:${sz}px" 
+            onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\\'tlogo-fb\\' style=\\'width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px\\'>${initials}</div>'" 
+            alt="${name}">`;
+    }
+    return `<div class="tlogo-fb" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px">${initials}</div>`;
+}
+
+function flagImg(country, w = 20, h = 14) {
+    if (!country) return `<div class="lg-flag-fb" style="width:${w}px;height:${h}px">🌐</div>`;
+    const url = flagUrl(country);
+    if (url) {
+        return `<img src="${url}" class="lg-flag" style="width:${w}px;height:${h}px" onerror="this.style.display='none'" alt="">`;
+    }
+    return `<div class="lg-flag-fb" style="width:${w}px;height:${h}px">🌐</div>`;
+}
+
+function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function tr(s, n) { return s && s.length > n ? s.slice(0, n - 1) + '…' : s || '—'; }
+
+// ─── TAB INDICATOR ───────────────────────────────────────
+function updateTabIndicator() {
+    const indicator = document.getElementById('tab-indicator');
+    const activeTab = document.querySelector('.tab.on');
+    const tabbar = document.getElementById('tabbar');
+    
+    if (!indicator || !activeTab || !tabbar) return;
+    
+    const btnRect = activeTab.getBoundingClientRect();
+    const containerRect = tabbar.getBoundingClientRect();
+    
+    indicator.style.width = btnRect.width + 'px';
+    indicator.style.left = (btnRect.left - containerRect.left) + 'px';
+}
+
+// ─── MOBILE NAVIGATION ───────────────────────────────────
+function switchMobileTab(tab) {
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    
+    if (tab === 'dashboard') {
+        document.querySelectorAll('.nav-item')[0].classList.add('active');
+        document.querySelector('.workspace').style.display = 'grid';
+        document.querySelector('.explore').style.display = 'block';
+        document.querySelector('.right-col').style.display = 'flex';
+    } else if (tab === 'explore') {
+        document.querySelectorAll('.nav-item')[1].classList.add('active');
+        document.querySelector('.workspace').style.display = 'none';
+        document.querySelector('.explore').style.display = 'block';
+        document.querySelector('.right-col').style.display = 'none';
+        if (!document.getElementById('exp-body').classList.contains('open')) toggleExplore();
+    } else if (tab === 'queue') {
+        document.querySelectorAll('.nav-item')[2].classList.add('active');
+        document.querySelector('.workspace').style.display = 'none';
+        document.querySelector('.explore').style.display = 'none';
+        document.querySelector('.right-col').style.display = 'block';
+        document.querySelector('.gqueue').scrollIntoView({ behavior: 'smooth' });
+    } else if (tab === 'generator') {
+        document.querySelectorAll('.nav-item')[3].classList.add('active');
+        document.querySelector('.workspace').style.display = 'none';
+        document.querySelector('.explore').style.display = 'none';
+        document.querySelector('.right-col').style.display = 'block';
+        document.querySelector('.gen').scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// ─── MANUAL MESSAGE ──────────────────────────────────────
+function showManualMessage() {
+    // Create a simple modal or redirect
+    alert('Manual message feature coming soon!');
+}
+
+// ─── SCORE ANIMATION ─────────────────────────────────────
+function updateScore(element, newScore) {
+    if (element.textContent !== newScore) {
+        element.classList.add('score-updated');
+        element.textContent = newScore;
+        setTimeout(() => element.classList.remove('score-updated'), 400);
+    }
+}
+
+// ─── STATE ───────────────────────────────────────────────
+let selMatch = null, selEvents = [], selType = 'live', selVar = 0, genMsg = '';
+let liveMatches = [], todayMatches = [], liveIds = new Set(), currentTab = 'live';
+let prevScores = new Map();
+let goalQueue = [], gqId = 0;
+let allComps = [];
+
+// ─── BOOT ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    tick(); 
+    setInterval(tick, 1000);
+    
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('hist-date').value = today;
+    
+    checkHealth();
+    loadLive(); 
+    loadToday();
+    
+    setInterval(loadLive, 90000);
+    setInterval(loadToday, 300000);
+    
+    // Initialize tab indicator
+    setTimeout(() => {
+        updateTabIndicator();
+    }, 100);
+    
+    // Initialize mobile nav
+    if (window.innerWidth <= 600) {
+        document.querySelectorAll('.nav-item')[0].classList.add('active');
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        updateTabIndicator();
+    });
+});
+
+function tick() {
+    const n = new Date();
+    const clock = document.getElementById('clock');
+    const clockSub = document.getElementById('clock-sub');
+    const ftClock = document.getElementById('ft-clock');
+    
+    if (clock) clock.textContent = n.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (clockSub) clockSub.textContent = n.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    if (ftClock) ftClock.textContent = n.toLocaleTimeString();
+}
+
+// ─── HEALTH ──────────────────────────────────────────────
+async function checkHealth() {
+    try {
+        const r = await fetch('/api/health').then(r => r.json());
+        const lsDot = document.getElementById('ls-dot');
+        const lsTxt = document.getElementById('ls-txt');
+        const budgetTxt = document.getElementById('budget-txt');
+        const budgetPill = document.getElementById('budget-pill');
+        
+        if (lsDot) lsDot.className = 'dot ' + (r.livescore ? 'ok' : 'err');
+        if (lsTxt) lsTxt.textContent = r.livescore ? 'LiveScore ✓' : 'No credentials';
+        
+        if (r.requests_today != null && budgetTxt && budgetPill) {
+            const pct = r.requests_today / (r.requests_limit || 1500);
+            budgetTxt.textContent = `${r.requests_today}/${r.requests_limit || 1500}`;
+            budgetPill.className = 'hpill budget' + (pct > .85 ? ' crit' : pct > .65 ? ' warn' : '');
+        }
+    } catch (e) {
+        console.log('Health check failed:', e);
+    }
+}
+
+// ─── TABS ────────────────────────────────────────────────
+function switchTab(tab, btn) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    
+    const histBar = document.getElementById('hist-bar');
+    if (histBar) histBar.classList.toggle('on', tab === 'hist');
+    
+    if (tab === 'live') renderGroups(liveMatches, true);
+    if (tab === 'today') renderGroups(todayMatches, false);
+    if (tab === 'hist') {
+        const panel = document.getElementById('matches-panel');
+        if (panel) panel.innerHTML = '<div class="empty"><div class="ico">📆</div><div>Pick a date and click Load</div></div>';
+    }
+    
+    updateTabIndicator();
+}
+
+function loadActiveTab() {
+    if (currentTab === 'live') loadLive();
+    else if (currentTab === 'today') loadToday();
+    else loadHistorical();
+}
+
+// ─── DATA ────────────────────────────────────────────────
+async function loadLive() {
+    try {
+        const d = await fetch('/api/matches/live').then(r => r.json());
+        const nm = d.matches || [];
+        detectGoals(nm);
+        liveMatches = nm;
+        liveIds = new Set(liveMatches.map(m => String(m.id)));
+        
+        const cntLive = document.getElementById('cnt-live');
+        const tcLive = document.getElementById('tc-live');
+        
+        if (cntLive) cntLive.textContent = liveMatches.length;
+        if (tcLive) tcLive.textContent = liveMatches.length;
+        
+        if (currentTab === 'live') renderGroups(liveMatches, true);
+        checkHealth();
+    } catch (e) {
+        console.log('Load live error:', e);
+        if (currentTab === 'live') setErr('Failed to load live scores.');
+    }
+}
+
+async function loadToday() {
+    try {
+        const d = await fetch('/api/matches/today').then(r => r.json());
+        todayMatches = d.matches || [];
+        
+        const cntToday = document.getElementById('cnt-today');
+        const tcToday = document.getElementById('tc-today');
+        const cntLeagues = document.getElementById('cnt-leagues');
+        
+        if (cntToday) cntToday.textContent = todayMatches.length;
+        if (tcToday) tcToday.textContent = todayMatches.length;
+        
+        const lgs = new Set(todayMatches.map(m => m.competition).filter(Boolean));
+        if (cntLeagues) cntLeagues.textContent = lgs.size || '—';
+        
+        if (currentTab === 'today') renderGroups(todayMatches, false);
+        checkHealth();
+    } catch (e) {
+        console.log('Load today error:', e);
+        if (currentTab === 'today') setErr('Failed to load today\'s fixtures.');
+    }
+}
+
+async function loadHistorical() {
+    const date = document.getElementById('hist-date').value;
+    if (!date) { toast('Pick a date first', 'err'); return; }
+    setLoading();
+    try {
+        const d = await fetch(`/api/matches/date?date=${date}`).then(r => r.json());
+        const ms = d.matches || [];
+        if (!ms.length) {
+            const panel = document.getElementById('matches-panel');
+            if (panel) panel.innerHTML = '<div class="empty"><div class="ico">📭</div><div>No fixtures on this date</div></div>';
+            return;
+        }
+        renderGroups(ms, false);
+        checkHealth();
+    } catch (e) {
+        console.log('Load historical error:', e);
+        setErr('Failed to load fixtures.');
+    }
+}
+
+function setLoading() {
+    const panel = document.getElementById('matches-panel');
+    if (panel) panel.innerHTML = '<div class="empty"><div class="ico spin">⚽</div><div>Loading…</div></div>';
+}
+
+function setErr(msg) {
+    const panel = document.getElementById('matches-panel');
+    if (panel) panel.innerHTML = `<div class="empty"><div class="ico">⚠️</div><div>${msg}</div></div>`;
+}
+
+// ─── GOAL DETECTION ──────────────────────────────────────
+function detectGoals(newMatches) {
+    for (const m of newMatches) {
+        const id = String(m.id);
+        const prev = prevScores.get(id);
+        if (prev && (m.home_score > prev.h || m.away_score > prev.a)) {
+            enqueueGoal(m);
+        }
+        prevScores.set(id, { h: m.home_score, a: m.away_score });
+    }
+}
+
+async function enqueueGoal(match) {
+    const id = ++gqId;
+    let msg = '';
+    try {
+        const res = await fetch('/api/template/generate', {
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                message_type: 'goal', 
+                match_data: match, 
+                events: [], 
+                variant: Math.floor(Math.random() * 4) 
+            })
+        });
+        const d = await res.json(); 
+        msg = d.message || '';
+    } catch {
+        const lg = match.competition_full || match.competition || '';
+        msg = `⚽ GOAL!\n──────────────────\n🏆 ${lg}${match.round ? ' · ' + match.round : ''}\n\n  ${match.home_name}  ${match.home_score}–${match.away_score}  ${match.away_name}\n\n⏱ ${match.minute}'`;
+    }
+    goalQueue.push({ id, match, msg, ts: new Date() });
+    renderQueue();
+    toast(`⚽ ${match.home_name} ${match.home_score}–${match.away_score} ${match.away_name}`, 'goal');
+}
+
+function renderQueue() {
+    const el = document.getElementById('gq-list');
+    const badge = document.getElementById('gq-badge');
+    
+    if (!el) return;
+    
+    if (badge) {
+        badge.textContent = goalQueue.length;
+        badge.classList.toggle('on', goalQueue.length > 0);
+    }
+    
+    if (!goalQueue.length) {
+        el.innerHTML = '<div class="gq-empty"><div>No goal alerts yet</div><div class="sub">Refreshes every 90s while live tab is open</div></div>';
+        return;
+    }
+    
+    el.innerHTML = goalQueue.slice().reverse().map(item => {
+        const m = item.match;
+        const t = item.ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return `<div class="gq-item" id="gqi-${item.id}">
+            <div class="gq-ihdr">
+                <div class="gq-logos">${logoImg(m.home_name, 18)}${logoImg(m.away_name, 18)}</div>
+                <span class="gq-score-chip">${m.home_score}–${m.away_score}</span>
+                <span class="gq-match">${esc(m.home_name)} vs ${esc(m.away_name)}</span>
+                <span class="gq-ts">${t}${m.minute ? " · " + m.minute + "'" : ''}</span>
+            </div>
+            <div class="gq-msg">${esc(item.msg)}</div>
+            <div class="gq-acts">
+                <button class="gqbtn gq-copy" onclick="copyGQ(${item.id})">📋 Copy</button>
+                <button class="gqbtn gq-wa" onclick="waGQ(${item.id})">WhatsApp</button>
+                <button class="gqbtn gq-dis" onclick="disGQ(${item.id})">✕ Dismiss</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function copyGQ(id) {
+    const it = goalQueue.find(q => q.id === id);
+    if (!it) return;
+    navigator.clipboard.writeText(it.msg).then(() => { 
+        toast('Copied!'); 
+        disGQ(id); 
+    });
+}
+
+function waGQ(id) {
+    const it = goalQueue.find(q => q.id === id);
+    if (it) window.open(`https://wa.me/?text=${encodeURIComponent(it.msg)}`, '_blank');
+}
+
+function disGQ(id) {
+    goalQueue = goalQueue.filter(q => q.id !== id);
+    renderQueue();
+}
+
+function clearQueue() { 
+    goalQueue = []; 
+    renderQueue(); 
+}
+
+// ─── RENDER GROUPS ───────────────────────────────────────
+function renderGroups(matches, isLive) {
+    const panel = document.getElementById('matches-panel');
+    if (!panel) return;
+    
+    if (!matches.length) {
+        panel.innerHTML = `<div class="empty"><div class="ico">${isLive ? '😴' : '📭'}</div><div>${isLive ? 'No live matches right now' : 'No fixtures found'}</div></div>`;
+        return;
+    }
+    
+    const groups = {};
+    for (const m of matches) {
+        const key = m.competition_full || m.competition || 'Other';
+        if (!groups[key]) {
+            groups[key] = { 
+                name: key, 
+                comp_id: m.competition_id, 
+                country: m.country, 
+                round: m.round, 
+                matches: [] 
+            };
+        }
+        groups[key].matches.push(m);
+        if (!groups[key].round && m.round) groups[key].round = m.round;
+    }
+    
+    const sorted = Object.values(groups).sort((a, b) => {
+        const aL = a.matches.some(m => liveIds.has(String(m.id)));
+        const bL = b.matches.some(m => liveIds.has(String(m.id)));
+        if (aL && !bL) return -1; 
+        if (!aL && bL) return 1;
+        return b.matches.length - a.matches.length;
+    });
+    
+    panel.innerHTML = sorted.map((g, gi) => {
+        const hasLive = g.matches.some(m => liveIds.has(String(m.id)));
+        const lc = g.matches.filter(m => liveIds.has(String(m.id))).length;
+        const open = gi < 3;
+        
+        return `<div class="lg">
+            <div class="lg-hdr" onclick="toggleLg(${gi})">
+                ${flagImg(g.country)}
+                <div class="lg-name">${esc(g.name)}</div>
+                <div class="lg-acts">
+                    ${g.round ? `<span class="lg-rnd">${esc(g.round)}</span>` : ''}
+                    ${hasLive ? `<span class="live-badge">${lc} LIVE</span>` : ''}
+                    ${g.comp_id ? `<button class="lg-tag" onclick="event.stopPropagation();quickStandings(${g.comp_id},'${g.name.replace(/'/g, "\\'")}')">📊 Table</button>` : ''}
+                    <span class="lg-cnt">${g.matches.length}</span>
+                    <span class="lg-chev ${open ? 'open' : ''}" id="chev-${gi}">▼</span>
+                </div>
+            </div>
+            <div class="lg-body ${open ? 'open' : ''}" id="grp-${gi}">
+                ${g.matches.map(m => renderRow(m)).join('')}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function toggleLg(gi) {
+    const g = document.getElementById(`grp-${gi}`);
+    const c = document.getElementById(`chev-${gi}`);
+    if (g) g.classList.toggle('open');
+    if (c) c.classList.toggle('open', g?.classList.contains('open'));
+}
+
+function renderRow(m) {
+    const live = liveIds.has(String(m.id));
+    const ft = ['FINISHED', 'FT'].includes(m.status);
+    const ds = JSON.stringify(m).replace(/"/g, '&quot;');
+    
+    let sc;
+    if (live) {
+        sc = `<div class="msc live">${m.home_score}–${m.away_score}</div><div class="mmin lv">${m.minute}'</div>`;
+    } else if (ft) {
+        sc = `<div class="msc ft">${m.home_score}–${m.away_score}</div><div class="mmin sc">FT</div>`;
+    } else {
+        sc = `<div class="msc">${m.time || 'TBC'}</div><div class="mmin sc">KO</div>`;
+    }
+    
+    return `<div class="mrow ${live ? 'live-match' : ''}" id="row-${m.id}" onclick="pickMatch(${ds})">
+        <div class="mteam h">${logoImg(m.home_name)}<span class="tname">${esc(tr(m.home_name, 14))}</span></div>
+        <div class="msc-c">${sc}</div>
+        <div class="mteam a">${logoImg(m.away_name)}<span class="tname">${esc(tr(m.away_name, 14))}</span></div>
+        <button class="gchip" onclick="event.stopPropagation();pickMatch(${ds})">GEN</button>
+    </div>
+    <div class="evs" id="evs-${m.id}"></div>`;
+}
+
+// ─── PICK MATCH ──────────────────────────────────────────
+async function pickMatch(match) {
+    selMatch = match; 
+    selEvents = []; 
+    genMsg = '';
+    
+    document.querySelectorAll('.mrow').forEach(r => r.classList.remove('sel'));
+    const row = document.getElementById(`row-${match.id}`);
+    if (row) row.classList.add('sel');
+    
+    const genEmpty = document.getElementById('gen-empty');
+    const genForm = document.getElementById('gen-form');
+    const mpHome = document.getElementById('mp-home');
+    const mpAway = document.getElementById('mp-away');
+    const mpSc = document.getElementById('mp-sc');
+    const mpMeta = document.getElementById('mp-meta');
+    
+    if (genEmpty) genEmpty.style.display = 'none';
+    if (genForm) genForm.style.display = 'block';
+    
+    const live = liveIds.has(String(match.id));
+    if (mpSc) mpSc.textContent = live ? `${match.home_score}–${match.away_score}` : 'vs';
+    if (mpMeta) mpMeta.textContent = `${match.competition_full || match.competition || ''}${match.round ? ' · ' + match.round : ''}${live ? ' · ' + match.minute + "'" : ''}`;
+    
+    if (mpHome) mpHome.innerHTML = `${logoImg(match.home_name, 18)}<span class="mp-name">${esc(tr(match.home_name, 10))}</span>`;
+    if (mpAway) mpAway.innerHTML = `${logoImg(match.away_name, 18)}<span class="mp-name">${esc(tr(match.away_name, 10))}</span>`;
+    
+    resetOut();
+    if (match.id) loadEvs(match.id);
+    
+    if (window.innerWidth < 1000) {
+        const gen = document.querySelector('.gen');
+        if (gen) gen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        switchMobileTab('generator');
+    }
+}
+
+async function loadEvs(id) {
+    const strip = document.getElementById(`evs-${id}`);
+    if (!strip) return;
+    try {
+        const d = await fetch(`/api/matches/events?id=${id}`).then(r => r.json());
+        selEvents = d.events || [];
+        if (!selEvents.length) return;
+        const html = selEvents.map(e => {
+            const cls = e.type?.includes('GOAL') ? 'goal' : e.type?.includes('RED') ? 'red' : e.type?.includes('YELLOW') ? 'yellow' : '';
+            return `<span class="ev ${cls}">${e.icon || '⚡'} ${e.minute}' ${esc(e.player)}${e.assist ? ' (' + esc(e.assist) + ')' : ''}</span>`;
+        }).join('');
+        strip.innerHTML = `<div class="ev-list">${html}</div>`;
+        strip.classList.add('on');
+        checkHealth();
+    } catch (e) {
+        console.log('Load events error:', e);
+    }
+}
+
+// ─── GENERATOR ───────────────────────────────────────────
+function setType(btn) {
+    document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    selType = btn.dataset.type;
+    resetOut();
+}
+
+function setVar(btn) {
+    document.querySelectorAll('.vbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    selVar = parseInt(btn.dataset.v);
+    resetOut();
+}
+
+function resetOut() {
+    genMsg = '';
+    const outbox = document.getElementById('outbox');
+    const shareRow = document.getElementById('share-row');
+    if (outbox) {
+        outbox.textContent = '';
+        outbox.classList.remove('on');
+    }
+    if (shareRow) shareRow.classList.remove('on');
+}
+
+async function generate() {
+    if (!selMatch) return;
+    const btn = document.getElementById('gen-btn');
+    if (!btn) return;
+    
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+    resetOut();
+    
+    try {
+        const res = await fetch('/api/template/generate', {
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                message_type: selType, 
+                match_data: selMatch, 
+                events: selEvents, 
+                variant: selVar 
+            })
+        });
+        const d = await res.json();
+        genMsg = d.message || '';
+        const outbox = document.getElementById('outbox');
+        const shareRow = document.getElementById('share-row');
+        
+        if (outbox) {
+            outbox.textContent = genMsg;
+            outbox.classList.add('on');
+        }
+        if (shareRow) shareRow.classList.add('on');
+    } catch (e) {
+        const outbox = document.getElementById('outbox');
+        if (outbox) {
+            outbox.textContent = '⚠️ Error: ' + e.message;
+            outbox.classList.add('on');
+        }
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Generate Message';
+}
+
+function copyMsg() { 
+    if (genMsg) navigator.clipboard.writeText(genMsg).then(() => toast('Copied!')); 
+}
+
+function shareWA() { 
+    if (genMsg) window.open(`https://wa.me/?text=${encodeURIComponent(genMsg)}`, '_blank'); 
+}
+
+function shareTG() { 
+    if (genMsg) window.open(`https://t.me/share/url?text=${encodeURIComponent(genMsg)}`, '_blank'); 
+}
+
+// ─── EXPLORE ─────────────────────────────────────────────
+function toggleExplore() {
+    const b = document.getElementById('exp-body');
+    const c = document.getElementById('exp-chev');
+    if (!b || !c) return;
+    
+    b.classList.toggle('open');
+    c.classList.toggle('open', b.classList.contains('open'));
+    
+    if (b.classList.contains('open') && !document.getElementById('country-list')?.innerHTML) {
+        loadCountries();
+    }
+}
+
+function showEtab(id, btn) {
+    document.querySelectorAll('.etab').forEach(b => b.classList.remove('on'));
+    document.querySelectorAll('.epanel').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    const panel = document.getElementById('ep-' + id);
+    if (panel) panel.classList.add('on');
+}
+
+async function loadCountries() {
+    const el = document.getElementById('country-list');
+    if (!el) return;
+    
+    el.innerHTML = '<div style="font-size:11px;color:var(--m1);">Loading…</div>';
+    try {
+        const d = await fetch('/api/countries').then(r => r.json());
+        const cs = d.countries || [];
+        const sel = document.getElementById('country-sel');
+        
+        if (sel) {
+            sel.innerHTML = '<option value="">All countries</option>' + 
+                cs.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+        
+        el.innerHTML = cs.map(c => {
+            const fu = flagUrl(c.name);
+            const fi = fu ? `<img src="${fu}" style="width:16px;height:11px;border-radius:2px;margin-right:5px;vertical-align:middle;" onerror="this.style.display='none'">` : '';
+            return `<div class="erow" onclick="drillComps(${c.id},'${c.name.replace(/'/g, "\\'")}')">
+                <span>${fi}</span><span class="ename">${esc(c.name)}</span><span class="emeta">→ leagues</span>
+            </div>`;
+        }).join('') || '<div style="font-size:11px;color:var(--m1);">No data</div>';
+        checkHealth();
+    } catch (e) {
+        el.innerHTML = `<div style="font-size:11px;color:var(--re);">${e.message}</div>`;
+    }
+}
+
+function drillComps(id, name) {
+    const sel = document.getElementById('country-sel');
+    if (sel) sel.value = id;
+    showEtab('comps', document.querySelectorAll('.etab')[1]);
+    loadComps(); 
+    toast(`Leagues for ${name}`);
+}
+
+async function loadComps() {
+    const cid = document.getElementById('country-sel')?.value;
+    const el = document.getElementById('comp-list');
+    if (!el) return;
+    
+    el.innerHTML = '<div style="font-size:11px;color:var(--m1);">Loading…</div>';
+    try {
+        const d = await fetch(`/api/competitions${cid ? '?country_id=' + cid : ''}`).then(r => r.json());
+        allComps = d.competitions || [];
+        refreshDropdowns();
+        
+        el.innerHTML = allComps.map(c => `<div class="erow">
+            <span class="ename">${esc(c.name || '—')}${c.country_name ? `<span style="font-size:9px;color:var(--m1);margin-left:5px;">(${esc(c.country_name)})</span>` : ''}</span>
+            <div style="display:flex;gap:4px;">
+                <button class="etag" onclick="event.stopPropagation();quickStandings(${c.id},'${(c.name + (c.country_name ? ' (' + c.country_name + ')' : '')).replace(/'/g, "\\'")}')">📊</button>
+                <button class="etag" onclick="event.stopPropagation();quickTeams(${c.id},'${(c.name + (c.country_name ? ' (' + c.country_name + ')' : '')).replace(/'/g, "\\'")}')">👕</button>
+            </div>
+        </div>`).join('') || '<div style="font-size:11px;color:var(--m1);">No competitions found</div>';
+        checkHealth();
+    } catch (e) {
+        el.innerHTML = `<div style="font-size:11px;color:var(--re);">${e.message}</div>`;
+    }
+}
+
+function refreshDropdowns() {
+    const standingsSel = document.getElementById('standings-sel');
+    const teamsSel = document.getElementById('teams-sel');
+    const standingsHint = document.getElementById('standings-hint');
+    const teamsHint = document.getElementById('teams-hint');
+    
+    const opts = allComps.length
+        ? '<option value="">— Pick a league —</option>' + allComps.map(c => 
+            `<option value="${c.id}">${c.name}${c.country_name ? ' (' + c.country_name + ')' : ''}</option>`
+          ).join('')
+        : '<option value="">No leagues loaded — visit Leagues tab first</option>';
+    
+    if (standingsSel) standingsSel.innerHTML = opts;
+    if (teamsSel) teamsSel.innerHTML = opts;
+    
+    if (allComps.length) {
+        if (standingsHint) standingsHint.style.display = 'none';
+        if (teamsHint) teamsHint.style.display = 'none';
+    }
+}
+
+async function loadStandings() {
+    const id = document.getElementById('standings-sel')?.value;
+    if (!id) return;
+    
+    const sel = document.getElementById('standings-sel');
+    const name = sel?.selectedOptions[0]?.text || 'League';
+    const el = document.getElementById('standings-table');
+    if (!el) return;
+    
+    el.innerHTML = `<div style="font-size:11px;color:var(--m1);">Loading ${esc(name)}…</div>`;
+    
+    try {
+        const d = await fetch(`/api/standings?competition_id=${id}`).then(r => r.json());
+        const table = d.table || [];
+        
+        if (!table.length) {
+            el.innerHTML = '<div style="font-size:11px;color:var(--m1);">No standings data yet.</div>';
+            return;
+        }
+        
+        el.innerHTML = `<div class="stable-title">📊 ${esc(name)}</div>
+            <div class="stable-wrap"><table class="stable">
+                <thead>
+                    <tr>
+                        <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+                        <th>GF</th><th>GA</th><th>GD</th><th>Pts</th><th>Form</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${table.map((t, i) => {
+                        const s = t.overall || t;
+                        const gf = s.goals_for || s.goals_scored || 0;
+                        const ga = s.goals_against || s.conceded || 0;
+                        const gd = typeof s.goal_difference !== 'undefined' ? s.goal_difference : (gf - ga);
+                        const form = (t.form || '').split('').slice(-5).map(f => 
+                            `<div class="fd ${f}"></div>`
+                        ).join('');
+                        const tn = t.team_name || t.team?.name || '—';
+                        const lu = logoUrl(tn);
+                        const li = lu ? 
+                            `<img src="${lu}" class="sl" onerror="this.style.display='none'" alt="">` : 
+                            `<div class="sl-fb">${tn.slice(0, 2)}</div>`;
+                        
+                        return `<tr>
+                            <td class="pos">${i + 1}</td>
+                            <td><div class="stable-team">${li}<span title="${esc(tn)}">${esc(tn)}</span></div></td>
+                            <td>${s.played || s.games_played || 0}</td>
+                            <td>${s.won || s.wins || 0}</td>
+                            <td>${s.draw || s.draws || 0}</td>
+                            <td>${s.lost || s.losses || 0}</td>
+                            <td class="gf">${gf}</td>
+                            <td class="ga">${ga}</td>
+                            <td>${gd > 0 ? '+' + gd : gd}</td>
+                            <td class="pts">${t.points || 0}</td>
+                            <td><div class="form-dots">${form}</div></td>
+                        </tr>`;
+                    }).join('')}
+                </tbody>
+            </table></div>`;
+        checkHealth();
+    } catch (e) {
+        el.innerHTML = `<div style="font-size:11px;color:var(--re);">${e.message}</div>`;
+    }
+}
+
+async function loadTeams() {
+    const id = document.getElementById('teams-sel')?.value;
+    if (!id) return;
+    
+    const sel = document.getElementById('teams-sel');
+    const name = sel?.selectedOptions[0]?.text || 'League';
+    const el = document.getElementById('teams-list');
+    if (!el) return;
+    
+    el.innerHTML = `<div style="font-size:11px;color:var(--m1);">Loading ${esc(name)}…</div>`;
+    
+    try {
+        const d = await fetch(`/api/teams?competition_id=${id}`).then(r => r.json());
+        const ts = d.teams || [];
+        
+        el.innerHTML = ts.length
+            ? `<div class="stable-title">👕 ${esc(name)}</div>` + 
+              ts.map(t => {
+                  const tn = t.name || t.title || '—';
+                  const lu = logoUrl(tn);
+                  const li = lu ? 
+                      `<img src="${lu}" style="width:18px;height:18px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'" alt="">` : 
+                      '';
+                  return `<div class="erow">
+                      ${li}
+                      <span class="ename">${esc(tn)}</span>
+                      <span class="emeta">${esc(t.country || '')}</span>
+                  </div>`;
+              }).join('')
+            : '<div style="font-size:11px;color:var(--m1);">No teams found.</div>';
+        checkHealth();
+    } catch (e) {
+        el.innerHTML = `<div style="font-size:11px;color:var(--re);">${e.message}</div>`;
+    }
+}
+
+function quickStandings(id, name) {
+    const expBody = document.getElementById('exp-body');
+    if (expBody && !expBody.classList.contains('open')) toggleExplore();
+    
+    showEtab('standings', document.querySelectorAll('.etab')[2]);
+    
+    const sel = document.getElementById('standings-sel');
+    if (sel) {
+        if (![...sel.options].find(o => String(o.value) === String(id))) {
+            const opt = document.createElement('option');
+            opt.value = id;
+            opt.text = name;
+            sel.appendChild(opt);
+        }
+        sel.value = id;
+    }
+    
+    const hint = document.getElementById('standings-hint');
+    if (hint) hint.style.display = 'none';
+    
+    loadStandings();
+    
+    const explore = document.querySelector('.explore');
+    if (explore) explore.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function quickTeams(id, name) {
+    const expBody = document.getElementById('exp-body');
+    if (expBody && !expBody.classList.contains('open')) toggleExplore();
+    
+    showEtab('teams', document.querySelectorAll('.etab')[3]);
+    
+    const sel = document.getElementById('teams-sel');
+    if (sel) {
+        if (![...sel.options].find(o => String(o.value) === String(id))) {
+            const opt = document.createElement('option');
+            opt.value = id;
+            opt.text = name;
+            sel.appendChild(opt);
+        }
+        sel.value = id;
+    }
+    
+    loadTeams();
+}
+
+// ─── TOAST ───────────────────────────────────────────────
+function toast(msg, type = 'ok') {
+    const el = document.getElementById('toast');
+    if (!el) return;
+    
+    el.textContent = msg;
+    const col = type === 'err' ? '#ff3d57' : type === 'warn' ? '#ffab00' : type === 'goal' ? '#00e676' : '#00d4ff';
+    el.style.cssText = `display:block;background:${col};color:#000;padding:9px 15px;border-radius:6px;font-size:12px;font-weight:700;position:fixed;bottom:16px;right:16px;z-index:9999;max-width:280px;`;
+    
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => {
+        if (el) el.style.display = 'none';
+    }, 3000);
+}
+</script>
+</body>
+</html>
