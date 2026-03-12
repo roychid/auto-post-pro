@@ -417,7 +417,7 @@ async def send_tg(p: TGMsg):
     
 # This is critical for Vercel - expose the app as 'app'
 # The variable name MUST be 'app'
-app = app  # If your FastAPI instance is already named 'app', this is fine
+handler = app  # If your FastAPI instance is already named 'app', this is fine
 
 # If your FastAPI instance has a different name, rename it to 'app'
 # For example, if you have 'application = FastAPI()', change it to 'app = FastAPI()'
