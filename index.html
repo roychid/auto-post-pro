@@ -1080,13 +1080,25 @@ footer{
 .nav-item.active{color:var(--cy)}
 .nav-item i{font-size:18px;font-style:normal}
 
-/* media queries */
 @media(max-width:1000px){
   .workspace{grid-template-columns:1fr}
   .right-col{position:static}
 }
+
+/* ── MOBILE PAGE SYSTEM ── */
 @media(max-width:600px){
   main{padding:10px;padding-bottom:74px}
+
+  header{padding:0 10px;gap:8px}
+  nav a{padding:4px 8px;font-size:11px}
+  /* hide livescore pill, keep budget */
+  .hpill:first-of-type{display:none}
+
+  .bottom-nav{display:block}
+
+  /* toast above bottom nav */
+  #toast{bottom:72px !important}
+
   .status-bar{
     width:100%;
     overflow-x:auto;
@@ -1095,15 +1107,33 @@ footer{
     -webkit-overflow-scrolling:touch
   }
   .status-item{flex-shrink:0}
-  header{padding:0 10px;gap:8px}
-  nav a{padding:4px 7px;font-size:11px}
-  /* hide livescore pill on mobile, keep budget pill */
-  .hpill:first-child{display:none}
-  .bottom-nav{display:block}
-  /* scroll targets clear sticky header */
-  .panel,.explore,.gqueue,.gen{scroll-margin-top:60px}
-  /* toast above bottom nav */
-  #toast{bottom:72px !important}
+
+  /* ── HOME tab: matches only ── */
+  body.mob-home .right-col{display:none}
+  body.mob-home .explore{display:none}
+
+  /* ── EXPLORE tab ── */
+  body.mob-explore .status-bar{display:none}
+  body.mob-explore .workspace{display:none}
+
+  /* ── QUEUE tab ── */
+  body.mob-queue .status-bar{display:none}
+  body.mob-queue .workspace > div:first-child{display:none}
+  body.mob-queue .right-col{display:flex;position:static;top:auto}
+  body.mob-queue .gen{display:none}
+  body.mob-queue .explore{display:none}
+
+  /* ── GENERATOR tab ── */
+  body.mob-gen .status-bar{display:none}
+  body.mob-gen .workspace > div:first-child{display:none}
+  body.mob-gen .right-col{display:flex;position:static;top:auto}
+  body.mob-gen .gqueue{display:none}
+  body.mob-gen .explore{display:none}
+
+  /* explore full width when shown */
+  body.mob-explore .explore{display:block;margin-top:0}
+
+  /* tighten rows on small screens */
   .mrow{padding:8px 10px;gap:5px}
   .tname{font-size:11px}
   .msc{font-size:12px;padding:3px 8px;min-width:46px}
@@ -1112,7 +1142,7 @@ footer{
 }
 </style>
 </head>
-<body>
+<body class="mob-home">
 
 <header>
   <a class="logo" href="/">
@@ -1292,9 +1322,9 @@ footer{
 <!-- Bottom Navigation for Mobile -->
 <div class="bottom-nav">
   <div class="nav-items">
-    <div class="nav-item active" onclick="switchMobileTab('dashboard')">
+    <div class="nav-item active" onclick="switchMobileTab('home')">
       <i>🏠</i>
-      <span>Home</span>
+      <span>Matches</span>
     </div>
     <div class="nav-item" onclick="switchMobileTab('explore')">
       <i>🔍</i>
@@ -1304,7 +1334,7 @@ footer{
       <i>⚽</i>
       <span>Goals</span>
     </div>
-    <div class="nav-item" onclick="switchMobileTab('generator')">
+    <div class="nav-item" onclick="switchMobileTab('gen')">
       <i>✍️</i>
       <span>Generate</span>
     </div>
@@ -2052,28 +2082,27 @@ function updateTabIndicator() {
 }
 
 // ─── MOBILE NAVIGATION ───────────────────────────────────
-function switchMobileTab(tab) {
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    const navItems = document.querySelectorAll('.nav-item');
+const MOB_PAGES = ['home','explore','queue','gen'];
 
-    if (tab === 'dashboard') {
-        navItems[0].classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (tab === 'explore') {
-        navItems[1].classList.add('active');
-        const el = document.querySelector('.explore');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Auto-open explore if collapsed
-        if (!document.getElementById('exp-body')?.classList.contains('open')) toggleExplore();
-    } else if (tab === 'queue') {
-        navItems[2].classList.add('active');
-        const el = document.querySelector('.gqueue');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (tab === 'generator') {
-        navItems[3].classList.add('active');
-        const el = document.querySelector('.gen');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function switchMobileTab(tab) {
+    if (window.innerWidth > 600) return;
+
+    // update nav highlight
+    document.querySelectorAll('.nav-item').forEach((item, i) => {
+        item.classList.toggle('active', MOB_PAGES[i] === tab);
+    });
+
+    // swap body class
+    document.body.classList.remove(...MOB_PAGES.map(p => 'mob-' + p));
+    document.body.classList.add('mob-' + tab);
+
+    // auto-open explore panel when switching to it
+    if (tab === 'explore') {
+        const expBody = document.getElementById('exp-body');
+        if (expBody && !expBody.classList.contains('open')) toggleExplore();
     }
+
+    window.scrollTo(0, 0);
 }
 
 // ─── MANUAL MESSAGE ──────────────────────────────────────
@@ -2477,12 +2506,8 @@ async function pickMatch(match) {
     resetOut();
     if (match.id) loadEvs(match.id);
     
-    if (window.innerWidth < 1000) {
-        const gen = document.querySelector('.gen');
-        if (gen) gen.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Update bottom nav active state
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        document.querySelectorAll('.nav-item')[3]?.classList.add('active');
+    if (window.innerWidth <= 600) {
+        switchMobileTab('gen');
     }
 }
 
