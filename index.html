@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AutoPost Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -611,7 +611,7 @@ footer{
 }
 </style>
 </head>
-<body>
+<body class="mob-home">
 
 <header>
   <a class="logo" href="/">
@@ -1553,32 +1553,20 @@ function updateTabIndicator() {
 
 // ─── MOBILE NAVIGATION ───────────────────────────────────
 function switchMobileTab(tab) {
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    
-    if (tab === 'dashboard') {
-        document.querySelectorAll('.nav-item')[0].classList.add('active');
-        document.querySelector('.workspace').style.display = 'grid';
-        document.querySelector('.explore').style.display = 'block';
-        document.querySelector('.right-col').style.display = 'flex';
-    } else if (tab === 'explore') {
-        document.querySelectorAll('.nav-item')[1].classList.add('active');
-        document.querySelector('.workspace').style.display = 'none';
-        document.querySelector('.explore').style.display = 'block';
-        document.querySelector('.right-col').style.display = 'none';
-        if (!document.getElementById('exp-body').classList.contains('open')) toggleExplore();
-    } else if (tab === 'queue') {
-        document.querySelectorAll('.nav-item')[2].classList.add('active');
-        document.querySelector('.workspace').style.display = 'none';
-        document.querySelector('.explore').style.display = 'none';
-        document.querySelector('.right-col').style.display = 'block';
-        document.querySelector('.gqueue').scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === 'generator') {
-        document.querySelectorAll('.nav-item')[3].classList.add('active');
-        document.querySelector('.workspace').style.display = 'none';
-        document.querySelector('.explore').style.display = 'none';
-        document.querySelector('.right-col').style.display = 'block';
-        document.querySelector('.gen').scrollIntoView({ behavior: 'smooth' });
+    if (window.innerWidth > 600) return;
+    // update nav highlight
+    document.querySelectorAll('.nav-item').forEach((el, i) => {
+        el.classList.toggle('active', MOB_PAGES[i] === tab);
+    });
+    // swap body class
+    document.body.classList.remove(...MOB_PAGES.map(p => 'mob-' + p));
+    document.body.classList.add('mob-' + tab);
+    // auto-open explore panel
+    if (tab === 'explore') {
+        const eb = document.getElementById('exp-body');
+        if (eb && !eb.classList.contains('open')) toggleExplore();
     }
+    window.scrollTo(0, 0);
 }
 
 // ─── MANUAL MESSAGE ──────────────────────────────────────
@@ -2000,7 +1988,7 @@ async function pickMatch(match) {
     if (window.innerWidth < 1000) {
         const gen = document.querySelector('.gen');
         if (gen) gen.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        switchMobileTab('generator');
+        switchMobileTab('gen');
     }
 }
 

@@ -194,7 +194,18 @@ async def by_date(date: str, competition_id: Optional[int] = None):
     if competition_id:
         p["competition_id"] = competition_id
     data = await ls_get("/fixtures/matches.json", p, ttl=600)
-    raw  = data.get("data", [])
+    raw_data = data.get("data", {})
+    # API returns {"data": {"fixtures": [...]}} not a bare list
+    if isinstance(raw_data, list):
+        raw = raw_data
+    elif isinstance(raw_data, dict):
+        raw = (raw_data.get("fixtures")
+               or raw_data.get("match")
+               or raw_data.get("matches")
+               or [])
+    else:
+        raw = []
+    raw = [f for f in raw if isinstance(f, dict)]
     return {"matches": [norm(f) for f in raw], "count": len(raw), "date": date}
 
 
@@ -414,3 +425,6 @@ async def send_tg(p: TGMsg):
         if not d.get("ok"):
             raise HTTPException(400, d.get("description", "Telegram error"))
         return {"ok": True}
+    
+# At the very end of api/main.py - ONLY this line:
+app = app
