@@ -414,6 +414,3 @@ async def send_tg(p: TGMsg):
         if not d.get("ok"):
             raise HTTPException(400, d.get("description", "Telegram error"))
         return {"ok": True}
-    
-# At the very end of api/main.py - ONLY this line:
-app = app
