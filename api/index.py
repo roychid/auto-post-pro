@@ -72,6 +72,10 @@ async def ls_get(endpoint: str, params: dict = None, ttl: int = 0) -> dict:
 
 
 def extract_score(m):
+    # Handle if m is a string (some APIs return string instead of dict)
+    if isinstance(m, str):
+        return 0, 0
+        
     for f in ["score", "ft_score", "ht_score"]:
         v = m.get(f, "")
         if v and isinstance(v, str):
@@ -84,7 +88,6 @@ def extract_score(m):
     h = m.get("home_score", 0)
     a = m.get("away_score", 0)
     return (int(h) if str(h).isdigit() else 0), (int(a) if str(a).isdigit() else 0)
-
 
 def norm_min(m):
     v = m.get("time", m.get("minute", "0"))
@@ -194,18 +197,7 @@ async def by_date(date: str, competition_id: Optional[int] = None):
     if competition_id:
         p["competition_id"] = competition_id
     data = await ls_get("/fixtures/matches.json", p, ttl=600)
-    raw_data = data.get("data", {})
-    # API returns {"data": {"fixtures": [...]}} not a bare list
-    if isinstance(raw_data, list):
-        raw = raw_data
-    elif isinstance(raw_data, dict):
-        raw = (raw_data.get("fixtures")
-               or raw_data.get("match")
-               or raw_data.get("matches")
-               or [])
-    else:
-        raw = []
-    raw = [f for f in raw if isinstance(f, dict)]
+    raw  = data.get("data", [])
     return {"matches": [norm(f) for f in raw], "count": len(raw), "date": date}
 
 
@@ -425,6 +417,3 @@ async def send_tg(p: TGMsg):
         if not d.get("ok"):
             raise HTTPException(400, d.get("description", "Telegram error"))
         return {"ok": True}
-    
-# At the very end of api/main.py - ONLY this line:
-app = app
