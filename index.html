@@ -1086,18 +1086,29 @@ footer{
   .right-col{position:static}
 }
 @media(max-width:600px){
-  main{padding:10px}
+  main{padding:10px;padding-bottom:74px}
   .status-bar{
     width:100%;
     overflow-x:auto;
     padding:8px 12px;
-    gap:16px
+    gap:16px;
+    -webkit-overflow-scrolling:touch
   }
   .status-item{flex-shrink:0}
-  header{padding:0 12px}
-  nav a{padding:4px 8px}
+  header{padding:0 10px;gap:8px}
+  nav a{padding:4px 7px;font-size:11px}
+  /* hide livescore pill on mobile, keep budget pill */
+  .hpill:first-child{display:none}
   .bottom-nav{display:block}
-  main{padding-bottom:70px}
+  /* scroll targets clear sticky header */
+  .panel,.explore,.gqueue,.gen{scroll-margin-top:60px}
+  /* toast above bottom nav */
+  #toast{bottom:72px !important}
+  .mrow{padding:8px 10px;gap:5px}
+  .tname{font-size:11px}
+  .msc{font-size:12px;padding:3px 8px;min-width:46px}
+  .type-grid{gap:4px}
+  .tbtn{font-size:10px;padding:6px 3px}
 }
 </style>
 </head>
@@ -2043,37 +2054,31 @@ function updateTabIndicator() {
 // ─── MOBILE NAVIGATION ───────────────────────────────────
 function switchMobileTab(tab) {
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    
+    const navItems = document.querySelectorAll('.nav-item');
+
     if (tab === 'dashboard') {
-        document.querySelectorAll('.nav-item')[0].classList.add('active');
-        document.querySelector('.workspace').style.display = 'grid';
-        document.querySelector('.explore').style.display = 'block';
-        document.querySelector('.right-col').style.display = 'flex';
+        navItems[0].classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (tab === 'explore') {
-        document.querySelectorAll('.nav-item')[1].classList.add('active');
-        document.querySelector('.workspace').style.display = 'none';
-        document.querySelector('.explore').style.display = 'block';
-        document.querySelector('.right-col').style.display = 'none';
-        if (!document.getElementById('exp-body').classList.contains('open')) toggleExplore();
+        navItems[1].classList.add('active');
+        const el = document.querySelector('.explore');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Auto-open explore if collapsed
+        if (!document.getElementById('exp-body')?.classList.contains('open')) toggleExplore();
     } else if (tab === 'queue') {
-        document.querySelectorAll('.nav-item')[2].classList.add('active');
-        document.querySelector('.workspace').style.display = 'none';
-        document.querySelector('.explore').style.display = 'none';
-        document.querySelector('.right-col').style.display = 'block';
-        document.querySelector('.gqueue').scrollIntoView({ behavior: 'smooth' });
+        navItems[2].classList.add('active');
+        const el = document.querySelector('.gqueue');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (tab === 'generator') {
-        document.querySelectorAll('.nav-item')[3].classList.add('active');
-        document.querySelector('.workspace').style.display = 'none';
-        document.querySelector('.explore').style.display = 'none';
-        document.querySelector('.right-col').style.display = 'block';
-        document.querySelector('.gen').scrollIntoView({ behavior: 'smooth' });
+        navItems[3].classList.add('active');
+        const el = document.querySelector('.gen');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
 // ─── MANUAL MESSAGE ──────────────────────────────────────
 function showManualMessage() {
-    // Create a simple modal or redirect
-    alert('Manual message feature coming soon!');
+    window.location.href = '/manualmessage.html';
 }
 
 // ─── SCORE ANIMATION ─────────────────────────────────────
@@ -2475,7 +2480,9 @@ async function pickMatch(match) {
     if (window.innerWidth < 1000) {
         const gen = document.querySelector('.gen');
         if (gen) gen.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        switchMobileTab('generator');
+        // Update bottom nav active state
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[3]?.classList.add('active');
     }
 }
 
